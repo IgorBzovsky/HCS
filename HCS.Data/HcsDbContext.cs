@@ -24,5 +24,10 @@ namespace HCS.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ProvidedUtilityConfiguration());
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }
