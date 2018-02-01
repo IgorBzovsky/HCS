@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using HCS.Data;
 using Microsoft.EntityFrameworkCore;
+using HCS.Core;
+using AutoMapper;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace HCS.Api
 {
@@ -25,7 +28,15 @@ namespace HCS.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "HCS API", Version = "v1" });
+                var xmlPath = AppDomain.CurrentDomain.BaseDirectory + @"HCS.Api.xml";
+                c.IncludeXmlComments(xmlPath);
+            });
             services.AddDbContext<HcsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddMvc();
         }
 
@@ -38,6 +49,11 @@ namespace HCS.Api
             }
 
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HCS API V1");
+            });
         }
     }
 }
