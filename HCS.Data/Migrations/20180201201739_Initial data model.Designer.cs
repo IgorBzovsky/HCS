@@ -11,9 +11,10 @@ using System;
 namespace HCS.Data.Migrations
 {
     [DbContext(typeof(HcsDbContext))]
-    partial class HcsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180201201739_Initial data model")]
+    partial class Initialdatamodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
