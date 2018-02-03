@@ -2,6 +2,7 @@
 using HCS.Api.Controllers.Resources;
 using HCS.Core;
 using HCS.Core.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace HCS.Api.Controllers
             return _mapper.Map<IEnumerable<Location>, IEnumerable<KeyValuePairResource>>(regions);
         }
 
+        [Authorize]
         [HttpGet("utilities")]
         public async Task<IEnumerable<KeyValuePairResource>> GetUtilities()
         {

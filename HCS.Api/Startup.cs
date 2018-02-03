@@ -29,6 +29,20 @@ namespace HCS.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper();
+
+            services.AddMvcCore()
+                .AddAuthorization()
+                .AddJsonFormatters();
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5002";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ApiName = "HcsApi";
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "HCS API", Version = "v1" });
@@ -47,7 +61,7 @@ namespace HCS.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.Data", "HCS.Data\HCS.Data.csproj", "{43C1B63D-6EEF-4451-9380-F789147662D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCS.Data", "HCS.Data\HCS.Data.csproj", "{43C1B63D-6EEF-4451-9380-F789147662D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.Core", "HCS.Core\HCS.Core.csproj", "{77F65EAA-CBC2-44FE-B334-FBD1C6FE8D5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCS.Core", "HCS.Core\HCS.Core.csproj", "{77F65EAA-CBC2-44FE-B334-FBD1C6FE8D5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.Client", "HCS.Client\HCS.Client.csproj", "{C78F97B8-BB00-4453-A362-E4273FC1699D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCS.Client", "HCS.Client\HCS.Client.csproj", "{C78F97B8-BB00-4453-A362-E4273FC1699D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.Api", "HCS.Api\HCS.Api.csproj", "{CE98A4C4-92A9-4E6B-9BEE-74D145B19F22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCS.Api", "HCS.Api\HCS.Api.csproj", "{CE98A4C4-92A9-4E6B-9BEE-74D145B19F22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.Auth", "HCS.Auth\HCS.Auth.csproj", "{059039C3-D5C6-41A8-8611-25E25B66493B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.TempClient", "HCS.TempClient\HCS.TempClient.csproj", "{AB134B57-5698-49FD-9393-AD63000C45BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{CE98A4C4-92A9-4E6B-9BEE-74D145B19F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE98A4C4-92A9-4E6B-9BEE-74D145B19F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE98A4C4-92A9-4E6B-9BEE-74D145B19F22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{059039C3-D5C6-41A8-8611-25E25B66493B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{059039C3-D5C6-41A8-8611-25E25B66493B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{059039C3-D5C6-41A8-8611-25E25B66493B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{059039C3-D5C6-41A8-8611-25E25B66493B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB134B57-5698-49FD-9393-AD63000C45BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB134B57-5698-49FD-9393-AD63000C45BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB134B57-5698-49FD-9393-AD63000C45BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB134B57-5698-49FD-9393-AD63000C45BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

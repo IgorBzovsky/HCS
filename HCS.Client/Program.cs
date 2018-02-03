@@ -19,6 +19,7 @@ namespace HCS_Client
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://localhost:5000")
                 .UseStartup<Startup>()
                 .Build();
     }
