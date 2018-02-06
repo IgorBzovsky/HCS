@@ -19,6 +19,10 @@ export class ProtectedComponent implements OnInit {
             this.tests = tests,
                 console.log(this.tests)
         });
-        console.log(this.authService.getAuthorizationHeaderValue())
+        console.log(this.authService.getAuthorizationHeaderValue());
+        console.log("Is admin: ", this.authService.isInRole("admin"));
+        console.log("Is manager: ", this.authService.isInRole("manager"));
+        console.log("Is user: ", this.authService.isInRole("user"));
+        console.log("Is logged in: ", this.authService.isLoggedIn());
     }
 }

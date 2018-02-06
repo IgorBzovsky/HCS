@@ -40,7 +40,8 @@ namespace HCS.Auth
                         Password = "password",
                         Claims = new List<Claim>
                         {
-                            new Claim("role", "admin")
+                            new Claim("role", "admin"),
+                            new Claim("role", "manager")
                         }
                     },
                     new TestUser
