@@ -45,6 +45,7 @@ namespace HCS.Auth
             services.AddIdentityServer()
                 .AddSigningCredential(cert)
                 .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddTestUsers(Config.Users.All());
             services.AddMvc();

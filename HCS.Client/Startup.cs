@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace HCS_Client
 {
@@ -22,6 +19,41 @@ namespace HCS_Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Todo: IOptions pattern
+            /*services.Configure<AppSettings>(options => 
+            {
+                Configuration.GetSection("AppSettings").Bind(options);
+            });
+
+            var settings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();*/
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5001")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.SignInScheme = "Cookies";
+                    options.Authority = "http://localhost:5002";
+                    options.RequireHttpsMetadata = false;
+                    options.SignedOutCallbackPath = "/home";
+                    options.ResponseType = "id_token token";
+                    options.ClientId = "hcsClient";
+                    options.SaveTokens = true;
+                });
             services.AddMvc();
         }
 
@@ -40,6 +72,9 @@ namespace HCS_Client
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCors("default");
+            app.UseAuthentication();
 
             app.UseStaticFiles();
 

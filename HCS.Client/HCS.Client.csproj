@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +21,30 @@
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="ClientApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\app\components\about\about.component.ts" />
+    <None Remove="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
+    <None Remove="ClientApp\app\components\protected\protected.component.ts" />
+    <None Remove="ClientApp\app\routing.module.ts" />
+    <None Remove="ClientApp\app\services\app-settings.service.ts" />
+    <None Remove="ClientApp\app\services\auth-guard.service.ts" />
+    <None Remove="ClientApp\app\services\auth-http.service.ts" />
+    <None Remove="ClientApp\app\services\auth.service.ts" />
+    <None Remove="ClientApp\app\services\test.service.ts" />
+    <None Remove="ClientApp\auth.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\about\about.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\protected\protected.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\app-settings.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\auth-guard.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\auth.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\test.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\auth.module.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

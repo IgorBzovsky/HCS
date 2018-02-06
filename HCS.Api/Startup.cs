@@ -29,9 +29,19 @@ namespace HCS.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper();
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
             services.AddMvcCore()
-                .AddAuthorization()
+                .AddAuthorization(options => {
+                    options.AddPolicy("admin", policy => policy.RequireClaim("role", "admin"));
+                })
                 .AddJsonFormatters();
 
             services.AddAuthentication("Bearer")
@@ -39,8 +49,8 @@ namespace HCS.Api
                 {
                     options.Authority = "http://localhost:5002";
                     options.RequireHttpsMetadata = false;
-
-                    options.ApiName = "HcsApi";
+                    options.ApiName = "hcsApi";
+                    options.RoleClaimType = "role";
                 });
 
             services.AddSwaggerGen(c =>
@@ -61,6 +71,7 @@ namespace HCS.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("default");
             app.UseAuthentication();
             app.UseMvc();
             app.UseSwagger();

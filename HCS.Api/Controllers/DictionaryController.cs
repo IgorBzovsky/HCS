@@ -22,6 +22,7 @@ namespace HCS.Api.Controllers
         }
 
         [HttpGet("locations")]
+        [Authorize(Policy = "admin")]
         public async Task<IEnumerable<KeyValuePairResource>> GetLocations()
         {
             var locations = await _unitOfWork.Locations.GetLocationsIncludeChildrenAsync();

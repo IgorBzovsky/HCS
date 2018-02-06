@@ -1,0 +1,16 @@
+﻿@model AppSettingsModel
+
+<script>
+    var HcsAppSettings = {
+        BaseUrls: {
+            Api: "@Model.ApiUrl",
+            Auth: "@Model.AuthUrl",
+            Web: "@Model.WebUrl"
+        },
+        LogoutRedirect: "@Model.RedirectUrl",
+        AccessToken: "@Model.AccessToken",
+        UserFullName: "@Model.UserFullName",
+        UserEmail: "@Model.UserEmail",
+        AdminEnabled: "@Model.AdminEnabled"
+    }
+</script>

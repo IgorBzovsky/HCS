@@ -4,6 +4,7 @@ using IdentityServer4.Test;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HCS.Auth
@@ -14,8 +15,16 @@ namespace HCS.Auth
         {
             return new List<ApiResource>
             {
-                new ApiResource("HcsApi", "My API"),
-                new ApiResource("socialnetwork", "Social Network")
+                new ApiResource("hcsApi", "HCS Api", new[] { "role" })
+            };
+        }
+
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile()
             };
         }
 
@@ -24,13 +33,27 @@ namespace HCS.Auth
             public static List<TestUser> All()
             {
                 return new List<TestUser> {
-                new TestUser
-                {
-                    SubjectId = "1",
-                    Username = "test@domain.com",
-                    Password = "password"
-                }
-            };
+                    new TestUser
+                    {
+                        SubjectId = "1",
+                        Username = "test@domain.com",
+                        Password = "password",
+                        Claims = new List<Claim>
+                        {
+                            new Claim("role", "admin")
+                        }
+                    },
+                    new TestUser
+                    {
+                        SubjectId = "2",
+                        Username = "test2@domain.com",
+                        Password = "password",
+                        Claims = new List<Claim>
+                        {
+                            new Claim("role", "user")
+                        }
+                    }
+                };
             }
         }
 
@@ -40,53 +63,21 @@ namespace HCS.Auth
             {
                 new Client
                 {
-                    ClientId = "test",
-
-                    // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-
-                    // secret for authentication
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-
-                    // scopes that client has access to
-                    AllowedScopes = { "socialnetwork" }
-                },
-
-                new Client
-                {
-                    ClientId = "client",
-
-                    // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    // secret for authentication
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-
-                    // scopes that client has access to
-                    AllowedScopes = { "HcsApi" }
-                },
-
-                new Client
-                {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
+                    ClientId = "hcsClient",
+                    ClientName = "HCS Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
-
-                    RedirectUris = { "http://localhost:5002/signin-oidc" },
-                    PostLogoutRedirectUris =
-                        { "http://localhost:5002/signout-callback-oidc" },
-
+                    AllowAccessTokensViaBrowser = true,
+                    RedirectUris = { "http://localhost:5000/auth-callback" },
+                    PostLogoutRedirectUris = { "http://localhost:5000/" },
+                    AllowedCorsOrigins = { "http://localhost:5000" },
+                
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    }
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "hcsApi"
+                    },
+                
                 }
             };
         }

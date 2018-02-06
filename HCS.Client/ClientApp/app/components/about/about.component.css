@@ -1,0 +1,47 @@
+﻿.header {
+    background: #3498db;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    height: 220px;
+}
+
+.header:after {
+    background: inherit;
+    bottom: 0;
+    content: '';
+    display: block;
+    height: 50%;
+    left: 0;
+    position: absolute;
+    right: 0;
+    transform: skewY(-1.5deg);
+    transform-origin: 100%;
+    z-index: -1;
+}
+
+.btn-start,
+.btn-start:link,
+.btn-start:visited {
+    margin-top: 15px;
+    border: 1px solid #fff;
+    color: #fff;
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 200px;
+    font-weight: 300;
+    transition: background-color 0.5s, border 0.5s, color 0.5s;
+}
+
+.btn-start:hover,
+.btn-start:active {
+    background-color: #7cbde8;
+    cursor: pointer;
+}
+
+.header .btn-start {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+}

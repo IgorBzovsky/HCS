@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCS.Client", "HCS.Client\HC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCS.Api", "HCS.Api\HCS.Api.csproj", "{CE98A4C4-92A9-4E6B-9BEE-74D145B19F22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.Auth", "HCS.Auth\HCS.Auth.csproj", "{059039C3-D5C6-41A8-8611-25E25B66493B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCS.Auth", "HCS.Auth\HCS.Auth.csproj", "{059039C3-D5C6-41A8-8611-25E25B66493B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.TempClient", "HCS.TempClient\HCS.TempClient.csproj", "{AB134B57-5698-49FD-9393-AD63000C45BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCS.TempClient", "HCS.TempClient\HCS.TempClient.csproj", "{AB134B57-5698-49FD-9393-AD63000C45BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
