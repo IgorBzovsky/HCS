@@ -24,9 +24,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\admin.module.ts" />
     <None Remove="ClientApp\app\components\about\about.component.ts" />
+    <None Remove="ClientApp\app\components\admin\admin\admin.component.ts" />
+    <None Remove="ClientApp\app\components\admin\main\main.component.ts" />
+    <None Remove="ClientApp\app\components\admin\more-info\more-info.component.ts" />
     <None Remove="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
+    <None Remove="ClientApp\app\components\portal\main\main.component.ts" />
+    <None Remove="ClientApp\app\components\portal\more-info\more-info.component.ts" />
+    <None Remove="ClientApp\app\components\portal\portal\portal.component.ts" />
     <None Remove="ClientApp\app\components\protected\protected.component.ts" />
+    <None Remove="ClientApp\app\portal.module.ts" />
     <None Remove="ClientApp\app\routing.module.ts" />
     <None Remove="ClientApp\app\services\app-settings.service.ts" />
     <None Remove="ClientApp\app\services\auth-guard.service.ts" />
@@ -37,9 +45,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\admin.module.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\about\about.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\admin\admin\admin.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\admin\main\main.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\admin\more-info\more-info.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\portal\main\main.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\portal\more-info\more-info.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\portal\portal\portal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\protected\protected.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\portal.module.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\app-settings.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\auth.service.ts" />

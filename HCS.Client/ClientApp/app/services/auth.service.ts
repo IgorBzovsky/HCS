@@ -12,7 +12,9 @@ export class AuthService {
     constructor() {
         this.manager.getUser().then(user => {
             this.user = user;
-            this.updateRoles();
+            if (this.isLoggedIn()) {
+                this.updateRoles();
+            }
         });
     }
 
@@ -21,6 +23,9 @@ export class AuthService {
     }
 
     public isInRole(roleName: string) {
+        if (!this.roles) {
+            return false;
+        }
         return this.roles.indexOf(roleName) > -1;
     }
 
@@ -41,12 +46,32 @@ export class AuthService {
     }
 
     completeAuthentication(): Promise<void> {
-        
         return this.manager.signinRedirectCallback().then(user => {
             this.user = user;
             this.updateRoles();
         });
     }
+
+    startSignout() {
+        this.manager.getUser().then(user => {
+            return this.manager.signoutRedirect({ id_token_hint: user.id_token }).then(resp => {
+                console.log('signed out', resp);
+                setTimeout(5000, () => {
+                    console.log('testing to see if fired...');
+                });
+            }).catch(function (err) {
+                console.log(err);
+            });
+        });
+    };
+
+    completeSignout() {
+        this.manager.signoutRedirectCallback().then(function (response) {
+            console.log('signed out', response);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
 
     private updateRoles() {
         var jwtHelper = new JwtHelper();
