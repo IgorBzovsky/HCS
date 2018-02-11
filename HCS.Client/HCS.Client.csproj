@@ -29,6 +29,7 @@
     <None Remove="ClientApp\app\components\admin\admin\admin.component.ts" />
     <None Remove="ClientApp\app\components\admin\main\main.component.ts" />
     <None Remove="ClientApp\app\components\admin\more-info\more-info.component.ts" />
+    <None Remove="ClientApp\app\components\admin\user-form\user-form.component.ts" />
     <None Remove="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
     <None Remove="ClientApp\app\components\portal\main\main.component.ts" />
     <None Remove="ClientApp\app\components\portal\more-info\more-info.component.ts" />
@@ -41,6 +42,7 @@
     <None Remove="ClientApp\app\services\auth-http.service.ts" />
     <None Remove="ClientApp\app\services\auth.service.ts" />
     <None Remove="ClientApp\app\services\test.service.ts" />
+    <None Remove="ClientApp\app\services\user-management.service.ts" />
     <None Remove="ClientApp\auth.module.ts" />
   </ItemGroup>
 
@@ -50,6 +52,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\admin\admin\admin.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\admin\main\main.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\admin\more-info\more-info.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\admin\user-form\user-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\portal\main\main.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\portal\more-info\more-info.component.ts" />
@@ -61,6 +64,7 @@
     <TypeScriptCompile Include="ClientApp\app\services\auth.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\test.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\auth.module.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\user-management.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

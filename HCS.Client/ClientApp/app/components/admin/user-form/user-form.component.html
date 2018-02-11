@@ -1,0 +1,29 @@
+﻿<h1>Нове підприємство</h1>
+<div class="col-md-6">
+    <form #f="ngForm" (ngSubmit)="submit()">
+        <p>
+            {{ provider | json }}
+        </p>
+        <div class="form-group">
+            <label for="name">Назва</label>
+            <input type="text" name="name" value="" class="form-control"
+                   [(ngModel)]="provider.name" required #name="ngModel" />
+            <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Вкажіть назву</div>
+        </div>
+        <div class="form-group">
+            <label for="location">Регіон</label>
+            <select name="location" class="form-control" [(ngModel)]="provider.locationId" required #location="ngModel">
+                <option value=""></option>
+                <option *ngFor="let r of regions" value="{{ r.id }}">{{ r.name }}</option>
+            </select>
+            <div class="alert alert-danger" *ngIf="location.touched && !location.valid">Оберіть регіон</div>
+        </div>
+        <h2>Типи послуг</h2>
+        <div *ngFor="let u of utilities" class="checkbox">
+            <label for="utility{{ u.id }}">
+                <input type="checkbox" id="utility{{ u.id }}" (change)="onUtilityToggle(u.id, $event)" />{{ u.name }}
+            </label>
+        </div>
+        <button class="btn btn-primary" [disabled]="!f.valid">Зберегти</button>
+    </form>
+</div>

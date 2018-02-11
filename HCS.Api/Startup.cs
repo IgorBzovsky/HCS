@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using HCS.Core;
 using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
+using HCS.Core.Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace HCS.Api
 {
@@ -60,6 +62,8 @@ namespace HCS.Api
                 c.IncludeXmlComments(xmlPath);
             });
             services.AddDbContext<HcsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<HcsDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddMvc();
         }
