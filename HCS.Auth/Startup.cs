@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using HCS.Core.Domain;
+using HCS.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IO;
@@ -42,12 +46,20 @@ namespace HCS.Auth
                 _logger.LogInformation($"Falling back to cert from file. Successfully loaded: {cert.Thumbprint}");
             }
 
+            services.AddDbContext<HcsDbContext>(builder =>
+                builder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=hcsdb;Trusted_Connection=True;MultipleActiveResultSets=true"));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<HcsDbContext>();
+
             services.AddIdentityServer()
                 .AddSigningCredential(cert)
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryClients(Config.GetClients())
-                .AddTestUsers(Config.Users.All());
+                //.AddTestUsers(Config.Users.All());
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddProfileService<Config.IdentityProfileService>();
             services.AddMvc();
         }
 

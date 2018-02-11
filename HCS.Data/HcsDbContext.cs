@@ -8,7 +8,7 @@ using System.Text;
 
 namespace HCS.Data
 {
-    public class HcsDbContext : IdentityDbContext<User>
+    public class HcsDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Location> Locations { get; set; }
         public DbSet<Utility> Utilities { get; set; }

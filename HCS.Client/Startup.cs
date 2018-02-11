@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace HCS_Client
@@ -53,6 +54,7 @@ namespace HCS_Client
                     options.ResponseType = "id_token token";
                     options.ClientId = "hcsClient";
                     options.SaveTokens = true;
+                    options.GetClaimsFromUserInfoEndpoint = true;
                 });
             services.AddMvc();
         }

@@ -1,0 +1,73 @@
+﻿using HCS.Core.Domain;
+using HCS.Data;
+using HCS.OAuth.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace HCS.OAuth
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<HcsDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<HcsDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Add application services.
+            services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddMvc();
+
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryPersistedGrants()
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddProfileService<Config.IdentityProfileService>();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            app.UseStaticFiles();
+
+            app.UseIdentityServer();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
+}

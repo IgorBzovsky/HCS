@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HCS.Core.Domain
 {
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
     }
 }
