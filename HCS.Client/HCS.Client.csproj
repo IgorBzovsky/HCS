@@ -37,7 +37,6 @@
     <None Remove="ClientApp\app\components\protected\protected.component.ts" />
     <None Remove="ClientApp\app\portal.module.ts" />
     <None Remove="ClientApp\app\routing.module.ts" />
-    <None Remove="ClientApp\app\services\app-settings.service.ts" />
     <None Remove="ClientApp\app\services\auth-guard.service.ts" />
     <None Remove="ClientApp\app\services\auth-http.service.ts" />
     <None Remove="ClientApp\app\services\auth.service.ts" />
@@ -59,7 +58,6 @@
     <TypeScriptCompile Include="ClientApp\app\components\portal\portal\portal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\protected\protected.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\portal.module.ts" />
-    <TypeScriptCompile Include="ClientApp\app\services\app-settings.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\auth.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\test.service.ts" />

@@ -1,11 +1,13 @@
 import { AdminModule, adminRoutes } from "./admin.module";
 import { AuthModule } from "./auth.module";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { PortalModule, portalRoutes } from "./portal.module";
 import { RouterModule } from '@angular/router';
+import { ToastModule } from 'ng2-toastr/ng2-toastr';
 
 import { AboutComponent } from './components/about/about.component';
 import { AdminComponent } from "./components/admin/admin/admin.component";
@@ -35,9 +37,11 @@ import { TestService } from './services/test.service';
     ],
     imports: [
         AuthModule.forRoot(),
-        AdminModule,
+        AdminModule.forRoot(),
+        ToastModule.forRoot(),
         PortalModule,
         CommonModule,
+        BrowserAnimationsModule,
         HttpModule,
         FormsModule,
         RouterModule.forRoot([

@@ -1,5 +1,7 @@
 ﻿using HCS.Core.Domain;
 using HCS.Data;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -60,6 +62,13 @@ namespace HCS.Auth
                 //.AddTestUsers(Config.Users.All());
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddProfileService<Config.IdentityProfileService>();
+            services.AddAuthentication()
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityConstants.ExternalScheme;
+                    options.ClientId = "932208734950-uvvn459764luouis7rusise15ii8ushq.apps.googleusercontent.com";
+                    options.ClientSecret = "fQ4noFbG_ib2PaYNWfRhI1LA";
+                });
             services.AddMvc();
         }
 

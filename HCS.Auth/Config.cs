@@ -28,7 +28,8 @@ namespace HCS.Auth
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResources.Email()
             };
         }
 
@@ -81,6 +82,7 @@ namespace HCS.Auth
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
                         "hcsApi",
                         "role"
                     },

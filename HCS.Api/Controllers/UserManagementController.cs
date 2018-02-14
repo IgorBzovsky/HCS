@@ -36,7 +36,13 @@ namespace HCS.Api.Controllers
                 return BadRequest(ModelState);
 
             var user = _mapper.Map<UserResource, ApplicationUser>(userResource);
-            await _userManager.CreateAsync(user, userResource.Password);
+            var result = await _userManager.CreateAsync(user, userResource.Password);
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError("user_exist", "Користувач з такою електронною адресою вже зареєстрований");
+                return BadRequest(ModelState);
+            }
+
             var principal = await _claimsFactory.CreateAsync(user);
             var claims = principal.Claims.Where(x => x.Type == "role").ToList();
             var removedClaims = claims.Where(x => !userResource.Roles.Contains(x.Value));
@@ -45,10 +51,10 @@ namespace HCS.Api.Controllers
                 .Where(c => !claims.Any(x => x.Value == c))
                 .Select(c => new Claim("role", c));
             await _userManager.AddClaimsAsync(user, addedClaims);
-            var result = _mapper.Map<ApplicationUser, UserResource>(user);
+            var savedUser = _mapper.Map<ApplicationUser, UserResource>(user);
             var userClaims = await _userManager.GetClaimsAsync(user);
-            result.Roles = userClaims.Where(x => x.Type.Equals("role")).Select(x => x.Value).ToList();
-            return Ok(result);
+            savedUser.Roles = userClaims.Where(x => x.Type.Equals("role")).Select(x => x.Value).ToList();
+            return Ok(savedUser);
         }
 
         [HttpGet]
@@ -60,9 +66,8 @@ namespace HCS.Api.Controllers
             foreach (var user in users)
             {
                 var principal = await _claimsFactory.CreateAsync(user);
-                var claims = principal.Claims.Where(x => x.Type == "role").ToList();
                 var userResource = _mapper.Map<ApplicationUser, UserResource>(user);
-                userResource.Roles = claims.Select(x => x.Value).ToList();
+                userResource.Roles = principal.Claims.Where(x => x.Type == "role").Select(x => x.Value).ToList();
                 result.Add(userResource);
             }
 

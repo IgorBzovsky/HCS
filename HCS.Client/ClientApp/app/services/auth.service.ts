@@ -7,6 +7,9 @@ export class AuthService {
     private manager: UserManager = new UserManager(getClientSettings());
     private user: User;
     private roles: any;
+    private profile = {
+        email: ""
+    }
     public redirectUrl: string;
 
     constructor() {
@@ -14,6 +17,7 @@ export class AuthService {
             this.user = user;
             if (this.isLoggedIn()) {
                 this.updateRoles();
+                this.updateProfile();
             }
         });
     }
@@ -49,6 +53,7 @@ export class AuthService {
         return this.manager.signinRedirectCallback().then(user => {
             this.user = user;
             this.updateRoles();
+            this.updateProfile();
         });
     }
 
@@ -73,10 +78,20 @@ export class AuthService {
         });
     };
 
+    getProfile() {
+        return this.profile;
+    }
+
     private updateRoles() {
         var jwtHelper = new JwtHelper();
         var decodedToken = jwtHelper.decodeToken(this.getAccessToken());
         this.roles = decodedToken['role'];
+    }
+
+    private updateProfile() {
+        var jwtHelper = new JwtHelper();
+        var decodedToken = jwtHelper.decodeToken(this.getAccessToken());
+        this.profile.email = decodedToken['email'];
     }
 }
 

@@ -13,12 +13,10 @@ export class HomeComponent implements OnInit {
         if (this.authService.isInRole("admin")) {
             this.router.navigate(["/admin"]);
         }
-        else if (this.authService.isInRole("user")) {
+        else if (this.authService.isLoggedIn()) {
             this.router.navigate(["/portal"]);
         }
         else {
-            console.log(this.authService.getAccessToken());
-            console.log(this.authService.getClaims());
             this.router.navigate(["/about"]);
         }
     }
