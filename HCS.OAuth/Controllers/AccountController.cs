@@ -19,6 +19,8 @@ using IdentityServer4.Events;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Http;
 using IdentityServer4.Extensions;
+using IdentityModel;
+using IdentityServer4;
 
 namespace HCS.OAuth.Controllers
 {
@@ -33,9 +35,12 @@ namespace HCS.OAuth.Controllers
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IEventService _events;
         private readonly AccountService _account;
+        private readonly IClientStore _clientStore;
+        private readonly IPersistedGrantService _persistedGrantService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
+            IPersistedGrantService persistedGrantService,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
@@ -46,6 +51,7 @@ namespace HCS.OAuth.Controllers
             IEventService events)
         {
             _userManager = userManager;
+            _persistedGrantService = persistedGrantService;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
@@ -273,15 +279,25 @@ namespace HCS.OAuth.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout(string logoutId)
         {
-            // build a model so the logout page knows what to display
-            var vm = await _account.BuildLogoutViewModelAsync(logoutId);
-
-            if (vm.ShowLogoutPrompt == false)
+            if (User.Identity.IsAuthenticated == false)
             {
-                // if the request for logout was properly authenticated from IdentityServer, then
-                // we don't need to show the prompt and can just log the user out directly.
-                return await Logout(vm);
+                // if the user is not authenticated, then just show logged out page
+                return await Logout(new LogoutViewModel { LogoutId = logoutId });
             }
+
+            var context = await _interaction.GetLogoutContextAsync(logoutId);
+            if (context?.ShowSignoutPrompt == false)
+            {
+                // it's safe to automatically sign-out
+                return await Logout(new LogoutViewModel { LogoutId = logoutId });
+            }
+
+            // show the logout prompt. this prevents attacks where the user
+            // is automatically signed out by another malicious web page.
+            var vm = new LogoutViewModel
+            {
+                LogoutId = logoutId
+            };
 
             return View(vm);
         }
@@ -293,30 +309,46 @@ namespace HCS.OAuth.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout(LogoutInputModel model)
         {
-            // build a model so the logged out page knows what to display
-            var vm = await _account.BuildLoggedOutViewModelAsync(model.LogoutId);
+            var idp = User?.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+            var subjectId = HttpContext.User.Identity.GetSubjectId();
 
-            var user = HttpContext.User;
-            if (user?.Identity.IsAuthenticated == true)
+            if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
             {
-                // delete local authentication cookie
-                await HttpContext.SignOutAsync();
+                if (model.LogoutId == null)
+                {
+                    // if there's no current logout context, we need to create one
+                    // this captures necessary info from the current logged in user
+                    // before we signout and redirect away to the external IdP for signout
+                    model.LogoutId = await _interaction.CreateLogoutContextAsync();
+                }
 
-                // raise the logout event
-                await _events.RaiseAsync(new UserLogoutSuccessEvent(user.GetSubjectId(), user.GetDisplayName()));
+                string url = "/Account/Logout?logoutId=" + model.LogoutId;
+                try
+                {
+                    await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext, idp, new AuthenticationProperties { RedirectUri = url });
+                }
+                catch (NotSupportedException)
+                {
+                }
             }
 
-            // check if we need to trigger sign-out at an upstream identity provider
-            if (vm.TriggerExternalSignout)
-            {
-                // build a return URL so the upstream provider will redirect back
-                // to us after the user has logged out. this allows us to then
-                // complete our single sign-out processing.
-                string url = Url.Action("Logout", new { logoutId = vm.LogoutId });
+            // delete authentication cookie
+            await _signInManager.SignOutAsync();
 
-                // this triggers a redirect to the external provider for sign-out
-                return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
-            }
+            // set this so UI rendering sees an anonymous user
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+            // get context information (client name, post logout redirect URI and iframe for federated signout)
+            var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
+
+            var vm = new LoggedOutViewModel
+            {
+                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
+                ClientName = logout?.ClientName,
+                SignOutIframeUrl = logout?.SignOutIFrameUrl
+            };
+
+            await _persistedGrantService.RemoveAllGrantsAsync(subjectId, logout?.ClientId);
 
             return View("LoggedOut", vm);
         }
