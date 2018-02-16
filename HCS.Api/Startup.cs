@@ -30,29 +30,42 @@ namespace HCS.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSettings>(options =>
+            {
+                Configuration.GetSection("AppSettings").Bind(options);
+            });
+            services.Configure<RolePolicies>(options =>
+            {
+                Configuration.GetSection("RolePolicies").Bind(options);
+            });
+
+            var provider = services.BuildServiceProvider();
+            var settings = provider.GetService<IOptions<AppSettings>>();
+            var rolePolicies = provider.GetService<IOptions<RolePolicies>>();
             services.AddAutoMapper();
             services.AddCors(options =>
             {
                 options.AddPolicy("default", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5000")
+                    policy.WithOrigins(settings.Value.BaseUrl.Web)
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
             });
             services.AddMvcCore()
                 .AddAuthorization(options => {
-                    options.AddPolicy("admin", policy => policy.RequireClaim("role", "admin"));
+                    options.AddPolicy(rolePolicies.Value.AdminPolicy.PolicyName, policy => policy.RequireClaim(rolePolicies.Value.RoleType, rolePolicies.Value.AdminPolicy.RoleName));
+                    options.AddPolicy(rolePolicies.Value.ProviderPolicy.PolicyName, policy => policy.RequireClaim(rolePolicies.Value.RoleType, rolePolicies.Value.ProviderPolicy.RoleName));
                 })
                 .AddJsonFormatters();
 
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "http://localhost:5002";
+                    options.Authority = settings.Value.BaseUrl.Auth;
                     options.RequireHttpsMetadata = false;
-                    options.ApiName = "hcsApi";
-                    options.RoleClaimType = "role";
+                    options.ApiName = settings.Value.ApiName;
+                    options.RoleClaimType = rolePolicies.Value.RoleType;
                 });
 
             services.AddSwaggerGen(c =>

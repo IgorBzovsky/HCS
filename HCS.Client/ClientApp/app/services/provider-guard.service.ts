@@ -10,6 +10,7 @@ export class AuthGuardService implements CanActivate {
         if (this.authService.isLoggedIn()) {
             return true;
         }
+        //localStorage.setItem('redirectUrl', state.url);
         this.authService.startAuthentication();
         return false;
     }

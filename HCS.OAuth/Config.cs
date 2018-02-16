@@ -19,7 +19,7 @@ namespace HCS.OAuth
         {
             return new List<ApiResource>
             {
-                new ApiResource("hcsApi", "HCS Api")
+                new ApiResource("HCS Api", "HCS Api")
             };
         }
 
@@ -32,43 +32,13 @@ namespace HCS.OAuth
             };
         }
 
-        public class Users
-        {
-            public static List<TestUser> All()
-            {
-                return new List<TestUser> {
-                    new TestUser
-                    {
-                        SubjectId = "1",
-                        Username = "test@domain.com",
-                        Password = "password",
-                        Claims = new List<Claim>
-                        {
-                            new Claim("role", "admin"),
-                            new Claim("role", "manager")
-                        }
-                    },
-                    new TestUser
-                    {
-                        SubjectId = "2",
-                        Username = "test2@domain.com",
-                        Password = "password",
-                        Claims = new List<Claim>
-                        {
-                            new Claim("role", "user")
-                        }
-                    }
-                };
-            }
-        }
-
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client>
             {
                 new Client
                 {
-                    ClientId = "hcsClient",
+                    ClientId = "HCS Client",
                     ClientName = "HCS Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     RequireConsent = false,
@@ -82,7 +52,7 @@ namespace HCS.OAuth
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "hcsApi",
+                        "HCS Api",
                         "role"
                     },
 

@@ -1,8 +1,10 @@
+using HCS.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -20,19 +22,18 @@ namespace HCS_Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Todo: IOptions pattern
-            /*services.Configure<AppSettings>(options => 
+            services.Configure<AppSettings>(options => 
             {
                 Configuration.GetSection("AppSettings").Bind(options);
             });
 
-            var settings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();*/
-
+            var settings = services.BuildServiceProvider().GetService<IOptions<AppSettings>>();
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("default", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5001")
+                    policy.WithOrigins(settings.Value.BaseUrl.Api)
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -48,11 +49,11 @@ namespace HCS_Client
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.SignInScheme = "Cookies";
-                    options.Authority = "http://localhost:5002";
+                    options.Authority = settings.Value.BaseUrl.Auth;
                     options.RequireHttpsMetadata = false;
-                    options.SignedOutCallbackPath = "/home";
+                    options.SignedOutCallbackPath = settings.Value.RedirectUrl;
                     options.ResponseType = "id_token token";
-                    options.ClientId = "hcsClient";
+                    options.ClientId = settings.Value.IdentityClient.ClientId;
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
                 });
