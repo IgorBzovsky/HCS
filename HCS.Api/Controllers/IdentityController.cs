@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace HCS.Api.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes =
+    JwtBearerDefaults.AuthenticationScheme)]
     public class IdentityController : ControllerBase
     {
         [HttpGet]
@@ -19,7 +21,7 @@ namespace HCS.Api.Controllers
 
         [HttpGet]
         [Route("superpowers")]
-        [Authorize(Policy = "admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "admin")]
         public IActionResult Superpowers()
         {
             return new JsonResult("Superpowers!");

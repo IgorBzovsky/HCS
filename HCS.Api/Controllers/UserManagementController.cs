@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using HCS.Api.Controllers.Resources;
-using HCS.Core;
 using HCS.Core.Domain;
+using HCS.Data;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -13,9 +15,11 @@ using System.Threading.Tasks;
 
 namespace HCS.Api.Controllers
 {
-    //[Authorize("admin")]
+    
     [Produces("application/json")]
-    [Route("api/user-management")]
+    [Route("user-management")]
+    [Authorize(AuthenticationSchemes =
+    JwtBearerDefaults.AuthenticationScheme, Policy = "admin")]
     public class UserManagementController : Controller
     {
         private readonly IMapper _mapper;
@@ -42,14 +46,14 @@ namespace HCS.Api.Controllers
                 ModelState.AddModelError("user_exist", "Користувач з такою електронною адресою вже зареєстрований");
                 return BadRequest(ModelState);
             }
-
+            
             var principal = await _claimsFactory.CreateAsync(user);
-            var claims = principal.Claims.Where(x => x.Type == "role").ToList();
+            var claims = principal.Claims.Where(x => x.Type == JwtClaimTypes.Role).ToList();
             var removedClaims = claims.Where(x => !userResource.Roles.Contains(x.Value));
             await _userManager.RemoveClaimsAsync(user, removedClaims);
             var addedClaims = userResource.Roles
                 .Where(c => !claims.Any(x => x.Value == c))
-                .Select(c => new Claim("role", c));
+                .Select(c => new Claim(JwtClaimTypes.Role, c));
             await _userManager.AddClaimsAsync(user, addedClaims);
             var savedUser = _mapper.Map<ApplicationUser, UserResource>(user);
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -67,7 +71,7 @@ namespace HCS.Api.Controllers
             {
                 var principal = await _claimsFactory.CreateAsync(user);
                 var userResource = _mapper.Map<ApplicationUser, UserResource>(user);
-                userResource.Roles = principal.Claims.Where(x => x.Type == "role").Select(x => x.Value).ToList();
+                userResource.Roles = principal.Claims.Where(x => x.Type == JwtClaimTypes.Role).Select(x => x.Value).ToList();
                 result.Add(userResource);
             }
 

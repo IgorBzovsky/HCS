@@ -12,10 +12,12 @@ namespace HCS.Core.Domain
         public int LocationId { get; set; }
         public Location Location { get; set; }
         public ICollection<ProvidedUtility> ProvidedUtilities { get; set; }
+        public ICollection<ApplicationUser> ApplicationUsers { get; set; }
 
         public Provider()
         {
             ProvidedUtilities = new Collection<ProvidedUtility>();
+            ApplicationUsers = new Collection<ApplicationUser>();
         }
     }
 }

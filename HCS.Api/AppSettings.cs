@@ -11,7 +11,6 @@ namespace HCS.Api
         public BaseUrl BaseUrl { get; set; }
         public string RedirectUrl { get; set; }
         public IdentityClient IdentityClient { get; set; }
-        public string RoleClaimType { get; set; }
     }
 
     public class BaseUrl

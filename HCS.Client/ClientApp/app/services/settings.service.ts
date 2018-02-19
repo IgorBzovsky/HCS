@@ -3,7 +3,7 @@
 @Injectable()
 export class SettingsService {
     roleNames = {
-        admin: 'Адміністратор системи',
+        admin: 'Адміністратор',
         provider: 'Постачальник',
         consumer: 'Споживач'
     }

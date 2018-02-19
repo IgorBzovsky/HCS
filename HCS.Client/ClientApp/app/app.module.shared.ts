@@ -1,4 +1,5 @@
 import { AdminModule, adminRoutes } from "./admin.module";
+import { ProviderModule, providerRoutes } from "./provider.module";
 import { AuthModule } from "./auth.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -21,6 +22,9 @@ import { PortalComponent } from "./components/portal/portal/portal.component";
 import { ProtectedComponent } from './components/protected/protected.component';
 
 import { AuthGuardService } from "./services/auth-guard.service";
+import { AdminGuardService } from "./services/admin-guard.service";
+import { ProviderGuardService } from "./services/provider-guard.service";
+import { SettingsService } from "./services/settings.service";
 import { TestService } from './services/test.service';
 
 
@@ -38,6 +42,7 @@ import { TestService } from './services/test.service';
     imports: [
         AuthModule.forRoot(),
         AdminModule.forRoot(),
+        ProviderModule.forRoot(),
         ToastModule.forRoot(),
         PortalModule,
         CommonModule,
@@ -63,11 +68,17 @@ import { TestService } from './services/test.service';
                 canActivate: [AuthGuardService],
                 children: adminRoutes
             },
+            {
+                path: 'admin',
+                component: AdminComponent,
+                canActivate: [AuthGuardService],
+                children: adminRoutes
+            },
             { path: 'auth-callback', component: AuthCallbackComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [TestService]
+    providers: [TestService, SettingsService]
 })
 export class AppModuleShared {
 }

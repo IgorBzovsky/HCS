@@ -5,17 +5,13 @@ using System.Threading.Tasks;
 
 namespace HCS.Api
 {
-    public class RolePolicies
+    public static class RolePolicies
     {
-        public string RoleType { get; set; }
-        public Policy AdminPolicy { get; set; }
-        public Policy ProviderPolicy { get; set; }
-        public Policy ConsumerPolicy { get; set; }
-    }
-
-    public class Policy
-    {
-        public string PolicyName { get; set; }
-        public string RoleName { get; set; }
+        public const string AdminPolicy = "admin";
+        public const string AdminRole = "Адміністратор";
+        public const string ProviderPolicy = "provider";
+        public const string ProviderRole = "Постачальник";
+        public const string ConsumerPolicy = "consumer";
+        public const string ConsumerRole = "Споживач";
     }
 }

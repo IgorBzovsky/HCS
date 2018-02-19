@@ -11,9 +11,10 @@ using System;
 namespace HCS.Data.Migrations
 {
     [DbContext(typeof(HcsDbContext))]
-    partial class HcsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180218112247_Add Provider to ApplicationUser")]
+    partial class AddProvidertoApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

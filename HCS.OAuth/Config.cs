@@ -19,7 +19,7 @@ namespace HCS.OAuth
         {
             return new List<ApiResource>
             {
-                new ApiResource("HCS Api", "HCS Api")
+                new ApiResource("hcsApi", "HCS Api", new[] { "role" })
             };
         }
 
@@ -38,7 +38,7 @@ namespace HCS.OAuth
             {
                 new Client
                 {
-                    ClientId = "HCS Client",
+                    ClientId = "hcsClient",
                     ClientName = "HCS Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     RequireConsent = false,
@@ -52,7 +52,7 @@ namespace HCS.OAuth
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "HCS Api",
+                        "hcsApi",
                         "role"
                     },
 

@@ -15,6 +15,8 @@ using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
 using HCS.Core.Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using IdentityModel;
 
 namespace HCS.Api
 {
@@ -34,14 +36,9 @@ namespace HCS.Api
             {
                 Configuration.GetSection("AppSettings").Bind(options);
             });
-            services.Configure<RolePolicies>(options =>
-            {
-                Configuration.GetSection("RolePolicies").Bind(options);
-            });
 
             var provider = services.BuildServiceProvider();
             var settings = provider.GetService<IOptions<AppSettings>>();
-            var rolePolicies = provider.GetService<IOptions<RolePolicies>>();
             services.AddAutoMapper();
             services.AddCors(options =>
             {
@@ -52,21 +49,26 @@ namespace HCS.Api
                         .AllowAnyMethod();
                 });
             });
+
             services.AddMvcCore()
                 .AddAuthorization(options => {
-                    options.AddPolicy(rolePolicies.Value.AdminPolicy.PolicyName, policy => policy.RequireClaim(rolePolicies.Value.RoleType, rolePolicies.Value.AdminPolicy.RoleName));
-                    options.AddPolicy(rolePolicies.Value.ProviderPolicy.PolicyName, policy => policy.RequireClaim(rolePolicies.Value.RoleType, rolePolicies.Value.ProviderPolicy.RoleName));
+                    options.AddPolicy(RolePolicies.AdminPolicy, policy => policy.RequireClaim(JwtClaimTypes.Role, RolePolicies.AdminRole));
+                    options.AddPolicy(RolePolicies.ProviderPolicy, policy => policy.RequireClaim(JwtClaimTypes.Role, RolePolicies.ProviderRole));
                 })
                 .AddJsonFormatters();
 
-            services.AddAuthentication("Bearer")
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
                     options.Authority = settings.Value.BaseUrl.Auth;
                     options.RequireHttpsMetadata = false;
                     options.ApiName = settings.Value.ApiName;
-                    options.RoleClaimType = rolePolicies.Value.RoleType;
+                    options.RoleClaimType = JwtClaimTypes.Role;
                 });
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<HcsDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddSwaggerGen(c =>
             {
@@ -75,8 +77,6 @@ namespace HCS.Api
                 c.IncludeXmlComments(xmlPath);
             });
             services.AddDbContext<HcsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<HcsDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddMvc();
         }

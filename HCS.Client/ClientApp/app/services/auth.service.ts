@@ -1,6 +1,7 @@
 ﻿import { UserManager, User, UserManagerSettings } from 'oidc-client';
 import { Injectable } from '@angular/core';
 import { JwtHelper } from "angular2-jwt/angular2-jwt";
+import { SettingsService } from "./settings.service";
 
 @Injectable()
 export class AuthService {
@@ -96,6 +97,7 @@ export class AuthService {
 }
 
 export function getClientSettings(): UserManagerSettings {
+    var settings = new SettingsService();
     return {
         authority: 'http://localhost:5002/',
         client_id: 'hcsClient',
