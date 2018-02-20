@@ -9,6 +9,7 @@ import { NgModule } from '@angular/core';
 import { PortalModule, portalRoutes } from "./portal.module";
 import { RouterModule } from '@angular/router';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
+import { MdMenuModule, MdButtonModule, MdIconModule, MdCardModule, MdSidenavModule } from '@angular/material';
 
 import { AboutComponent } from './components/about/about.component';
 import { AdminComponent } from "./components/admin/admin/admin.component";
@@ -26,6 +27,8 @@ import { AdminGuardService } from "./services/admin-guard.service";
 import { ProviderGuardService } from "./services/provider-guard.service";
 import { SettingsService } from "./services/settings.service";
 import { TestService } from './services/test.service';
+import { ProviderComponent } from "./components/provider/provider/provider.component";
+
 
 
 @NgModule({
@@ -49,13 +52,17 @@ import { TestService } from './services/test.service';
         BrowserAnimationsModule,
         HttpModule,
         FormsModule,
+        MdMenuModule,
+        MdButtonModule,
+        MdIconModule,
+        MdCardModule,
+        MdSidenavModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'about', pathMatch: 'full' },
             { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
             { path: 'about', component: AboutComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
-            { path: 'protected', component: ProtectedComponent, canActivate: [AuthGuardService] },
             {
                 path: 'portal',
                 component: PortalComponent,
@@ -65,14 +72,14 @@ import { TestService } from './services/test.service';
             {
                 path: 'admin',
                 component: AdminComponent,
-                canActivate: [AuthGuardService],
+                canActivate: [AdminGuardService],
                 children: adminRoutes
             },
             {
-                path: 'admin',
-                component: AdminComponent,
-                canActivate: [AuthGuardService],
-                children: adminRoutes
+                path: 'provider',
+                component: ProviderComponent,
+                canActivate: [ProviderGuardService],
+                children: providerRoutes
             },
             { path: 'auth-callback', component: AuthCallbackComponent },
             { path: '**', redirectTo: 'home' }

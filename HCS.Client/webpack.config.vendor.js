@@ -17,6 +17,8 @@ const treeShakableModules = [
 const nonTreeShakableModules = [
     'bootstrap',
     'bootstrap/dist/css/bootstrap.css',
+    '@angular/material',
+    '@angular/material/prebuilt-themes/indigo-pink.css',
     'ng2-toastr/bundles/ng2-toastr.min.css',
     'es6-promise',
     'es6-shim',

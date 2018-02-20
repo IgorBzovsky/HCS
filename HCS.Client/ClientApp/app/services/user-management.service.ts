@@ -7,7 +7,7 @@ import { SettingsService } from "./settings.service";
 export class UserManagementService {
     constructor(private authHttp: AuthHttp, private settings: SettingsService) { }
     create(user: any) {
-        return this.authHttp.post('http://localhost:5001/user-management', user).map(res => res.json());
+        return this.authHttp.post(this.settings.baseUrls.apiUrl + '/user-management', user).map(res => res.json());
     }
     getRoles() {
         return [

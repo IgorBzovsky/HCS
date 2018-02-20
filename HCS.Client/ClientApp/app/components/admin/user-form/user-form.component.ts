@@ -8,6 +8,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 })
 export class UserFormComponent implements OnInit {
     roles: any;
+    isBlocked: boolean;
     user: any = {
         roles: []
     };
@@ -30,11 +31,16 @@ export class UserFormComponent implements OnInit {
     }
 
     submit() {
+        this.isBlocked = true;
         this.user.userName = this.user.email;
         this.userManagementService.create(this.user)
             .subscribe(
-            x => this.toastr.success('Ви створили користувача ' + this.user.userName, 'Успішно!'),
+            x => {
+                this.isBlocked = false;
+                this.toastr.success('Ви створили користувача ' + this.user.userName, 'Успішно!');
+            },
             err => {
+                this.isBlocked = false;
                 this.toastr.error('Виникла помилка. Можливо користувач вже зареєстрований.', 'Помилка!');
                 console.log(err);
             }

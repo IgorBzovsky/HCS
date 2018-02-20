@@ -5,7 +5,7 @@ import { SettingsService } from "./settings.service";
 
 @Injectable()
 export class AuthService {
-    private manager: UserManager = new UserManager(getClientSettings());
+    private manager: UserManager;
     private user: User;
     private roles: any;
     private profile = {
@@ -14,6 +14,7 @@ export class AuthService {
     public redirectUrl: string;
 
     constructor() {
+        this.manager = new UserManager(getClientSettings());
         this.manager.getUser().then(user => {
             this.user = user;
             if (this.isLoggedIn()) {

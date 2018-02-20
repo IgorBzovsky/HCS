@@ -2,6 +2,7 @@
 using HCS.Api.Controllers.Resources;
 using HCS.Core;
 using HCS.Core.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace HCS.Api.Controllers
 {
-    [Route("api")]
+    [Authorize(AuthenticationSchemes =
+    JwtBearerDefaults.AuthenticationScheme)]
     public class DictionaryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -21,8 +23,8 @@ namespace HCS.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("locations")]
-        [Authorize(Policy = "admin")]
+        [HttpGet]
+        [Route("locations")]
         public async Task<IEnumerable<KeyValuePairResource>> GetLocations()
         {
             var locations = await _unitOfWork.Locations.GetLocationsIncludeChildrenAsync();
@@ -34,15 +36,16 @@ namespace HCS.Api.Controllers
         /// Get regions (locations where ParentId is null)
         /// </summary>
         /// <returns></returns>
-        [HttpGet("regions")]
+        [HttpGet]
+        [Route("regions")]
         public async Task<IEnumerable<KeyValuePairResource>> GetRegions()
         {
             var regions = await _unitOfWork.Locations.FindAsync(x => x.ParentId == null);
             return _mapper.Map<IEnumerable<Location>, IEnumerable<KeyValuePairResource>>(regions);
         }
 
-        [Authorize]
-        [HttpGet("utilities")]
+        [HttpGet]
+        [Route("utilities")]
         public async Task<IEnumerable<KeyValuePairResource>> GetUtilities()
         {
             var utilities = await _unitOfWork.Utilities.GetAllAsync();

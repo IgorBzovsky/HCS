@@ -1,4 +1,5 @@
 ﻿using HCS.Core.Domain;
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
@@ -19,7 +20,7 @@ namespace HCS.OAuth
         {
             return new List<ApiResource>
             {
-                new ApiResource("hcsApi", "HCS Api", new[] { "role" })
+                new ApiResource("hcsApi", "HCS Api", new[] { JwtClaimTypes.Role })
             };
         }
 
@@ -43,7 +44,6 @@ namespace HCS.OAuth
                     AllowedGrantTypes = GrantTypes.Implicit,
                     RequireConsent = false,
                     AllowAccessTokensViaBrowser = true,
-                    //AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris = { "http://localhost:5000/auth-callback" },
                     PostLogoutRedirectUris = { "http://localhost:5000/" },
                     AllowedCorsOrigins = { "http://localhost:5000" },
@@ -52,8 +52,8 @@ namespace HCS.OAuth
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "hcsApi",
-                        "role"
+                        JwtClaimTypes.Role,
+                        "hcsApi"
                     },
 
                 }

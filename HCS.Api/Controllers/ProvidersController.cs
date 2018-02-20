@@ -2,6 +2,7 @@
 using HCS.Api.Controllers.Resources;
 using HCS.Core;
 using HCS.Core.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,10 @@ using System.Threading.Tasks;
 
 namespace HCS.Api.Controllers
 {
-    [Authorize(Policy = "admin")]
-    [Produces("application/json")]
     [Route("providers")]
+    [Produces("application/json")]
+    [Authorize(AuthenticationSchemes =
+    JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.ProviderPolicy)]
     public class ProvidersController : Controller
     {
         private readonly IMapper _mapper;
@@ -33,7 +35,8 @@ namespace HCS.Api.Controllers
                 return BadRequest(ModelState);
 
             var provider = _mapper.Map<SaveProviderResource, Provider>(providerResource);
-            var user = await _userManager.GetUserAsync(User);
+            var userName = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(userName);
             provider.ApplicationUsers.Add(user);
             _unitOfWork.Providers.Add(provider);
             await _unitOfWork.CompleteAsync();

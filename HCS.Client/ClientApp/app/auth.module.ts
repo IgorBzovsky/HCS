@@ -3,6 +3,8 @@ import { Http, RequestOptions } from '@angular/http';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
+import { AdminGuardService } from "./services/admin-guard.service";
+import { ProviderGuardService } from "./services/provider-guard.service";
 
 let authService = new AuthService();
 
@@ -20,6 +22,8 @@ export class AuthModule {
             ngModule: AuthModule,
             providers: [
                 AuthGuardService,
+                AdminGuardService,
+                ProviderGuardService,
                 AuthService,
                 {
                     provide: AuthHttp,

@@ -15,11 +15,10 @@ using System.Threading.Tasks;
 
 namespace HCS.Api.Controllers
 {
-    
-    [Produces("application/json")]
     [Route("user-management")]
+    [Produces("application/json")]
     [Authorize(AuthenticationSchemes =
-    JwtBearerDefaults.AuthenticationScheme, Policy = "admin")]
+    JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.AdminPolicy)]
     public class UserManagementController : Controller
     {
         private readonly IMapper _mapper;

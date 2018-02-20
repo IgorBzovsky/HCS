@@ -4,24 +4,26 @@
         <p>
             {{ user | json }}
         </p>
-        <div class="form-group">
-            <label for="name">Електронна пошта</label>
-            <input type="text" name="name" value="" class="form-control"
-                   [(ngModel)]="user.email" email required #email="ngModel" />
-            <div class="alert alert-danger" *ngIf="email.touched && !email.valid">Вкажіть електронну пошту</div>
-        </div>
-        <div class="form-group">
-            <label for="password">Пароль</label>
-            <input type="password" name="password" value="" class="form-control"
-                   [(ngModel)]="user.password" required #password="ngModel" />
-            <div class="alert alert-danger" *ngIf="password.touched && !password.valid">Вкажіть пароль</div>
-        </div>
-        <h2>Ролі</h2>
-        <div *ngFor="let r of roles" class="checkbox">
-            <label for="role{{ r.id }}">
-                <input type="checkbox" id="role{{ r.id }}" (change)="onRoleToggle(r.name, $event)" />{{ r.name }}
-            </label>
-        </div>
-        <button class="btn btn-primary" [disabled]="!f.valid">Зберегти</button>
+        <fieldset [disabled]="isBlocked">
+            <div class="form-group">
+                <label for="name">Електронна пошта</label>
+                <input type="text" name="name" value="" class="form-control"
+                       [(ngModel)]="user.email" email required #email="ngModel" />
+                <div class="alert alert-danger" *ngIf="email.touched && !email.valid">Вкажіть електронну пошту</div>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" name="password" value="" class="form-control"
+                       [(ngModel)]="user.password" required #password="ngModel" />
+                <div class="alert alert-danger" *ngIf="password.touched && !password.valid">Вкажіть пароль</div>
+            </div>
+            <h2>Ролі</h2>
+            <div *ngFor="let r of roles" class="checkbox">
+                <label for="role{{ r.id }}">
+                    <input type="checkbox" id="role{{ r.id }}" (change)="onRoleToggle(r.name, $event)" />{{ r.name }}
+                </label>
+            </div>
+        </fieldset>
+        <button class="btn btn-primary" [disabled]="!f.valid || isBlocked">Зберегти</button>
     </form>
 </div>
