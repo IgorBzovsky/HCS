@@ -38,10 +38,11 @@
     <None Remove="ClientApp\app\components\portal\main\main.component.ts" />
     <None Remove="ClientApp\app\components\portal\more-info\more-info.component.ts" />
     <None Remove="ClientApp\app\components\portal\portal\portal.component.ts" />
-    <None Remove="ClientApp\app\components\protected\protected.component.ts" />
-    <None Remove="ClientApp\app\components\provider\navmenu\navmenu.component.ts" />
+    <None Remove="ClientApp\app\components\provider\dashboard\dashboard.component.ts" />
     <None Remove="ClientApp\app\components\provider\provider-form\provider-form.component.ts" />
     <None Remove="ClientApp\app\components\provider\provider\provider.component.ts" />
+    <None Remove="ClientApp\app\models\key_value_pair.ts" />
+    <None Remove="ClientApp\app\models\provider.ts" />
     <None Remove="ClientApp\app\portal.module.ts" />
     <None Remove="ClientApp\app\provider.module.ts" />
     <None Remove="ClientApp\app\routing.module.ts" />
@@ -68,10 +69,11 @@
     <TypeScriptCompile Include="ClientApp\app\components\portal\main\main.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\portal\more-info\more-info.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\portal\portal\portal.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\protected\protected.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\provider\navmenu\navmenu.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\provider\dashboard\dashboard.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\provider-form\provider-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\provider\provider.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\key_value_pair.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\provider.ts" />
     <TypeScriptCompile Include="ClientApp\app\portal.module.ts" />
     <TypeScriptCompile Include="ClientApp\app\provider.module.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\admin-guard.service.ts" />

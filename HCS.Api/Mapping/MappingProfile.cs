@@ -41,14 +41,14 @@ namespace HCS.Api.Mapping
                 {
                     //Remove unselected provided utilities
                     var removedUtilities = p.ProvidedUtilities
-                        .Where(x => !pr.ProvidedUtilities.Contains(x.UtilityId));
+                        .Where(x => !pr.ProvidedUtilities.Contains(x.UtilityId)).ToList();
                     foreach (var removedUtility in removedUtilities)
                         p.ProvidedUtilities.Remove(removedUtility);
 
                     //Add new provided utility
                     var addedUtilities = pr.ProvidedUtilities
                         .Where(id => !p.ProvidedUtilities.Any(x => x.UtilityId == id))
-                        .Select(id => new ProvidedUtility { UtilityId = id });
+                        .Select(id => new ProvidedUtility { UtilityId = id }).ToList();
                     foreach (var addedUtility in addedUtilities)
                         p.ProvidedUtilities.Add(addedUtility);
                 });

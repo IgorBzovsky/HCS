@@ -1,29 +1,34 @@
-﻿<h1>Профіль постачальника</h1>
-<div class="col-md-6">
-    <form #f="ngForm" (ngSubmit)="submit()">
-        <p>
-            {{ provider | json }}
-        </p>
-        <div class="form-group">
-            <label for="name">Назва</label>
-            <input type="text" name="name" value="" class="form-control"
-                   [(ngModel)]="provider.name" required #name="ngModel" />
-            <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Вкажіть назву</div>
-        </div>
-        <div class="form-group">
-            <label for="location">Регіон</label>
-            <select name="location" class="form-control" [(ngModel)]="provider.locationId" required #location="ngModel">
-                <option value=""></option>
-                <option *ngFor="let r of regions" value="{{ r.id }}">{{ r.name }}</option>
-            </select>
-            <div class="alert alert-danger" *ngIf="location.touched && !location.valid">Оберіть регіон</div>
-        </div>
-        <h2>Типи послуг</h2>
-        <div *ngFor="let u of utilities" class="checkbox">
-            <label for="utility{{ u.id }}">
-                <input type="checkbox" id="utility{{ u.id }}" (change)="onUtilityToggle(u.id, $event)" />{{ u.name }}
-            </label>
-        </div>
-        <button class="btn btn-primary" [disabled]="!f.valid">Зберегти</button>
-    </form>
+﻿<div class="form-wrapper">
+    <md-card>
+        <md-card-title>Профіль постачальника</md-card-title>
+        <md-card-content>
+            <form #f="ngForm" (ngSubmit)="submit()">
+                <!--<p>
+                    {{ provider | json }}
+                </p>-->
+                <fieldset [disabled]="isBlocked">
+                    <div class="input-group">
+                        <md-input-container>
+                            <input mdInput placeholder="Назва" type="text" name="name"
+                                   [(ngModel)]="provider.name" required #name="ngModel" />
+                            <md-error>Вкажіть назву</md-error>
+                        </md-input-container>
+                    </div>
+                    <div class="input-group">
+                        <md-select placeholder="Регіон" name="location" [(ngModel)]="provider.locationId" required #location="ngModel">
+                            <md-option value=""></md-option>
+                            <md-option *ngFor="let r of regions" [value]="r.id">{{ r.name }}</md-option>
+                        </md-select>
+                    </div>
+                    <div class="input-group">
+                        <h4>Послуги</h4>
+                        <div *ngFor="let u of utilities">
+                            <md-checkbox id="utility{{ u.id }}" (change)="onUtilityToggle(u.id, $event)" [checked]="provider.providedUtilities.includes(u.id)">{{ u.name }}</md-checkbox>
+                        </div>
+                    </div>
+                </fieldset>
+                <button color="primary" md-raised-button [disabled]="!f.valid || provider.providedUtilities.length == 0 || isBlocked">Зберегти</button>
+            </form>
+        </md-card-content>
+</md-card>
 </div>

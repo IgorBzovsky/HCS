@@ -3,6 +3,9 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
+import { MdMenuModule, MdButtonModule, MdCheckboxModule, MdIconModule, MdCardModule, MdSidenavModule, MdToolbarModule, MdListModule, MdInputModule } from '@angular/material';
+
+
 import { AdminComponent } from './components/admin/admin/admin.component';
 import { MainComponent } from "./components/admin/main/main.component";
 import { MoreInfoComponent } from "./components/admin/more-info/more-info.component";
@@ -19,7 +22,20 @@ export const adminRoutes: Routes = [
 
 
 @NgModule({
-    imports: [CommonModule, RouterModule, FormsModule],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        MdMenuModule,
+        MdButtonModule,
+        MdCheckboxModule,
+        MdInputModule,
+        MdIconModule,
+        MdCardModule,
+        MdSidenavModule,
+        MdToolbarModule,
+        MdListModule
+    ],
     declarations: [
         AdminComponent,
         MainComponent,

@@ -1,20 +1,21 @@
-﻿<!--<h1>Admin</h1>
-<div class="navLinks">
-    <a [routerLink]="['./main']">Main</a> |
-    <a [routerLink]="['./more-info']">More Info</a> |
-    <button (click)="authService.startSignout()">Logout</button> |
-    Enter id: <input #id size="6">
-</div>-->
-
-
-
-<div class='container-fluid'>
-    <div class='row'>
-        <div class='col-sm-3'>
-            <nav-menu></nav-menu>
-        </div>
-        <div class='col-sm-9 body-content'>
-            <router-outlet></router-outlet>
-        </div>
+﻿<md-sidenav-container fullscreen>
+    <md-sidenav #sidenav mode="side" class="app-sidenav">
+        <md-nav-list>
+            <a md-list-item [routerLink]="['./main']">Створити користувача</a>
+            <a md-list-item [routerLink]="['/portal']">Портал користувача</a>
+            <a md-list-item (click)="authService.startSignout()">Вийти</a>
+        </md-nav-list>
+    </md-sidenav>
+    <md-toolbar class="mat-elevation-z5" color="primary">
+        <button md-icon-button (click)="sidenav.toggle()">
+            <md-icon class="md-24">menu</md-icon>
+        </button>
+    </md-toolbar>
+    <div class="app-content">
+        <h1>Портал адміністратора</h1>
+        <router-outlet></router-outlet>
     </div>
-</div>
+</md-sidenav-container>
+
+
+

@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HCS.Api.Controllers
@@ -33,17 +30,17 @@ namespace HCS.Api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var provider = _mapper.Map<SaveProviderResource, Provider>(providerResource);
             var userName = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(userName);
+            var provider = _mapper.Map<SaveProviderResource, Provider>(providerResource);
             provider.ApplicationUsers.Add(user);
             _unitOfWork.Providers.Add(provider);
             await _unitOfWork.CompleteAsync();
-            
+
             provider = await _unitOfWork.Providers.GetProviderAsync(provider.Id);
             var result = _mapper.Map<Provider, ProviderResource>(provider);
             return Ok(result);
+
         }
 
         [HttpPut("{id}")]
@@ -71,6 +68,19 @@ namespace HCS.Api.Controllers
             var provider = await _unitOfWork.Providers.GetProviderAsync(id);
             if (provider == null)
                 return NotFound();
+            var providerResource = _mapper.Map<Provider, ProviderResource>(provider);
+            return Ok(providerResource);
+        }
+
+        [HttpGet]
+        [Route("current")]
+        public async Task<IActionResult> GetCurrentProvider()
+        {
+            var userName = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(userName);
+            if(user.ProviderId == null)
+                return NoContent();
+            var provider = await _unitOfWork.Providers.GetProviderAsync(user.ProviderId.Value);
             var providerResource = _mapper.Map<Provider, ProviderResource>(provider);
             return Ok(providerResource);
         }

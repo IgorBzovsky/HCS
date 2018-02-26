@@ -1,35 +1,98 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import * as _ from 'underscore';
+import { Component, OnInit } from '@angular/core';
 import { ProviderService } from "../../../services/provider.service";
+import { Observable } from "rxjs/Observable";
+import 'rxjs/add/Observable/forkJoin';
+import { SaveProvider, Provider } from "../../../models/provider";
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'provider-form',
-    templateUrl: './provider-form.component.html'
+    templateUrl: './provider-form.component.html',
+    styleUrls: ['./provider-form.component.css']
 })
 export class ProviderFormComponent implements OnInit {
+    isBlocked: boolean;
     regions: any[];
     utilities: any[];
-    provider: any = {
+    provider: SaveProvider = {
+        id: 0,
+        name: "",
+        locationId: 0,
         providedUtilities: []
     };
 
-    constructor(private providerService: ProviderService) { }
+    constructor(private providerService: ProviderService, private router: Router, private toastr: ToastsManager) { }
 
     ngOnInit() {
-        this.providerService.getRegions().subscribe(regions => this.regions = regions);
-        this.providerService.getUtilities().subscribe(utilities => this.utilities = utilities);
+        Observable.forkJoin([
+            this.providerService.getRegions(),
+            this.providerService.getUtilities(),
+            this.providerService.getProvider()
+        ]).subscribe(data => {
+                this.regions = data[0],
+                this.utilities = data[1],
+                this.setProvider(data[2])
+            },
+            err => {
+                console.log(err)
+            }
+        );
     }
 
     onUtilityToggle(utilityId: number, $event: any) {
-        if ($event.target.checked)
+        if ($event.checked)
             this.provider.providedUtilities.push(utilityId);
         else {
             var index = this.provider.providedUtilities.indexOf(utilityId);
             this.provider.providedUtilities.splice(index, 1);
+            
         }
     }
 
     submit() {
-        this.providerService.create(this.provider)
-            .subscribe(x => console.log(x));
+        this.isBlocked = true;
+        if (this.provider.id == 0) {
+            this.providerService.create(this.provider)
+                .subscribe(
+                x => {
+                    this.isBlocked = false;
+                    this.toastr.success('Ви створили профіль підприємства', 'Успішно!');
+                    this.router.navigate(['./dashboard']);
+                },
+                err => {
+                    this.isBlocked = false;
+                    this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                    console.log(err);
+                }
+            );
+        }
+        else {
+            this.providerService.update(this.provider)
+                .subscribe(
+                x => {
+                    this.isBlocked = false;
+                    this.toastr.success('Ви оновили профіль підприємства', 'Успішно!');
+                    this.router.navigate(['./dashboard']);
+                },
+                err => {
+                    this.isBlocked = false;
+                    this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                    console.log(err);
+                }
+            );
+        }
+        
+    }
+
+    private setProvider(provider: Provider) {
+        if (!provider) {
+            return;
+        } 
+        this.provider.id = provider.id;
+        this.provider.name = provider.name;
+        this.provider.locationId = provider.location.id;
+        this.provider.providedUtilities = _.pluck(provider.providedUtilities, 'id');
     }
 }

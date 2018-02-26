@@ -4,7 +4,8 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
     selector: 'user-form',
-    templateUrl: './user-form.component.html'
+    templateUrl: './user-form.component.html',
+    styleUrls: ['./user-form.component.css']
 })
 export class UserFormComponent implements OnInit {
     roles: any;
@@ -22,7 +23,7 @@ export class UserFormComponent implements OnInit {
     }
 
     onRoleToggle(roleName: string, $event: any) {
-        if ($event.target.checked)
+        if ($event.checked)
             this.user.roles.push(roleName);
         else {
             var index = this.user.roles.indexOf(roleName);

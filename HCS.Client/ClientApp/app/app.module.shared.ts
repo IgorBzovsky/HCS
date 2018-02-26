@@ -15,12 +15,8 @@ import { AboutComponent } from './components/about/about.component';
 import { AdminComponent } from "./components/admin/admin/admin.component";
 import { AppComponent } from './components/app/app.component';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
-import { CounterComponent } from './components/counter/counter.component';
-import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { HomeComponent } from './components/home/home.component';
-import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { PortalComponent } from "./components/portal/portal/portal.component";
-import { ProtectedComponent } from './components/protected/protected.component';
 
 import { AuthGuardService } from "./services/auth-guard.service";
 import { AdminGuardService } from "./services/admin-guard.service";
@@ -34,11 +30,7 @@ import { ProviderComponent } from "./components/provider/provider/provider.compo
 @NgModule({
     declarations: [
         AppComponent,
-        NavMenuComponent,
-        CounterComponent,
-        FetchDataComponent,
         HomeComponent,
-        ProtectedComponent,
         AuthCallbackComponent,
         AboutComponent
     ],
@@ -61,8 +53,6 @@ import { ProviderComponent } from "./components/provider/provider/provider.compo
             { path: '', redirectTo: 'about', pathMatch: 'full' },
             { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
             { path: 'about', component: AboutComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
             {
                 path: 'portal',
                 component: PortalComponent,
