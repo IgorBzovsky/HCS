@@ -12,9 +12,10 @@ using System;
 namespace HCS.Data.Migrations
 {
     [DbContext(typeof(HcsDbContext))]
-    partial class HcsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180226134329_Add Consumers (Organizations, Households, Occupants)")]
+    partial class AddConsumersOrganizationsHouseholdsOccupants
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

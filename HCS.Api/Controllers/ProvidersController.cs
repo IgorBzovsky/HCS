@@ -40,7 +40,6 @@ namespace HCS.Api.Controllers
             provider = await _unitOfWork.Providers.GetProviderAsync(provider.Id);
             var result = _mapper.Map<Provider, ProviderResource>(provider);
             return Ok(result);
-
         }
 
         [HttpPut("{id}")]

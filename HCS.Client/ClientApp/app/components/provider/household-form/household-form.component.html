@@ -1,0 +1,13 @@
+﻿
+<!--<md-input-container>
+    <input mdInput placeholder="Регіон" [mdAutocomplete]="auto" [formControl]="myControl"
+           (blur)=validateChoice() (focus)="focused=true" required>
+    <md-error>Оберіть регіон</md-error>
+</md-input-container>
+<md-autocomplete #auto="mdAutocomplete">
+    <md-option *ngFor="let r of filteredOptions | async" [value]="r.name">
+        {{ r.name }}
+    </md-option>
+</md-autocomplete>-->
+
+<autocomplete placeholder="Регіон" [items]="regions" error="Оберіть регіон" (itemChanged)="onRegionChanged($event)"></autocomplete>

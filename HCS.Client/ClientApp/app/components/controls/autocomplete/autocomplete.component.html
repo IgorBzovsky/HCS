@@ -1,0 +1,9 @@
+﻿<md-input-container>
+    <input mdInput [placeholder]="placeholder" [mdAutocomplete]="auto" [formControl]="control" (blur)=validateChoice() (focus)="focused=true" required>
+    <md-error>{{ error }}</md-error>
+</md-input-container>
+<md-autocomplete #auto="mdAutocomplete">
+    <md-option *ngFor="let i of filteredItems | async" [value]="i.name">
+        {{ i.name }}
+    </md-option>
+</md-autocomplete>

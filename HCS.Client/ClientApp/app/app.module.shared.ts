@@ -17,13 +17,14 @@ import { AppComponent } from './components/app/app.component';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 import { HomeComponent } from './components/home/home.component';
 import { PortalComponent } from "./components/portal/portal/portal.component";
+import { ProviderComponent } from "./components/provider/provider/provider.component";
 
 import { AuthGuardService } from "./services/auth-guard.service";
 import { AdminGuardService } from "./services/admin-guard.service";
 import { ProviderGuardService } from "./services/provider-guard.service";
 import { SettingsService } from "./services/settings.service";
-import { TestService } from './services/test.service';
-import { ProviderComponent } from "./components/provider/provider/provider.component";
+import { LocationService } from "./services/location.service";
+
 
 
 
@@ -75,7 +76,7 @@ import { ProviderComponent } from "./components/provider/provider/provider.compo
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [TestService, SettingsService]
+    providers: [SettingsService, LocationService]
 })
 export class AppModuleShared {
 }

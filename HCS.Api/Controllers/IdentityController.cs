@@ -1,22 +1,42 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using HCS.Core;
+using HCS.Core.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HCS.Api.Controllers
 {
-    [Authorize(AuthenticationSchemes =
-    JwtBearerDefaults.AuthenticationScheme)]
     public class IdentityController : ControllerBase
     {
+        IUnitOfWork _unitOfWork;
+        public IdentityController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         [HttpGet]
         [Route("identity")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
+            Location location = new Location
+            {
+                Name = "Sverdlova str",
+                Parent = new Location
+                {
+                    Name = "Vinnitsa",
+                    Parent = new Location
+                    {
+                        Name = "Vinnitsa district",
+                        Parent = new Location
+                        {
+                            Name = "Vinnitsa region"
+                        }
+                    }
+                }
+            };
+            _unitOfWork.Locations.Add(location);
+            await _unitOfWork.CompleteAsync();
+            return Ok();
         }
 
         [HttpGet]

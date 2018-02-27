@@ -1,20 +1,23 @@
 ﻿import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MdMenuModule, MdButtonModule, MdIconModule, MdCardModule, MdSidenavModule, MdToolbarModule, MdListModule, MdCheckboxModule, MdSelectModule, MdInputModule } from '@angular/material';
+import { MdMenuModule, MdButtonModule, MdIconModule, MdCardModule, MdSidenavModule, MdToolbarModule, MdListModule, MdCheckboxModule, MdSelectModule, MdInputModule, MdAutocompleteModule } from '@angular/material';
+
+import { ProviderService } from "./services/provider.service";
 
 import { ProviderComponent } from './components/provider/provider/provider.component';
 import { ProviderFormComponent } from "./components/provider/provider-form/provider-form.component";
-
-import { ProviderService } from "./services/provider.service";
 import { DashboardComponent } from "./components/provider/dashboard/dashboard.component";
+import { HouseholdFormComponent } from "./components/provider/household-form/household-form.component";
+import { AutocompleteComponent } from "./components/controls/autocomplete/autocomplete.component";
 
 export const providerRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardComponent },
-    { path: 'profile', component: ProviderFormComponent }
+    { path: 'profile', component: ProviderFormComponent },
+    { path: 'household/new', component: HouseholdFormComponent }
 ];
 
 
@@ -23,6 +26,7 @@ export const providerRoutes: Routes = [
         CommonModule,
         RouterModule,
         FormsModule,
+        ReactiveFormsModule,
         MdMenuModule,
         MdButtonModule,
         MdIconModule,
@@ -32,12 +36,15 @@ export const providerRoutes: Routes = [
         MdListModule,
         MdCheckboxModule,
         MdSelectModule,
-        MdInputModule
+        MdInputModule,
+        MdAutocompleteModule
     ],
     declarations: [
         ProviderComponent,
         ProviderFormComponent,
-        DashboardComponent
+        DashboardComponent,
+        HouseholdFormComponent,
+        AutocompleteComponent
     ],
     exports: [ProviderComponent]
 })
