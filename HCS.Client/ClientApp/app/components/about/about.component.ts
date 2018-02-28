@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
+import { SettingsService } from "../../services/settings.service";
 
 @Component({
     selector: 'about',
@@ -9,19 +10,21 @@ import { Router } from "@angular/router";
 })
 
 export class AboutComponent implements OnInit {
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private authService: AuthService, private router: Router, private settings: SettingsService) { }
     ngOnInit() {
     }
     enterPortal() {
-        this.router
         if (!this.authService.isLoggedIn()) {
             this.authService.startAuthentication();
             return;
         }
-        if (this.authService.isInRole("admin")) {
+        if (this.authService.isInRole(this.settings.roleNames.admin)) {
             this.router.navigate(["/admin"]);
         }
-        else if (this.authService.isInRole("user")) {
+        else if (this.authService.isInRole(this.settings.roleNames.provider)) {
+            this.router.navigate(["/provider"]);
+        }
+        else if (this.authService.isInRole(this.settings.roleNames.consumer)) {
             this.router.navigate(["/portal"]);
         }
     }

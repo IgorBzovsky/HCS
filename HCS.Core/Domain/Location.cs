@@ -7,6 +7,8 @@ namespace HCS.Core.Domain
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Building { get; set; }
+        public string Appartment { get; set; }
         public int? ParentId { get; set; }
         public Location Parent { get; set; }
         public ICollection<Location> Children { get; set; }

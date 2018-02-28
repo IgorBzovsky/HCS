@@ -1,7 +1,4 @@
 ﻿using HCS.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HCS.Core
@@ -11,6 +8,7 @@ namespace HCS.Core
         IUtilityRepository Utilities { get; }
         ILocationRepository Locations { get; }
         IProviderRepository Providers { get; }
+        IHouseholdRepository Households { get; }
         Task CompleteAsync();
     }
 }

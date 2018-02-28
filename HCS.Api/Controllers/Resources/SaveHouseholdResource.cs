@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HCS.Api.Controllers.Resources
+﻿namespace HCS.Api.Controllers.Resources
 {
-    public class HouseholdResource
+    public class SaveHouseholdResource
     {
         public int Id { get; set; }
         public double Area { get; set; }
@@ -13,6 +8,6 @@ namespace HCS.Api.Controllers.Resources
         public bool HasTowelRail { get; set; }
         public bool HasElectricHotplates { get; set; }
         public bool HasCentralGasSupply { get; set; }
-        public int LocationId { get; set; }
+        public SaveAddressResource Location { get; set; }
     }
 }

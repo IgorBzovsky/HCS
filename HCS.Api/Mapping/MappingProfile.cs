@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
 using HCS.Api.Controllers.Resources;
 using HCS.Core.Domain;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Security.Claims;
 
 namespace HCS.Api.Mapping
 {
@@ -29,8 +24,14 @@ namespace HCS.Api.Mapping
                 .ForMember(pr => pr.ProvidedUtilities,
                 opt => opt.MapFrom(p => p.ProvidedUtilities
                 .Select(x => new KeyValuePairResource { Id = x.Utility.Id, Name = x.Utility.Name })));
+            CreateMap<Location, SaveAddressResource>();
+            CreateMap<Household, SaveHouseholdResource>();
 
             //API resource to domain
+            CreateMap<SaveAddressResource, Location>()
+                .ForMember(s => s.Id, opt => opt.Ignore());
+            CreateMap<SaveHouseholdResource, Household>()
+                .ForMember(s => s.Id, opt => opt.Ignore());
             CreateMap<UserResource, ApplicationUser>()
                 .ForMember(u => u.Id, opt => opt.Ignore());
 
