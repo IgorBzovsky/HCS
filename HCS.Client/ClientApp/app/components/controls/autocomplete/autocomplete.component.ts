@@ -11,39 +11,55 @@ import 'rxjs/add/operator/startWith';
 })
 
 export class AutocompleteComponent implements OnInit {
-    @Input() items: any[];
-    @Input() item: any;
     @Input() placeholder: string;
     @Input() error: string;
-
+    @Input() items: any[] = [];
     @Output() itemChanged = new EventEmitter();
+
+    private _item: any;
+
+    @Input() set item(value: any) {
+        this._item = value;
+        if (this._item) {
+            this.control.setValue(this._item.name);
+        }
+        else {
+            this.control.setValue('');
+        }
+    }
+
+    get item(): any {
+        return this._item;
+    }
 
     filteredItems: Observable<any[]>;
     control = new FormControl();
-    focused = false;
 
     constructor() {
         this.filteredItems = this.control.valueChanges
             .startWith(null)
-            .map(name => this.filterStates(name));
-        
+            .map(name => this.filterItems(name));
     }
 
     ngOnInit() {
-        if (this.item) {
+        if (this._item) {
             this.control.setValue(this.item.name);
         }
     }
 
     validateChoice() {
-        this.focused = false;
-        if (!this.items) {
-            this.control.setValue('');
-            this.item = null;
-            this.itemChanged.emit(this.item);
+        setTimeout(() => this.validate(), 300);
+    }
+
+    private validate() {
+        let name = this.control.value;
+        console.log(name);
+        if (!this.item && !name)
             return;
-        }
-        const index = this.items.map(x => x.name).indexOf(this.control.value);
+        if (this.item && this.item.name === name)
+            return;
+
+        const index = this.items.map(x => x.name).indexOf(name);
         if (index === -1) {
             this.control.setValue('');
             this.item = null;
@@ -54,7 +70,7 @@ export class AutocompleteComponent implements OnInit {
         this.itemChanged.emit(this.item);
     }
 
-    filterStates(val: string) {
+    filterItems(val: string) {
         if (!this.items) {
             return [];
         }

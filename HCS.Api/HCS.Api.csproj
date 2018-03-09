@@ -13,6 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Resources\HouseholdResource.cs" />
+    <Compile Remove="Controllers\Resources\LocationIncludeParentResource.cs" />
+    <Compile Remove="Controllers\Resources\OrganizationResource.cs" />
+    <Compile Remove="Controllers\Resources\SaveOrganizationResource.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

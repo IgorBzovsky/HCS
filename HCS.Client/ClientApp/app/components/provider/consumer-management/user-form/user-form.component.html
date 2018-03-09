@@ -1,0 +1,8 @@
+﻿<mat-tab-group>
+    <mat-tab label="Новий користувач">
+        <registration-form [user]="user" (onSubmit)="submit($event)"></registration-form>
+    </mat-tab>
+    <mat-tab label="Зареєстрований користувач">
+        <login-form [user]="user" (onSubmit)="submit($event)"></login-form>
+    </mat-tab>
+</mat-tab-group>

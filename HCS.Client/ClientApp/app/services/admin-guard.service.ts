@@ -12,7 +12,7 @@ export class AdminGuardService implements CanActivate {
             this.authService.startAuthentication();
             return false;
         }
-        if (this.authService.isInRole(this.settings.roleNames.admin)) {
+        if (this.authService.isInRole(this.settings.RoleNames.admin)) {
             return true;
         }
         return false;

@@ -1,9 +1,9 @@
-﻿<md-input-container>
-    <input mdInput [placeholder]="placeholder" [mdAutocomplete]="auto" [formControl]="control" (blur)=validateChoice() (focus)="focused=true" required>
-    <md-error>{{ error }}</md-error>
-</md-input-container>
-<md-autocomplete #auto="mdAutocomplete">
-    <md-option *ngFor="let i of filteredItems | async" [value]="i.name">
-        {{ i.name }}
-    </md-option>
-</md-autocomplete>
+﻿<mat-form-field>
+    <input matInput [placeholder]="placeholder" [matAutocomplete]="auto" [formControl]="control" required (blur)="validateChoice()">
+    <mat-error>{{ error }}</mat-error>
+</mat-form-field>
+<mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let item of filteredItems | async" [value]="item.name">
+        {{ item.name }}
+    </mat-option>
+</mat-autocomplete>

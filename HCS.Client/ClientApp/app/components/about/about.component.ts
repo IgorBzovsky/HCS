@@ -18,13 +18,13 @@ export class AboutComponent implements OnInit {
             this.authService.startAuthentication();
             return;
         }
-        if (this.authService.isInRole(this.settings.roleNames.admin)) {
+        if (this.authService.isInRole(this.settings.RoleNames.admin)) {
             this.router.navigate(["/admin"]);
         }
-        else if (this.authService.isInRole(this.settings.roleNames.provider)) {
+        else if (this.authService.isInRole(this.settings.RoleNames.provider)) {
             this.router.navigate(["/provider"]);
         }
-        else if (this.authService.isInRole(this.settings.roleNames.consumer)) {
+        else if (this.authService.isInRole(this.settings.RoleNames.consumer)) {
             this.router.navigate(["/portal"]);
         }
     }

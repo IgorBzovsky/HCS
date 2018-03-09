@@ -2,15 +2,23 @@
 
 @Injectable()
 export class SettingsService {
-    roleNames = {
+    private roleNames = {
         admin: 'Адміністратор',
         provider: 'Постачальник',
         consumer: 'Споживач'
     }
 
-    baseUrls = {
+    private baseUrls = {
         webUrl: 'http://localhost:5000',
         apiUrl: 'http://localhost:5001',
         authUrl: 'http://localhost:5002'
+    }
+
+    get RoleNames() {
+        return this.roleNames;
+    }
+
+    get BaseUrls() {
+        return this.baseUrls;
     }
 }

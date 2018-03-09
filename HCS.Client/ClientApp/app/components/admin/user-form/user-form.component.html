@@ -6,22 +6,22 @@
         </p>
         <fieldset [disabled]="isBlocked">
             <div>
-                <md-input-container>
-                    <input mdInput placeholder="Електронна пошта" type="text" name="name"
+                <mat-form-field>
+                    <input matInput placeholder="Електронна пошта" type="text" name="name"
                            [(ngModel)]="user.email" email required #email="ngModel" />
-                    <md-error>Вкажіть правильну електронну адресу</md-error>
-                </md-input-container>
+                    <mat-error>Вкажіть правильну електронну адресу</mat-error>
+                </mat-form-field>
             </div>
            <div>
-               <md-input-container>
-                   <input mdInput placeholder="Пароль" type="password" name="password"
+               <mat-form-field>
+                   <input matInput placeholder="Пароль" type="password" name="password"
                           [(ngModel)]="user.password" required #password="ngModel" />
-                   <md-error>Вкажіть правильний пароль</md-error>
-               </md-input-container>
+                   <mat-error>Вкажіть правильний пароль</mat-error>
+               </mat-form-field>
            </div>
             <h2>Ролі</h2>
             <div *ngFor="let r of roles">
-                <md-checkbox id="role{{ r.id }}" (change)="onRoleToggle(r.name, $event)">{{ r.name }}</md-checkbox>
+                <mat-checkbox id="role{{ r.id }}" (change)="onRoleToggle(r.name, $event)">{{ r.name }}</mat-checkbox>
             </div>
         </fieldset>
         <button class="btn btn-primary" [disabled]="!f.valid || isBlocked">Зберегти</button>

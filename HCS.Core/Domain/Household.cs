@@ -9,8 +9,6 @@ namespace HCS.Core.Domain
         public bool HasTowelRail { get; set; }
         public bool HasElectricHotplates { get; set; }
         public bool HasCentralGasSupply { get; set; }
-        public int LocationId { get; set; }
-        public Location Location { get; set; }
         public ICollection<Occupant> Occupants { get; set; }
 
         public Household()

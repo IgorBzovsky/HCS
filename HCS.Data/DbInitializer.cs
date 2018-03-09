@@ -1,8 +1,6 @@
 ﻿using HCS.Core.Domain;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HCS.Data
 {
@@ -31,7 +29,26 @@ namespace HCS.Data
                             {
                                 new Location
                                 {
-                                    Name = "Вінниця"
+                                    Name = "Вінниця",
+                                    Children = new List<Location>
+                                    {
+                                        new Location
+                                        {
+                                            Name = "Шевченка"
+                                        },
+                                        new Location
+                                        {
+                                            Name = "Л.Ратушної"
+                                        },
+                                        new Location
+                                        {
+                                            Name = "Київська"
+                                        },
+                                        new Location
+                                        {
+                                            Name = "600-річчя"
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -42,7 +59,18 @@ namespace HCS.Data
                             {
                                 new Location
                                 {
-                                    Name = "Жмеринка"
+                                    Name = "Жмеринка",
+                                    Children = new List<Location>
+                                    {
+                                        new Location
+                                        {
+                                            Name = "Крилова"
+                                        },
+                                        new Location
+                                        {
+                                            Name = "Залізнична"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -61,7 +89,22 @@ namespace HCS.Data
                             {
                                 new Location
                                 {
-                                    Name = "Одеса"
+                                    Name = "Одеса",
+                                    Children = new List<Location>
+                                    {
+                                        new Location
+                                        {
+                                            Name = "Пушкінська"
+                                        },
+                                        new Location
+                                        {
+                                            Name = "Маловського"
+                                        },
+                                        new Location
+                                        {
+                                            Name = "Балківська"
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -72,7 +115,18 @@ namespace HCS.Data
                             {
                                 new Location
                                 {
-                                    Name = "Білгород-Дністровський"
+                                    Name = "Білгород-Дністровський",
+                                    Children = new List<Location>
+                                    {
+                                        new Location
+                                        {
+                                            Name = "Франко"
+                                        },
+                                        new Location
+                                        {
+                                            Name = "Київська"
+                                        }
+                                    }
                                 }
                             }
                         }

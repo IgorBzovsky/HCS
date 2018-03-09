@@ -1,0 +1,13 @@
+﻿<mat-card>
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step label="Користувач" [stepControl]="userFormControl">
+            <user-form [user]="user" (formSubmit)="userFormSubmit($event)"></user-form>
+        </mat-step>
+        <mat-step label="Адреса" [stepControl]="addressFormControl">
+            <address-form [address]="address" (formSubmit)="addressFormSubmit($event)"></address-form>
+        </mat-step>
+        <mat-step label="Споживач">
+            <household-form [household]="household" (formSubmit)="householdFormSubmit($event)"></household-form>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-card>

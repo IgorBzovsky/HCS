@@ -3,7 +3,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-import { MdMenuModule, MdButtonModule, MdCheckboxModule, MdIconModule, MdCardModule, MdSidenavModule, MdToolbarModule, MdListModule, MdInputModule } from '@angular/material';
+import { MatMenuModule, MatButtonModule, MatCheckboxModule, MatIconModule, MatCardModule, MatSidenavModule, MatToolbarModule, MatListModule, MatInputModule } from '@angular/material';
 
 
 import { AdminComponent } from './components/admin/admin/admin.component';
@@ -26,15 +26,15 @@ export const adminRoutes: Routes = [
         CommonModule,
         RouterModule,
         FormsModule,
-        MdMenuModule,
-        MdButtonModule,
-        MdCheckboxModule,
-        MdInputModule,
-        MdIconModule,
-        MdCardModule,
-        MdSidenavModule,
-        MdToolbarModule,
-        MdListModule
+        MatMenuModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatInputModule,
+        MatIconModule,
+        MatCardModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule
     ],
     declarations: [
         AdminComponent,

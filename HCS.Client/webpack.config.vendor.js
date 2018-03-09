@@ -24,8 +24,7 @@ const nonTreeShakableModules = [
     'es6-shim',
     'event-source-polyfill',
     'jquery',
-    'underscore',
-    'md-autocomplete'
+    'underscore'
 ];
 const allModules = treeShakableModules.concat(nonTreeShakableModules);
 

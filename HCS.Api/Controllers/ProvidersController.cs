@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HCS.Api.Controllers.Resources;
+using HCS.Api.Controllers.Resources.Provider;
 using HCS.Core;
 using HCS.Core.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,7 +27,7 @@ namespace HCS.Api.Controllers
             _userManager = userManager;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateProvider([FromBody] SaveProviderResource providerResource)
+        public async Task<IActionResult> Create([FromBody] SaveProviderResource providerResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -43,7 +44,7 @@ namespace HCS.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProvider(int id, [FromBody] SaveProviderResource providerResource)
+        public async Task<IActionResult> Update(int id, [FromBody] SaveProviderResource providerResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -62,7 +63,7 @@ namespace HCS.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProvider(int id)
+        public async Task<IActionResult> Get(int id)
         {
             var provider = await _unitOfWork.Providers.GetProviderAsync(id);
             if (provider == null)
@@ -73,7 +74,7 @@ namespace HCS.Api.Controllers
 
         [HttpGet]
         [Route("current")]
-        public async Task<IActionResult> GetCurrentProvider()
+        public async Task<IActionResult> GetCurrentUserProvider()
         {
             var userName = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(userName);

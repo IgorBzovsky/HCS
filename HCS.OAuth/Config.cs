@@ -4,12 +4,10 @@ using IdentityServer4;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using IdentityServer4.Test;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HCS.OAuth
@@ -44,10 +42,11 @@ namespace HCS.OAuth
                     AllowedGrantTypes = GrantTypes.Implicit,
                     RequireConsent = false,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = { "http://localhost:5000/auth-callback" },
+                    RedirectUris = { "http://localhost:5000/auth-callback", "http://localhost:5000/silent-callback" },
                     PostLogoutRedirectUris = { "http://localhost:5000/" },
                     AllowedCorsOrigins = { "http://localhost:5000" },
-
+                    AccessTokenLifetime = 3600,
+                    IdentityTokenLifetime = 3600,
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

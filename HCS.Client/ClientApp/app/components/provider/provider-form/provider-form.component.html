@@ -1,34 +1,33 @@
-﻿<div class="form-wrapper">
-    <md-card>
-        <md-card-title>Профіль постачальника</md-card-title>
-        <md-card-content>
-            <form #f="ngForm" (ngSubmit)="submit()">
-                <!--<p>
-                    {{ provider | json }}
-                </p>-->
-                <fieldset [disabled]="isBlocked">
-                    <div class="input-group">
-                        <md-input-container>
-                            <input mdInput placeholder="Назва" type="text" name="name"
-                                   [(ngModel)]="provider.name" required #name="ngModel" />
-                            <md-error>Вкажіть назву</md-error>
-                        </md-input-container>
+﻿<mat-card>
+    <mat-card-title>Профіль постачальника</mat-card-title>
+    <mat-card-content>
+        <form #f="ngForm" (ngSubmit)="submit()">
+            <fieldset [disabled]="isBlocked">
+                <div>
+                    <mat-form-field>
+                        <input matInput placeholder="Назва" type="text" name="name"
+                               [(ngModel)]="provider.name" required #name="ngModel" />
+                        <mat-error>Вкажіть назву</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-select placeholder="Регіон" name="location" [(ngModel)]="provider.locationId" required #location="ngModel">
+                            <mat-option value=""></mat-option>
+                            <mat-option *ngFor="let r of regions" [value]="r.id">{{ r.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <h4>Послуги</h4>
+                    <div *ngFor="let u of utilities">
+                        <mat-checkbox id="utility{{ u.id }}" (change)="onUtilityToggle(u.id, $event)" [checked]="provider.providedUtilities.includes(u.id)">{{ u.name }}</mat-checkbox>
                     </div>
-                    <div class="input-group">
-                        <md-select placeholder="Регіон" name="location" [(ngModel)]="provider.locationId" required #location="ngModel">
-                            <md-option value=""></md-option>
-                            <md-option *ngFor="let r of regions" [value]="r.id">{{ r.name }}</md-option>
-                        </md-select>
-                    </div>
-                    <div class="input-group">
-                        <h4>Послуги</h4>
-                        <div *ngFor="let u of utilities">
-                            <md-checkbox id="utility{{ u.id }}" (change)="onUtilityToggle(u.id, $event)" [checked]="provider.providedUtilities.includes(u.id)">{{ u.name }}</md-checkbox>
-                        </div>
-                    </div>
-                </fieldset>
-                <button color="primary" md-raised-button [disabled]="!f.valid || provider.providedUtilities.length == 0 || isBlocked">Зберегти</button>
-            </form>
-        </md-card-content>
-</md-card>
-</div>
+                </div>
+            </fieldset>
+            <div class="top-20">
+                <button color="primary" mat-raised-button [disabled]="!f.valid || provider.providedUtilities.length == 0 || isBlocked">Зберегти</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

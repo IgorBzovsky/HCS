@@ -1,7 +1,7 @@
 ﻿import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { MdMenuModule, MdButtonModule, MdIconModule, MdCardModule, MdSidenavModule, MdToolbarModule, MdListModule } from '@angular/material';
+import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatSidenavModule, MatToolbarModule, MatListModule } from '@angular/material';
 
 import { MainComponent } from "./components/portal/main/main.component";
 import { MoreInfoComponent } from "./components/portal/more-info/more-info.component";
@@ -16,13 +16,13 @@ export const portalRoutes: Routes = [
 @NgModule({
     imports: [
         RouterModule,
-        MdMenuModule,
-        MdButtonModule,
-        MdIconModule,
-        MdCardModule,
-        MdSidenavModule,
-        MdToolbarModule,
-        MdListModule
+        MatMenuModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule
     ],
     declarations: [
         PortalComponent,

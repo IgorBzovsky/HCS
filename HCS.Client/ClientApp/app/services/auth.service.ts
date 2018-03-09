@@ -22,6 +22,13 @@ export class AuthService {
                 this.updateProfile();
             }
         });
+        this.manager.events.addAccessTokenExpiring(() => {
+            this.manager.signinSilent().then(user => {
+                this.user = user;
+                console.log(this.user);
+            });
+            console.log("Token expiring");
+        });
     }
 
     isLoggedIn(): boolean {
@@ -59,6 +66,12 @@ export class AuthService {
         });
     }
 
+    silentCallback(): Promise<void> {
+        return this.manager.signinSilentCallback().then(user => {
+            console.log("Silent refresh!");
+        });
+    }
+
     startSignout() {
         this.manager.getUser().then(user => {
             return this.manager.signoutRedirect({ id_token_hint: user.id_token }).then(resp => {
@@ -71,6 +84,8 @@ export class AuthService {
             });
         });
     };
+
+
 
     completeSignout() {
         this.manager.signoutRedirectCallback().then(function (response) {
@@ -107,6 +122,8 @@ export function getClientSettings(): UserManagerSettings {
         response_type: "id_token token",
         scope: "openid profile hcsApi",
         filterProtocolClaims: true,
-        loadUserInfo: true
+        loadUserInfo: true,
+        //automaticSilentRenew: true,
+        silent_redirect_uri: 'http://localhost:5000/silent-callback'
     };
 }

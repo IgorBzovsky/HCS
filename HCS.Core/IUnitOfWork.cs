@@ -8,7 +8,7 @@ namespace HCS.Core
         IUtilityRepository Utilities { get; }
         ILocationRepository Locations { get; }
         IProviderRepository Providers { get; }
-        IHouseholdRepository Households { get; }
+        IConsumerRepository Consumers { get; }
         Task CompleteAsync();
     }
 }

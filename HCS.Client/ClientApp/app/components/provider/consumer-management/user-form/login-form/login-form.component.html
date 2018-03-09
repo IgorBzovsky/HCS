@@ -1,0 +1,17 @@
+﻿<form #f="ngForm" (ngSubmit)="submit()" class="top-20">
+    {{user | json}}
+    <fieldset [disabled]="isBlocked">
+        <div>
+            <mat-form-field hintLabel="Максимум 50 символів">
+                <input matInput placeholder="Електронна адреса" type="text" name="email"
+                       [(ngModel)]="user.email" required email #email="ngModel" maxlength="50" />
+                <mat-hint align="end">{{email.value?.length || 0}}/50</mat-hint>
+                <mat-error *ngIf="email.invalid && email.errors.required">Вкажіть електронну адресу</mat-error>
+                <mat-error *ngIf="email.invalid && !email.errors.required && email.errors.email">Електронну адресу вказано невірно</mat-error>
+            </mat-form-field>
+        </div>
+    </fieldset>
+    <div class="top-20">
+        <button color="primary" mat-raised-button [disabled]="!f.valid || isBlocked">Підтвердити</button>
+    </div>
+</form>

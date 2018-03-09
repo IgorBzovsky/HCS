@@ -1,21 +1,21 @@
-﻿<md-sidenav-container fullscreen>
-    <md-sidenav #sidenav mode="side" class="app-sidenav">
-        <md-nav-list>
-            <a md-list-item [routerLink]="['./main']">Створити користувача</a>
-            <a md-list-item [routerLink]="['/portal']">Портал користувача</a>
-            <a md-list-item (click)="authService.startSignout()">Вийти</a>
-        </md-nav-list>
-    </md-sidenav>
-    <md-toolbar class="mat-elevation-z5" color="primary">
-        <button md-icon-button (click)="sidenav.toggle()">
-            <md-icon class="md-24">menu</md-icon>
+﻿<mat-sidenav-container fullscreen>
+    <mat-sidenav #sidenav mode="side" class="app-sidenav">
+        <mat-nav-list>
+            <a mat-list-item [routerLink]="['./main']">Створити користувача</a>
+            <a mat-list-item [routerLink]="['/portal']">Портал користувача</a>
+            <a mat-list-item (click)="authService.startSignout()">Вийти</a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-toolbar class="mat-elevation-z5" color="primary">
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon class="md-24">menu</mat-icon>
         </button>
-    </md-toolbar>
+    </mat-toolbar>
     <div class="app-content">
         <h1>Портал адміністратора</h1>
         <router-outlet></router-outlet>
     </div>
-</md-sidenav-container>
+</mat-sidenav-container>
 
 
 

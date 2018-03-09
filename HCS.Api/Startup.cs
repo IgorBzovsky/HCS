@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using HCS.Core;
+using HCS.Core.Domain;
+using HCS.Data;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using HCS.Data;
-using Microsoft.EntityFrameworkCore;
-using HCS.Core;
-using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
-using HCS.Core.Domain;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using IdentityModel;
+using System;
 
 namespace HCS.Api
 {
@@ -55,7 +51,7 @@ namespace HCS.Api
                     options.AddPolicy(RolePolicies.AdminPolicy, policy => policy.RequireClaim(JwtClaimTypes.Role, RolePolicies.AdminRole));
                     options.AddPolicy(RolePolicies.ProviderPolicy, policy => policy.RequireClaim(JwtClaimTypes.Role, RolePolicies.ProviderRole));
                 })
-                .AddJsonFormatters();
+                .AddJsonFormatters(options => options.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>

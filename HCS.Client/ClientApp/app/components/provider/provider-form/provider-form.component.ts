@@ -1,11 +1,14 @@
 ﻿import * as _ from 'underscore';
 import { Component, OnInit } from '@angular/core';
-import { ProviderService } from "../../../services/provider.service";
+import { LocationService } from "../../../services/location.service";
 import { Observable } from "rxjs/Observable";
-import 'rxjs/add/Observable/forkJoin';
+import { ProviderService } from "../../../services/provider.service";
+import { Router } from "@angular/router";
 import { SaveProvider, Provider } from "../../../models/provider";
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Router } from "@angular/router";
+import 'rxjs/add/Observable/forkJoin';
+
+
 
 @Component({
     selector: 'provider-form',
@@ -23,11 +26,11 @@ export class ProviderFormComponent implements OnInit {
         providedUtilities: []
     };
 
-    constructor(private providerService: ProviderService, private router: Router, private toastr: ToastsManager) { }
+    constructor(private providerService: ProviderService, private locationService: LocationService, private router: Router, private toastr: ToastsManager) { }
 
     ngOnInit() {
         Observable.forkJoin([
-            this.providerService.getRegions(),
+            this.locationService.getRegions(),
             this.providerService.getUtilities(),
             this.providerService.getProvider()
         ]).subscribe(data => {

@@ -10,10 +10,10 @@ import { SettingsService } from "../../services/settings.service";
 export class HomeComponent implements OnInit {
     constructor(private authService: AuthService, private router: Router, private settings: SettingsService) { }
     ngOnInit() {
-        if (this.authService.isInRole(this.settings.roleNames.admin)) {
+        if (this.authService.isInRole(this.settings.RoleNames.admin)) {
             this.router.navigate(["/admin"]);
         }
-        else if (this.authService.isInRole(this.settings.roleNames.provider)) {
+        else if (this.authService.isInRole(this.settings.RoleNames.provider)) {
             console.log("Provider");
             this.router.navigate(["/provider"]);
         }

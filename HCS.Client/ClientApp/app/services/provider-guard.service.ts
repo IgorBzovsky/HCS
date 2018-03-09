@@ -12,7 +12,7 @@ export class ProviderGuardService implements CanActivate {
             this.authService.startAuthentication();
             return false;
         }
-        if (this.authService.isInRole(this.settings.roleNames.provider)) {
+        if (this.authService.isInRole(this.settings.RoleNames.provider)) {
             return true;
         }
         return false;

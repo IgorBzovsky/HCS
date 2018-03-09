@@ -10,7 +10,9 @@ let authService = new AuthService();
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     return new AuthHttp(new AuthConfig({
-        tokenGetter: (() => authService.getAccessToken())
+        tokenName: 'token',
+        tokenGetter: (() => authService.getAccessToken()),
+        globalHeaders: [{ 'Content-Type': 'application/json' }]
     }), http, options);
 }
 

@@ -1,0 +1,70 @@
+﻿<form #f="ngForm" (ngSubmit)="submit()" class="top-20">
+    {{user | json}}
+    <div class="flex-wrapper">
+        <div class="user-info-region">
+            <fieldset [disabled]="isBlocked">
+                <div>
+                    <mat-form-field hintLabel="Максимум 50 символів">
+                        <input matInput placeholder="Прізвище" type="text" name="lastName"
+                               [(ngModel)]="user.lastName" required #lastName="ngModel" maxlength="50" [pattern]="regexService.Name" />
+                        <mat-hint align="end">{{lastName.value?.length || 0}}/50</mat-hint>
+                        <mat-error *ngIf="lastName.invalid && lastName.errors.required">Вкажіть прізвище</mat-error>
+                        <mat-error *ngIf="lastName.invalid && lastName.errors.pattern">Прізвище вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field hintLabel="Максимум 50 символів">
+                        <input matInput placeholder="Ім'я" type="text" name="firstName"
+                               [(ngModel)]="user.firstName" required #firstName="ngModel" maxlength="50" [pattern]="regexService.Name" />
+                        <mat-hint align="end">{{firstName.value?.length || 0}}/50</mat-hint>
+                        <mat-error *ngIf="firstName.invalid && firstName.errors.required">Вкажіть ім'я</mat-error>
+                        <mat-error *ngIf="firstName.invalid && firstName.errors.pattern">Ім'я вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field hintLabel="Максимум 50 символів">
+                        <input matInput placeholder="Ім'я по батькові" type="text" name="middleName"
+                               [(ngModel)]="user.middleName" required #middleName="ngModel" maxlength="50" [pattern]="regexService.Name" />
+                        <mat-hint align="end">{{middleName.value?.length || 0}}/50</mat-hint>
+                        <mat-error *ngIf="middleName.invalid && middleName.errors.required">Вкажіть ім'я по батькові</mat-error>
+                        <mat-error *ngIf="middleName.invalid && middleName.errors.pattern">Ім'я по батькові вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field hintLabel="Максимум 50 символів">
+                        <input matInput placeholder="Електронна адреса" type="text" name="email"
+                               [(ngModel)]="user.email" required email #email="ngModel" maxlength="50" />
+                        <mat-hint align="end">{{email.value?.length || 0}}/50</mat-hint>
+                        <mat-error *ngIf="email.invalid && email.errors.required">Вкажіть електронну адресу</mat-error>
+                        <mat-error *ngIf="email.invalid && !email.errors.required && email.errors.email">Електронну адресу вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+            </fieldset>
+        </div>
+        <div class="password-region">
+            <fieldset [disabled]="isBlocked">
+                <div>
+                    <mat-form-field hintLabel="Максимум 100 символів">
+                        <input matInput placeholder="Пароль" type="password" name="password"
+                               [(ngModel)]="user.password" required #password="ngModel" minlength="6" maxlength="100" [pattern]="regexService.Password" validateEqual="confirmPassword" reverse="true"/>
+                        <mat-hint align="end">{{password.value?.length || 0}}/100</mat-hint>
+                        <mat-error *ngIf="password.invalid && password.errors.required">Вкажіть пароль</mat-error>
+                        <mat-error *ngIf="password.invalid && password.errors.minlength">Пароль має складатись мінімум з 6 символів</mat-error>
+                        <mat-error *ngIf="password.invalid && password.errors.pattern">Пароль має містити хоча б одну велику літеру, цифру і спеціальний символ</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="top-30">
+                    <mat-form-field hintLabel="Максимум 100 символів">
+                        <input matInput placeholder="Підтвердження паролю" type="password" name="confirmPassword"
+                               [(ngModel)]="user.confirmPassword" required validateEqual="password" maxlength="100" #confirmPassword="ngModel" />
+                        <mat-hint align="end">{{confirmPassword.value?.length || 0}}/100</mat-hint>
+                        <mat-error *ngIf="confirmPassword.invalid">Паролі не співпадають</mat-error>
+                    </mat-form-field>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="top-20">
+        <button color="primary" mat-raised-button [disabled]="!f.valid || isBlocked">Підтвердити</button>
+    </div>
+</form>

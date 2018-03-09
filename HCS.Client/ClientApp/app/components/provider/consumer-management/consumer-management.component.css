@@ -1,0 +1,4 @@
+﻿.nav-container button:not(:last-child) {
+    display: inline-block;
+    margin-right: 10px;
+}

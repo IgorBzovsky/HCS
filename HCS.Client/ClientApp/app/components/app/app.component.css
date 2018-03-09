@@ -1,6 +1,63 @@
-@media (max-width: 767px) {
-    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
-    .body-content {
-        padding-top: 50px;
-    }
+
+/*-----------------*/
+/*Layout*/
+/*-----------------*/
+.flex-container, .body-content {
+    display: flex;
+    justify-content: center;
 }
+.flex-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+.body-content {
+    padding-top: 50px;
+}
+
+/*Margins*/
+.top-10 {
+    margin-top: 10px;
+}
+.top-20 {
+    margin-top: 20px
+}
+.top-30 {
+    margin-top: 30px;
+}
+.top-40 {
+    margin-top: 40px
+}
+
+.top-50 {
+    margin-top: 50px;
+}
+
+.left-10 {
+    margin-left: 10px;
+}
+
+.left-20 {
+    margin-left: 20px;
+}
+
+.right-10 {
+    margin-right: 10px;
+}
+
+/*-----------------*/
+/*Angular Material*/
+/*-----------------*/
+.mat-checkbox-label {
+    font-weight: 300;
+}
+
+/*Navbar*/
+.mat-list-item-content {
+    font-size: 0.8em;
+}
+.mat-list-item-content mat-icon {
+    color: grey;
+}
+
+
+

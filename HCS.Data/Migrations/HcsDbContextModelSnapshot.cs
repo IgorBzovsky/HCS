@@ -36,9 +36,15 @@ namespace HCS.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("MiddleName");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -81,12 +87,20 @@ namespace HCS.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<double>("Area");
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
+                    b.Property<int>("LocationId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("Consumers");
 
@@ -310,10 +324,6 @@ namespace HCS.Data.Migrations
 
                     b.Property<bool>("HasTowelRail");
 
-                    b.Property<int>("LocationId");
-
-                    b.HasIndex("LocationId");
-
                     b.ToTable("Household");
 
                     b.HasDiscriminator().HasValue("Household");
@@ -334,6 +344,18 @@ namespace HCS.Data.Migrations
                     b.HasOne("HCS.Core.Domain.Provider", "Provider")
                         .WithMany("ApplicationUsers")
                         .HasForeignKey("ProviderId");
+                });
+
+            modelBuilder.Entity("HCS.Core.Domain.Consumer", b =>
+                {
+                    b.HasOne("HCS.Core.Domain.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("HCS.Core.Domain.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HCS.Core.Domain.Location", b =>
@@ -421,14 +443,6 @@ namespace HCS.Data.Migrations
                     b.HasOne("HCS.Core.Domain.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("HCS.Core.Domain.Household", b =>
-                {
-                    b.HasOne("HCS.Core.Domain.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
