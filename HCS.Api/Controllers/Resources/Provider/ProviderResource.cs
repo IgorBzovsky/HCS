@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HCS.Api.Controllers.Resources.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace HCS.Api.Controllers.Resources.Provider
         public int Id { get; set; }
         public string Name { get; set; }
         public KeyValuePairResource Location { get; set; }
-        public ICollection<KeyValuePairResource> ProvidedUtilities { get; set; }
+        public ICollection<ProvidedUtilityResource> ProvidedUtilities { get; set; }
 
         public ProviderResource()
         {
-            ProvidedUtilities = new Collection<KeyValuePairResource>();
+            ProvidedUtilities = new Collection<ProvidedUtilityResource>();
         }
     }
 }

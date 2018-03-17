@@ -1,0 +1,32 @@
+﻿[
+  {
+    "name": "Електроенергія",
+    "isSeasonal": true,
+    "measureUnit": "кВт"
+  },
+  {
+    "name": "Газ",
+    "isSeasonal": true,
+    "measureUnit": "м³"
+  },
+  {
+    "name": "Тепло",
+    "isSeasonal": true,
+    "measureUnit": "Гкал"
+  },
+  {
+    "name": "Гаряча вода",
+    "isSeasonal": false,
+    "measureUnit": "м³"
+  },
+  {
+    "name": "Холодна вода",
+    "isSeasonal": false,
+    "measureUnit": "м³"
+  },
+  {
+    "name": "Водовідведення",
+    "isSeasonal": false,
+    "measureUnit": "м³"
+  }
+]

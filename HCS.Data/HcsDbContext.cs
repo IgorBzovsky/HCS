@@ -9,12 +9,15 @@ namespace HCS.Data
     {
         public DbSet<Location> Locations { get; set; }
         public DbSet<Consumer> Consumers { get; set; }
-        public DbSet<Organization> Organizations { get; set; }
-        public DbSet<Household> Households { get; set; }
         public DbSet<Occupant> Occupants { get; set; }
         public DbSet<Utility> Utilities { get; set; }
         public DbSet<Provider> Providers { get; set; }
-        public DbSet<MeasureUnit> MeasureUnits { get; set; }
+        public DbSet<ProvidedUtility> ProvidedUtilities { get; set; }
+        public DbSet<ConsumedUtility> ConsumedUtilities { get; set; }
+        public DbSet<ConsumptionNorm> ConsumptionNorms { get; set; }
+        public DbSet<Exemption> Exemptions { get; set; }
+        public DbSet<ConsumerCategory> ConsumerCategories { get; set; }
+        public DbSet<ConsumerType> ConsumerTypes { get; set; }
 
         public HcsDbContext(DbContextOptions<HcsDbContext> options) : base(options)
         {
@@ -23,7 +26,9 @@ namespace HCS.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new ProvidedUtilityConfiguration());
+            modelBuilder.ApplyConfiguration(new ConsumedUtilityConfiguration());
+            modelBuilder.ApplyConfiguration(new OccupantConfiguration());
+            //modelBuilder.ApplyConfiguration(new ConsumerConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

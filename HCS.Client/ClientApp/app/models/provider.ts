@@ -1,10 +1,14 @@
 ﻿import { KeyValuePair } from "./key_value_pair";
+import { ProvidedUtility } from "./provided-utility";
 
-export interface Provider {
+export class Provider {
     id: number;
     name: string;
-    location: KeyValuePair;
-    providedUtilities: KeyValuePair[];
+    location: KeyValuePair | null;
+    providedUtilities: ProvidedUtility[];
+    constructor() {
+        this.providedUtilities = [];
+    }
 }
 
 export interface SaveProvider {

@@ -1,38 +1,54 @@
 ﻿<form #f="ngForm" (ngSubmit)="submit()">
-    {{household | json}}
     <fieldset [disabled]="isBlocked">
         <div>
-            <mat-form-field>
-                <input matInput placeholder="Площа помешкання" type="text" name="area"
-                       [(ngModel)]="household.area" required />
-                <mat-error>Вкажіть площу помешкання</mat-error>
+            <mat-form-field hint="Наприклад 47.4">
+                <input matInput placeholder="Площа помешкання (кв.м.)" type="text" name="area"
+                       [(ngModel)]="household.area" required  [pattern]="regexService.Decimal" #area="ngModel"/>
+                <mat-error *ngIf="area.hasError('required')">Вкажіть площу помешкання</mat-error>
+                <mat-error *ngIf="area.hasError('pattern')">Невірний формат</mat-error>
             </mat-form-field>
         </div>
         <div>
             <h5>Електроенергія</h5>
             <div class="left-20">
                 <div>
-                    <mat-checkbox name="has-electric-heating" [(ngModel)]="household.hasElectricHeating">Електроопалювальні прилади</mat-checkbox>
+                    <mat-checkbox color="primary" name="has-electric-heating" [(ngModel)]="household.hasElectricHeating">Електроопалювальні прилади</mat-checkbox>
                 </div>
                 <div>
-                    <mat-checkbox name="has-electric-hotplates" [(ngModel)]="household.hasElectricHotplates">Електрична плитка</mat-checkbox>
+                    <mat-checkbox color="primary" name="has-electric-hotplates" [(ngModel)]="household.hasElectricHotplates">Електрична плитка</mat-checkbox>
                 </div>
             </div>
         </div>
         <div>
             <h5>Гаряча вода</h5>
             <div class="left-20">
-                <mat-checkbox name="has-towel-rail" [(ngModel)]="household.hasTowelRail">Рушникосушарка</mat-checkbox>
+                <mat-checkbox color="primary" name="has-towel-rail" [(ngModel)]="household.hasTowelRail">Рушникосушарка</mat-checkbox>
             </div>
         </div>
         <div>
             <h5>Газопостачання</h5>
             <div class="left-20">
-                <mat-checkbox name="central-gas-supply" [(ngModel)]="household.hasCentralGasSupply">Централізоване газопостачання</mat-checkbox>
+                <mat-checkbox color="primary" name="central-gas-supply" [(ngModel)]="household.hasCentralGasSupply">Централізоване газопостачання</mat-checkbox>
+            </div>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-select placeholder="Категорія" name="consumerCategory" [(ngModel)]="household.consumerCategory.id" required #consumerCategory="ngModel">
+                    <mat-option></mat-option>
+                    <mat-option *ngFor="let c of consumerCategories" [value]="c.id">{{ c.name }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="consumerCategory.hasError('required')">Оберіть категорію житла</mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <h5>Послуги</h5>
+            <div *ngFor="let u of providedUtilities">
+                <mat-checkbox color="primary" id="utility{{ u.id }}" (change)="onUtilityToggle(u.id, u.name, $event)" [checked]="containsUtilities(u.id)" class="left-20">{{ u.name }}</mat-checkbox>
             </div>
         </div>
     </fieldset>
     <div class="top-20">
-        <button color="primary" mat-raised-button [disabled]="!f.valid ||isBlocked">Підтвердити</button>
+        <button color="primary" mat-raised-button [disabled]="!f.valid || household.consumedUtilities.length == 0 || isBlocked">Підтвердити</button>
     </div>
 </form>
+{{household | json}}

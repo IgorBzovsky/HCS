@@ -1,4 +1,8 @@
-﻿.nav-container button:not(:last-child) {
+﻿.nav-container {
+    display: flex;
+    justify-content: center;
+}
+.nav-container button:not(:last-child) {
     display: inline-block;
     margin-right: 10px;
 }

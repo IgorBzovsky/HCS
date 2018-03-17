@@ -1,13 +1,30 @@
 ﻿<mat-card>
     <mat-horizontal-stepper linear #stepper>
         <mat-step label="Користувач" [stepControl]="userFormControl">
-            <user-form [user]="user" (formSubmit)="userFormSubmit($event)"></user-form>
+            <div class="step-wrapper">
+                <user-form [user]="user" (formSubmit)="userFormSubmit($event)"></user-form>
+            </div>
         </mat-step>
         <mat-step label="Адреса" [stepControl]="addressFormControl">
-            <address-form [address]="address" (formSubmit)="addressFormSubmit($event)"></address-form>
+            <div class="step-wrapper">
+                <address-form [address]="address" (formSubmit)="addressFormSubmit($event)"></address-form>
+            </div>
         </mat-step>
-        <mat-step label="Споживач">
-            <household-form [household]="household" (formSubmit)="householdFormSubmit($event)"></household-form>
+        <mat-step label="Споживач" [stepControl]="householdFormControl">
+            <div class="step-wrapper">
+                <household-form [household]="household" [providedUtilities]="provider.providedUtilities" [consumerCategories]="consumerCategories" (formSubmit)="householdFormSubmit($event)"></household-form>
+            </div>
+        </mat-step>
+        <mat-step label="Субсидії" [stepControl]="subsidyFormControl">
+            <div class="step-wrapper">
+                <subsidy [household]="household" (formSubmit)="subsidyFormSubmit($event)"></subsidy>
+            </div>
+        </mat-step>
+        <mat-step label="Мешканці">
+            <div class="step-wrapper">
+                <occupants [household]="household"></occupants>
+            </div>
         </mat-step>
     </mat-horizontal-stepper>
 </mat-card>
+

@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System;
 
 namespace HCS.Data.Migrations
@@ -37,6 +34,8 @@ namespace HCS.Data.Migrations
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastName");
 
@@ -82,6 +81,26 @@ namespace HCS.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("HCS.Core.Domain.ConsumedUtility", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ConsumerId");
+
+                    b.Property<decimal?>("ObligatoryPrice");
+
+                    b.Property<int>("ProvidedUtilityId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumerId");
+
+                    b.HasIndex("ProvidedUtilityId");
+
+                    b.ToTable("ConsumedUtilities");
+                });
+
             modelBuilder.Entity("HCS.Core.Domain.Consumer", b =>
                 {
                     b.Property<int>("Id")
@@ -91,20 +110,95 @@ namespace HCS.Data.Migrations
 
                     b.Property<double>("Area");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
+                    b.Property<int>("ConsumerCategoryId");
+
+                    b.Property<bool>("HasCentralGasSupply");
+
+                    b.Property<bool>("HasElectricHeating");
+
+                    b.Property<bool>("HasElectricHotplates");
+
+                    b.Property<bool>("HasSubsidy");
+
+                    b.Property<bool>("HasTowelRail");
+
+                    b.Property<bool>("IsDraft");
 
                     b.Property<int>("LocationId");
+
+                    b.Property<string>("OrganizationName");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
+                    b.HasIndex("ConsumerCategoryId");
+
                     b.HasIndex("LocationId");
 
                     b.ToTable("Consumers");
+                });
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Consumer");
+            modelBuilder.Entity("HCS.Core.Domain.ConsumerCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ConsumerTypeId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumerTypeId");
+
+                    b.ToTable("ConsumerCategories");
+                });
+
+            modelBuilder.Entity("HCS.Core.Domain.ConsumerType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ConsumerTypes");
+                });
+
+            modelBuilder.Entity("HCS.Core.Domain.ConsumptionNorm", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Amount");
+
+                    b.Property<int>("ConsumedUtilityId");
+
+                    b.Property<int>("OccupantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumedUtilityId");
+
+                    b.HasIndex("OccupantId");
+
+                    b.ToTable("ConsumptionNorms");
+                });
+
+            modelBuilder.Entity("HCS.Core.Domain.Exemption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Percent");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Exemptions");
                 });
 
             modelBuilder.Entity("HCS.Core.Domain.Location", b =>
@@ -127,26 +221,16 @@ namespace HCS.Data.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("HCS.Core.Domain.MeasureUnit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MeasureUnits");
-                });
-
             modelBuilder.Entity("HCS.Core.Domain.Occupant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FirstName");
+                    b.Property<int>("ConsumerId");
 
-                    b.Property<int?>("HouseholdId");
+                    b.Property<int>("ExemptionId");
+
+                    b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
@@ -154,18 +238,25 @@ namespace HCS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HouseholdId");
+                    b.HasIndex("ConsumerId");
+
+                    b.HasIndex("ExemptionId");
 
                     b.ToTable("Occupants");
                 });
 
             modelBuilder.Entity("HCS.Core.Domain.ProvidedUtility", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
                     b.Property<int>("ProviderId");
 
                     b.Property<int>("UtilityId");
 
-                    b.HasKey("ProviderId", "UtilityId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProviderId");
 
                     b.HasIndex("UtilityId");
 
@@ -193,13 +284,13 @@ namespace HCS.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("MeasureUnitId");
+                    b.Property<bool>("IsSeasonal");
+
+                    b.Property<string>("MeasureUnit");
 
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MeasureUnitId");
 
                     b.ToTable("Utilities");
                 });
@@ -312,38 +403,24 @@ namespace HCS.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("HCS.Core.Domain.Household", b =>
-                {
-                    b.HasBaseType("HCS.Core.Domain.Consumer");
-
-                    b.Property<bool>("HasCentralGasSupply");
-
-                    b.Property<bool>("HasElectricHeating");
-
-                    b.Property<bool>("HasElectricHotplates");
-
-                    b.Property<bool>("HasTowelRail");
-
-                    b.ToTable("Household");
-
-                    b.HasDiscriminator().HasValue("Household");
-                });
-
-            modelBuilder.Entity("HCS.Core.Domain.Organization", b =>
-                {
-                    b.HasBaseType("HCS.Core.Domain.Consumer");
-
-
-                    b.ToTable("Organization");
-
-                    b.HasDiscriminator().HasValue("Organization");
-                });
-
             modelBuilder.Entity("HCS.Core.Domain.ApplicationUser", b =>
                 {
                     b.HasOne("HCS.Core.Domain.Provider", "Provider")
                         .WithMany("ApplicationUsers")
                         .HasForeignKey("ProviderId");
+                });
+
+            modelBuilder.Entity("HCS.Core.Domain.ConsumedUtility", b =>
+                {
+                    b.HasOne("HCS.Core.Domain.Consumer", "Consumer")
+                        .WithMany("ConsumedUtilities")
+                        .HasForeignKey("ConsumerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HCS.Core.Domain.ProvidedUtility", "ProvidedUtility")
+                        .WithMany()
+                        .HasForeignKey("ProvidedUtilityId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("HCS.Core.Domain.Consumer", b =>
@@ -352,9 +429,35 @@ namespace HCS.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
+                    b.HasOne("HCS.Core.Domain.ConsumerCategory", "ConsumerCategory")
+                        .WithMany()
+                        .HasForeignKey("ConsumerCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("HCS.Core.Domain.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("HCS.Core.Domain.ConsumerCategory", b =>
+                {
+                    b.HasOne("HCS.Core.Domain.ConsumerType", "ConsumerType")
+                        .WithMany("ConsumerCategories")
+                        .HasForeignKey("ConsumerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("HCS.Core.Domain.ConsumptionNorm", b =>
+                {
+                    b.HasOne("HCS.Core.Domain.ConsumedUtility", "ConsumedUtility")
+                        .WithMany()
+                        .HasForeignKey("ConsumedUtilityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HCS.Core.Domain.Occupant")
+                        .WithMany("ConsumptionNorms")
+                        .HasForeignKey("OccupantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -367,9 +470,15 @@ namespace HCS.Data.Migrations
 
             modelBuilder.Entity("HCS.Core.Domain.Occupant", b =>
                 {
-                    b.HasOne("HCS.Core.Domain.Household")
+                    b.HasOne("HCS.Core.Domain.Consumer", "Household")
                         .WithMany("Occupants")
-                        .HasForeignKey("HouseholdId");
+                        .HasForeignKey("ConsumerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HCS.Core.Domain.Exemption", "Exemption")
+                        .WithMany()
+                        .HasForeignKey("ExemptionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HCS.Core.Domain.ProvidedUtility", b =>
@@ -390,14 +499,6 @@ namespace HCS.Data.Migrations
                     b.HasOne("HCS.Core.Domain.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("HCS.Core.Domain.Utility", b =>
-                {
-                    b.HasOne("HCS.Core.Domain.MeasureUnit", "MeasureUnit")
-                        .WithMany()
-                        .HasForeignKey("MeasureUnitId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -9,6 +9,8 @@ namespace HCS.Core
         ILocationRepository Locations { get; }
         IProviderRepository Providers { get; }
         IConsumerRepository Consumers { get; }
+        IOccupantRepository Occupants { get; }
+        IConsumerCategoryRepository ConsumerCategories { get; }
         Task CompleteAsync();
     }
 }

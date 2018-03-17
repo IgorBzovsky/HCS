@@ -1,12 +1,18 @@
-﻿<mat-sidenav-container fullscreen>
+﻿<mat-sidenav-container class="all-wrap" fullscreen>
     <mat-sidenav #sidenav mode="side" class="app-sidenav">
         <mat-nav-list>
             <a mat-list-item [routerLink]="['./profile']"><mat-icon>assignment</mat-icon>&nbsp;Профіль постачальника</a>
             <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="['./utilities']"><mat-icon>location_city</mat-icon>&nbsp;Створити домогосподарство</a>
+            <mat-divider></mat-divider>
             <h3 mat-subheader>Управління споживачами</h3>
-            <a mat-list-item [routerLink]="['./consumers/household']"><mat-icon>location_city</mat-icon>&nbsp;Створити домогосподарство</a>
-            <a mat-list-item [routerLink]="['./consumers/organization']"><mat-icon>domain</mat-icon>&nbsp;Створити організацію</a>
-            <a mat-list-item [routerLink]="['./consumers/organization']"><mat-icon>group</mat-icon>&nbsp;Список споживачів</a>
+            <a mat-list-item [routerLink]="['./consumers/households/new']">
+                Створити домогосподарство
+            </a>
+            <a mat-list-item [routerLink]="['./consumers/organizations/new']">
+                Створити організацію
+            </a>
+            <a mat-list-item [routerLink]="['./consumers']"><mat-icon>group</mat-icon>&nbsp;Список споживачів</a>
             <mat-divider></mat-divider>
             <h3 mat-subheader>Управління тарифами</h3>
             <a mat-list-item [routerLink]="['./consumers/household']"><mat-icon>lightbulb_outline</mat-icon>&nbsp;Створити тариф</a>
@@ -19,16 +25,27 @@
             <a mat-list-item (click)="authService.startSignout()">Вийти</a>
         </mat-nav-list>
     </mat-sidenav>
-    <mat-toolbar class="mat-elevation-z5" color="primary">
-        <button mat-icon-button (click)="sidenav.toggle()">
-            <mat-icon class="md-24">menu</mat-icon>
-        </button>
-        <button mat-button [routerLink]="['./dashboard']">Портал постачальника</button>
-        <button mat-button (click)="testToken()">Test token</button>
-    </mat-toolbar>
-    <div class="body-content">
-        <router-outlet></router-outlet>
+    <div class="page-wrap">
+        <header>
+            <mat-toolbar class="mat-elevation-z5" color="primary">
+                <button mat-icon-button (click)="sidenav.toggle()">
+                    <mat-icon class="md-24">menu</mat-icon>
+                </button>
+                <button mat-button [routerLink]="['./dashboard']">Портал постачальника</button>
+                <!--<button mat-button (click)="testToken()">Test token</button>-->
+            </mat-toolbar>
+        </header>
+        <main class="content">
+            <div class="body-content">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+        <footer>
+            <mat-toolbar color="primary">
+            </mat-toolbar>
+        </footer>
     </div>
 </mat-sidenav-container>
+
 
 

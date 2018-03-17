@@ -1,5 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../../services/auth.service";
+import { trigger, animate, style, group, animateChild, query, stagger, transition } from '@angular/animations';
+
 
 @Component({
     selector: 'admin',

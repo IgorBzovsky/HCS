@@ -4,18 +4,21 @@
         <form #f="ngForm" (ngSubmit)="submit()">
             <fieldset [disabled]="isBlocked">
                 <div>
-                    <mat-form-field>
-                        <input matInput placeholder="Назва" type="text" name="name"
-                               [(ngModel)]="provider.name" required #name="ngModel" />
-                        <mat-error>Вкажіть назву</mat-error>
+                    <mat-form-field hintLabel="Максимум 250 символів">
+                        <input matInput placeholder="Назва підприємства" type="text" name="name"
+                               [(ngModel)]="provider.name" required #name="ngModel" maxlength="250" [pattern]="regexService.SpacedName" />
+                        <mat-hint align="end">{{name.value?.length || 0}}/250</mat-hint>
+                        <mat-error *ngIf="name.hasError('required')">Вкажіть назву підприємства</mat-error>
+                        <mat-error *ngIf="name.hasError('pattern')">Назву вказано невірно</mat-error>
                     </mat-form-field>
                 </div>
                 <div>
                     <mat-form-field>
                         <mat-select placeholder="Регіон" name="location" [(ngModel)]="provider.locationId" required #location="ngModel">
-                            <mat-option value=""></mat-option>
+                            <mat-option></mat-option>
                             <mat-option *ngFor="let r of regions" [value]="r.id">{{ r.name }}</mat-option>
                         </mat-select>
+                        <mat-error *ngIf="location.hasError('required')">Оберіть регіон постачання</mat-error>
                     </mat-form-field>
                 </div>
                 <div>
@@ -26,7 +29,7 @@
                 </div>
             </fieldset>
             <div class="top-20">
-                <button color="primary" mat-raised-button [disabled]="!f.valid || provider.providedUtilities.length == 0 || isBlocked">Зберегти</button>
+                <button color="primary" mat-raised-button [disabled]="!f.valid || !isValid || isBlocked">Зберегти</button>
             </div>
         </form>
     </mat-card-content>

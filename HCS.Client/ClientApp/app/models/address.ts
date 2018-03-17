@@ -1,7 +1,7 @@
 ﻿
 import { KeyValuePair } from "./key_value_pair";
 
-export interface Address {
+export class Address {
     id: number;
     region: KeyValuePair | null;
     district: KeyValuePair | null;

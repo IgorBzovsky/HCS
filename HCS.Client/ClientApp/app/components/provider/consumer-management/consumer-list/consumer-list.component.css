@@ -1,1 +1,52 @@
-﻿
+﻿.table-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+}
+
+.table-heading {
+    color: dimgray;
+    text-align: center;
+}
+
+.mat-column-region, .mat-column-district,
+.mat-column-locality, .mat-column-street {
+    padding: 0 10px;
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 180px !important;
+    width: 180px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+
+.mat-column-building, .mat-column-appartment {
+    padding: 0 10px;
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 50px !important;
+    width: 50px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}

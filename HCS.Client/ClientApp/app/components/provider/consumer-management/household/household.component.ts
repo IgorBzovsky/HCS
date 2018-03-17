@@ -1,11 +1,16 @@
 ﻿import { Address } from "../../../../models/address";
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConsumerService } from "../../../../services/consumer.service";
-import { Household } from "../../../../models/consumer";
 import { MatStepper } from "@angular/material/stepper";
 import { FormControl } from "@angular/forms";
+import { Provider } from "../../../../models/provider";
+import { ProviderService } from "../../../../services/provider.service";
+import { Household } from "../../../../models/consumer";
 import { ToastsManager } from "ng2-toastr/ng2-toastr";
 import { User } from "../../../../models/user";
+import { Observable } from "rxjs/Observable";
+import 'rxjs/add/Observable/forkJoin';
+import { KeyValuePair } from "../../../../models/key_value_pair";
 
 
 @Component({
@@ -16,41 +21,28 @@ import { User } from "../../../../models/user";
 export class HouseholdComponent implements OnInit {
 
     @ViewChild('stepper') stepper: MatStepper;
-    householdDiscriminator = "Household";
-    user: User = {
-        id: '',
-        email: '',
-        userName: '',
-        password: '',
-        confirmPassword: '',
-        firstName: '',
-        lastName: '',
-        middleName: '',
-        roles: []
-    };
-    address: Address = {
-        id: 0,
-        region: null,
-        district: null,
-        locality: null,
-        street: null,
-        building: '',
-        appartment: ''
-    }
-    household: Household = {
-        id: 0,
-        area: null,
-        hasElectricHeating: false,
-        hasTowelRail: false,
-        hasElectricHotplates: false,
-        hasCentralGasSupply: false,
-        applicationUserId: '',
-        locationId: 0
-    }
 
-    constructor(private consumerService: ConsumerService, private toastr: ToastsManager) { }
+    householdDiscriminator = "Household";
+
+    provider = new Provider();
+    user = new User();
+    address = new Address();
+    household = new Household();
+    consumerCategories: KeyValuePair[];
+
+    constructor(private consumerService: ConsumerService, private providerService: ProviderService, private toastr: ToastsManager) { }
     
     ngOnInit() {
+        Observable.forkJoin([
+            this.providerService.getProvider(),
+            this.consumerService.getCategoriesByTypeName(this.householdDiscriminator)
+        ]).subscribe(data => {
+            this.provider = data[0],
+            this.consumerCategories = data[1]
+        },
+            err => {
+                console.log(err)
+            });
         this.setFormsInvalid();
     }
 
@@ -64,12 +56,10 @@ export class HouseholdComponent implements OnInit {
 
     addressFormSubmit($event: Address) {
         this.address = $event;
-        this.household.locationId = this.address.id;
         this.consumerService.getConsumerByLocationId(this.address.id)
             .subscribe(
             data => {
-                console.log(data);
-                if (data.discriminator !== this.householdDiscriminator) {
+                if (data.consumerType.name !== this.householdDiscriminator) {
                     this.toastr.error("За цією адресою зареєстрована організація");
                 }
                 else if (data.applicationUserId !== this.user.id) {
@@ -79,10 +69,14 @@ export class HouseholdComponent implements OnInit {
                     this.household = data;
                     this.setAddressFormValid();
                     this.stepper.next();
+                    this.setHouseholdFormValid();
                 }
             },
             err => {
                 if (err.status == 404) {
+                    this.household = new Household();
+                    this.household.locationId = this.address.id;
+                    this.household.applicationUserId = this.user.id;
                     this.setAddressFormValid();
                     this.stepper.next();
                 }
@@ -91,6 +85,18 @@ export class HouseholdComponent implements OnInit {
                 }
             }
             );
+    }
+
+    householdFormSubmit($event: Household) {
+        this.household = $event;
+        this.setHouseholdFormValid();
+        this.stepper.next();
+    }
+
+    subsidyFormSubmit($event: Household) {
+        this.household = $event;
+        this.setSubsidyFormValid();
+        this.stepper.next();
     }
 
 
@@ -119,6 +125,15 @@ export class HouseholdComponent implements OnInit {
     }
     private setHouseholdFormValid() {
         this.householdFormControl.setErrors(null);
+    }
+
+    //Subsidy form
+    private subsidyFormControl = new FormControl();
+    private setSubsidyFormInvalid() {
+        this.subsidyFormControl.setErrors({ 'completed': 'Not completed' });
+    }
+    private setSubsidyFormValid() {
+        this.subsidyFormControl.setErrors(null);
     }
 
     private setFormsInvalid() {

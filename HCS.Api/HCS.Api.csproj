@@ -13,10 +13,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Resources\Consumer\Household\HouseholdResource.cs" />
+    <Compile Remove="Controllers\Resources\Consumer\Household\SaveHouseholdResource.cs" />
     <Compile Remove="Controllers\Resources\HouseholdResource.cs" />
     <Compile Remove="Controllers\Resources\LocationIncludeParentResource.cs" />
     <Compile Remove="Controllers\Resources\OrganizationResource.cs" />
     <Compile Remove="Controllers\Resources\SaveOrganizationResource.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Seed\organization-categories.json" />
   </ItemGroup>
 
   <ItemGroup>

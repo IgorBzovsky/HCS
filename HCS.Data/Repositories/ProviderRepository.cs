@@ -1,9 +1,6 @@
 ﻿using HCS.Core.Domain;
 using HCS.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HCS.Data.Repositories
@@ -17,7 +14,7 @@ namespace HCS.Data.Repositories
         public async Task<Provider> GetProviderAsync(int id, bool includeRelated = true)
         {
             if (!includeRelated)
-                return await context.Providers.FindAsync(id);
+                return await GetAsync(id);
 
             return await context.Providers
                 .Include(p => p.ProvidedUtilities)

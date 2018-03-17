@@ -24,24 +24,48 @@ export class RegistrationFormComponent implements OnInit {
     submit() {
         this.isBlocked = true;
         this.user.userName = this.user.email;
-        this.userManagementService.create(this.user)
-            .subscribe(
-            data => {
-                this.isBlocked = false;
-                this.user = data;
-                this.toastr.success('Ви створили користувача ' + this.user.userName, 'Успішно!');
-                this.onSubmit.emit(this.user);
-            },
-            err => {
-                this.isBlocked = false;
-                if (err.status == 400) {
-                    this.toastr.error('Виникла помилка. Такий користувач вже зареєстрований.', 'Помилка!');
+        if (!this.user.id) {
+            this.userManagementService.create(this.user)
+                .subscribe(
+                data => {
+                    this.isBlocked = false;
+                    this.user = data;
+                    this.toastr.success('Ви створили користувача ' + this.user.userName, 'Успішно!');
+                    this.onSubmit.emit(this.user);
+                },
+                err => {
+                    this.isBlocked = false;
+                    if (err.status == 400) {
+                        this.toastr.error('Виникла помилка. Такий користувач вже зареєстрований.', 'Помилка!');
+                    }
+                    else {
+                        this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                    }
+                    console.log(err);
                 }
-                else {
-                    this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                );
+        }
+        else {
+            this.userManagementService.update(this.user)
+                .subscribe(
+                data => {
+                    this.isBlocked = false;
+                    this.user = data;
+                    this.toastr.success('Ви оновили інформацію про користувача ' + this.user.userName, 'Успішно!');
+                    this.onSubmit.emit(this.user);
+                },
+                err => {
+                    this.isBlocked = false;
+                    if (err.status == 404) {
+                        this.toastr.error('Виникла помилка. Такий користувач не зареєстрований.', 'Помилка!');
+                    }
+                    else {
+                        this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                    }
+                    console.log(err);
                 }
-                console.log(err);
-            }
-            );
+                );
+        }
+        
     }
 }

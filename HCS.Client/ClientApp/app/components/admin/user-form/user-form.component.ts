@@ -1,6 +1,9 @@
-﻿import { Component, OnInit, ViewContainerRef } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { UserManagementService } from "../../../services/user-management.service";
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { RegexService } from "../../../services/regex.service";
+import { User } from "../../../models/user";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: 'user-form',
@@ -8,17 +11,23 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
     styleUrls: ['./user-form.component.css']
 })
 export class UserFormComponent implements OnInit {
-    roles: any;
+    roles: any[];
     isBlocked: boolean;
-    user: any = {
-        roles: []
-    };
+    user = new User();
 
-    constructor(private userManagementService: UserManagementService, private toastr: ToastsManager, vcr: ViewContainerRef) {
-        this.toastr.setRootViewContainerRef(vcr);
+    constructor(private userManagementService: UserManagementService, private regexService: RegexService, private toastr: ToastsManager, private route: ActivatedRoute, private router: Router) {
+
+        route.params.subscribe(p => {
+            this.user.id = p['id'];
+        });
     }
 
     ngOnInit() {
+        this.userManagementService.getById(this.user.id)
+            .subscribe(data => {
+                console.log(data);
+                this.user = data;
+            });
         this.roles = this.userManagementService.getRoles();
     }
 
@@ -34,17 +43,39 @@ export class UserFormComponent implements OnInit {
     submit() {
         this.isBlocked = true;
         this.user.userName = this.user.email;
-        this.userManagementService.create(this.user)
-            .subscribe(
-            x => {
-                this.isBlocked = false;
-                this.toastr.success('Ви створили користувача ' + this.user.userName, 'Успішно!');
-            },
-            err => {
-                this.isBlocked = false;
-                this.toastr.error('Виникла помилка. Можливо користувач вже зареєстрований.', 'Помилка!');
-                console.log(err);
-            }
-        );
+        if (this.user.id) {
+            this.userManagementService.update(this.user)
+                .subscribe(
+                data => {
+                    this.isBlocked = false;
+                    this.router.navigate(["admin/user-list"]);
+                    this.toastr.success('Ви оновили інформацію користувача ' + this.user.userName, 'Успішно!');
+                },
+                err => {
+                    this.isBlocked = false;
+                    if (err.status == 404) {
+                        this.toastr.error('Такого користувача не існує.', 'Помилка!');
+                    }
+                    else {
+                        this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                    }
+                }
+                );
+        }
+        else {
+            this.userManagementService.create(this.user)
+                .subscribe(
+                data => {
+                    this.isBlocked = false;
+                    this.router.navigate(["admin/user-list"]);
+                    this.toastr.success('Ви створили користувача ' + this.user.userName, 'Успішно!');
+                },
+                err => {
+                    this.isBlocked = false;
+                    this.toastr.error('Виникла помилка. Можливо користувач вже зареєстрований.', 'Помилка!');
+                    console.log(err);
+                }
+                );
+        }
     }
 }

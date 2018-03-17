@@ -1,7 +1,6 @@
-﻿using System;
+﻿using HCS.Api.Controllers.Resources.Utilities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace HCS.Api.Controllers.Resources.Consumer.Household
 {
@@ -15,5 +14,11 @@ namespace HCS.Api.Controllers.Resources.Consumer.Household
         public bool HasCentralGasSupply { get; set; }
         public string ApplicationUserId { get; set; }
         public int LocationId { get; set; }
+        public ICollection<SaveConsumedUtilityResource> ConsumedUtilities { get; set; }
+
+        public SaveHouseholdResource()
+        {
+            ConsumedUtilities = new Collection<SaveConsumedUtilityResource>();
+        }
     }
 }

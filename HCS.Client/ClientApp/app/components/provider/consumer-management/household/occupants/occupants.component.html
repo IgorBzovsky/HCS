@@ -1,0 +1,8 @@
+﻿<mat-tab-group (selectedTabChange)="selectTab($event)">
+    <mat-tab label="Список мешканців">
+        <occupants-list></occupants-list>
+    </mat-tab>
+    <mat-tab label="Форма">
+        <occupants-form [household]="household"></occupants-form>
+    </mat-tab>
+</mat-tab-group>

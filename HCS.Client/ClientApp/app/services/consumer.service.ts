@@ -1,20 +1,29 @@
 ﻿import { AuthHttp } from 'angular2-jwt';
 import { Injectable } from '@angular/core';
+import { Household } from "../models/consumer";
 import { SettingsService } from "./settings.service";
 import 'rxjs/add/operator/map';
-import { Household } from "../models/consumer";
+
 
 
 @Injectable()
 export class ConsumerService {
     constructor(private authHttp: AuthHttp, private settings: SettingsService) { }
 
-    createHousehold(household: Household) {
-        return this.authHttp.post(this.settings.BaseUrls.apiUrl + '/consumers/household', household).map(res => res.json());
+    create(consumer: any) {
+        return this.authHttp.post(this.settings.BaseUrls.apiUrl + '/consumers', consumer).map(res => res.json());
     }
 
-    updateHousehold(household: Household) {
-        return this.authHttp.put(this.settings.BaseUrls.apiUrl + '/consumers/household/' + household.id, household).map(res => res.json());
+    update(consumer: any) {
+        return this.authHttp.put(this.settings.BaseUrls.apiUrl + '/consumers/' + consumer.id, consumer).map(res => res.json());
+    }
+
+    getAll() {
+        return this.authHttp.get(this.settings.BaseUrls.apiUrl + '/consumers').map(res => res.json());
+    }
+
+    getCategoriesByTypeName(name: string) {
+        return this.authHttp.get(this.settings.BaseUrls.apiUrl + '/consumers/categories/type/' + name).map(res => res.json());
     }
 
     getConsumerByLocationId(locationId: number) {

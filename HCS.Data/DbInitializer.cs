@@ -1,5 +1,7 @@
 ﻿using HCS.Core.Domain;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace HCS.Data
@@ -11,127 +13,26 @@ namespace HCS.Data
             context.Database.EnsureCreated();
             SeedUtilities(context);
             SeedLocations(context);
+            SeedExemptions(context);
+            SeedConsumerCategories(context);
         }
 
         private static void SeedLocations(HcsDbContext context)
         {
             if (!context.Locations.Any())
             {
-                context.Locations.Add(new Location
-                {
-                    Name = "Вінницька область",
-                    Children = new List<Location>
-                    {
-                        new Location
-                        {
-                            Name = "Вінницький район",
-                            Children = new List<Location>
-                            {
-                                new Location
-                                {
-                                    Name = "Вінниця",
-                                    Children = new List<Location>
-                                    {
-                                        new Location
-                                        {
-                                            Name = "Шевченка"
-                                        },
-                                        new Location
-                                        {
-                                            Name = "Л.Ратушної"
-                                        },
-                                        new Location
-                                        {
-                                            Name = "Київська"
-                                        },
-                                        new Location
-                                        {
-                                            Name = "600-річчя"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        new Location
-                        {
-                            Name = "Жмеринський район",
-                            Children = new List<Location>
-                            {
-                                new Location
-                                {
-                                    Name = "Жмеринка",
-                                    Children = new List<Location>
-                                    {
-                                        new Location
-                                        {
-                                            Name = "Крилова"
-                                        },
-                                        new Location
-                                        {
-                                            Name = "Залізнична"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
+                List<Location> locations = JsonConvert.DeserializeObject<List<Location>>(File.ReadAllText(@"Seed" + Path.DirectorySeparatorChar + "locations.json"));
+                context.Locations.AddRange(locations);
+                context.SaveChanges();
+            }
+        }
 
-                context.Locations.Add(new Location
-                {
-                    Name = "Одеська область",
-                    Children = new List<Location>
-                    {
-                        new Location
-                        {
-                            Name = "Одеський район",
-                            Children = new List<Location>
-                            {
-                                new Location
-                                {
-                                    Name = "Одеса",
-                                    Children = new List<Location>
-                                    {
-                                        new Location
-                                        {
-                                            Name = "Пушкінська"
-                                        },
-                                        new Location
-                                        {
-                                            Name = "Маловського"
-                                        },
-                                        new Location
-                                        {
-                                            Name = "Балківська"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        new Location
-                        {
-                            Name = "Білгород-Дністровський район",
-                            Children = new List<Location>
-                            {
-                                new Location
-                                {
-                                    Name = "Білгород-Дністровський",
-                                    Children = new List<Location>
-                                    {
-                                        new Location
-                                        {
-                                            Name = "Франко"
-                                        },
-                                        new Location
-                                        {
-                                            Name = "Київська"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
+        private static void SeedExemptions(HcsDbContext context)
+        {
+            if (!context.Exemptions.Any())
+            {
+                List<Exemption> exemptions = JsonConvert.DeserializeObject<List<Exemption>>(File.ReadAllText(@"Seed" + Path.DirectorySeparatorChar + "exemptions.json"));
+                context.Exemptions.AddRange(exemptions);
                 context.SaveChanges();
             }
         }
@@ -140,42 +41,25 @@ namespace HCS.Data
         {
             if (!context.Utilities.Any())
             {
-                MeasureUnit electricityUnit = new MeasureUnit { Name = "кВт" };
-                MeasureUnit heatingUnit = new MeasureUnit { Name = "Гкал" };
-                MeasureUnit cubicMeter = new MeasureUnit { Name = "м\u00B3" };
-
-                context.Utilities.Add(new Utility
-                {
-                    Name = "Електроенергія",
-                    MeasureUnit = electricityUnit
-                });
-                context.Utilities.Add(new Utility
-                {
-                    Name = "Газ",
-                    MeasureUnit = cubicMeter
-                });
-                context.Utilities.Add(new Utility
-                {
-                    Name = "Тепло",
-                    MeasureUnit = heatingUnit
-                });
-                context.Utilities.Add(new Utility
-                {
-                    Name = "Гаряча вода",
-                    MeasureUnit = cubicMeter
-                });
-                context.Utilities.Add(new Utility
-                {
-                    Name = "Холодна вода",
-                    MeasureUnit = cubicMeter
-                });
-                context.Utilities.Add(new Utility
-                {
-                    Name = "Водовідведення",
-                    MeasureUnit = cubicMeter
-                });
+                List<Utility> utilities = JsonConvert.DeserializeObject<List<Utility>>(File.ReadAllText(@"Seed" + Path.DirectorySeparatorChar + "utilities.json"));
+                context.Utilities.AddRange(utilities);
                 context.SaveChanges();
             }
+        }
+
+        private static void SeedConsumerCategories(HcsDbContext context)
+        {
+            if (!context.ConsumerTypes.Any())
+            {
+                List<ConsumerType> consumerTypes = JsonConvert.DeserializeObject<List<ConsumerType>>(File.ReadAllText(@"Seed" + Path.DirectorySeparatorChar + "consumer_categories.json"));
+                context.ConsumerTypes.AddRange(consumerTypes);
+                context.SaveChanges();
+            }
+        }
+
+        private static void SeedOrganizationCategories(HcsDbContext context)
+        {
+
         }
     }
 }

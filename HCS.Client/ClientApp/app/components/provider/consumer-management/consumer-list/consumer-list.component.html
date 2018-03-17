@@ -1,1 +1,57 @@
-﻿consumer-list
+﻿<div class="table-container mat-elevation-z8">
+    <h4 class="table-heading">Список споживачів</h4>
+    <mat-table #table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="region">
+            <mat-header-cell *matHeaderCellDef> Область </mat-header-cell>
+            <mat-cell *matCellDef="let consumerData"> {{consumerData.region}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="district">
+            <mat-header-cell *matHeaderCellDef> Район </mat-header-cell>
+            <mat-cell *matCellDef="let consumerData"> {{consumerData.district}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="locality">
+            <mat-header-cell *matHeaderCellDef> Населенний пункт </mat-header-cell>
+            <mat-cell *matCellDef="let consumerData"> {{consumerData.locality}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="street">
+            <mat-header-cell *matHeaderCellDef> Вулиця </mat-header-cell>
+            <mat-cell *matCellDef="let consumerData"> {{consumerData.street}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="building">
+            <mat-header-cell *matHeaderCellDef> буд. </mat-header-cell>
+            <mat-cell *matCellDef="let consumerData"> {{consumerData.building}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="appartment">
+            <mat-header-cell *matHeaderCellDef> кв. </mat-header-cell>
+            <mat-cell *matCellDef="let consumerData"> {{consumerData.appartment}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Дії </mat-header-cell>
+            <mat-cell *matCellDef="let consumerData">
+                <button mat-icon-button color="primary">
+                    <mat-icon aria-label="Редагувати">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn">
+                    <mat-icon aria-label="Видалити">delete</mat-icon>
+                </button>
+                <!--<button mat-icon-button color="primary">
+                    <mat-icon aria-label="Редагувати" (click)="edit(userData.id)">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn">
+                    <mat-icon aria-label="Видалити" (click)="delete(userData)">delete</mat-icon>
+                </button>-->
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>
+
+

@@ -1,5 +1,4 @@
 ﻿<form #f="ngForm" (ngSubmit)="submit()">
-    {{address | json}}
     <fieldset [disabled]="isBlocked">
         <div>
             <autocomplete placeholder="Область" [item]="address.region" [items]="regions" error="Оберіть область" (itemChanged)="onRegionChanged($event)"></autocomplete>

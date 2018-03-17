@@ -1,1 +1,19 @@
-﻿organization
+﻿<mat-card>
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step label="Користувач" [stepControl]="userFormControl">
+            <div class="step-wrapper">
+                <user-form [user]="user" (formSubmit)="userFormSubmit($event)"></user-form>
+            </div>
+        </mat-step>
+        <mat-step label="Адреса" [stepControl]="addressFormControl">
+            <div class="step-wrapper">
+                <address-form [address]="address" (formSubmit)="addressFormSubmit($event)"></address-form>
+            </div>
+        </mat-step>
+        <mat-step label="Організація" [stepControl]="organizationFormControl">
+            <div class="step-wrapper">
+                <organization-form [organization]="organization" [consumerCategories]="consumerCategories" [providedUtilities]="provider.providedUtilities" (formSubmit)="organizationFormSubmit($event)"></organization-form>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-card>

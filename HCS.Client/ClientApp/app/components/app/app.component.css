@@ -11,8 +11,32 @@
     flex-wrap: wrap;
 }
 .body-content {
-    padding-top: 50px;
+    padding: 50px 0;
 }
+
+.content-wrapper {
+    padding: 15px;
+}
+
+.all-wrap {
+    min-height: 100vh;
+}
+
+.page-wrap {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
 
 /*Margins*/
 .top-10 {
@@ -57,6 +81,10 @@
 }
 .mat-list-item-content mat-icon {
     color: grey;
+}
+.mat-table {
+    overflow: auto;
+    max-height: 500px;
 }
 
 

@@ -15,13 +15,16 @@ namespace HCS.Data
             Locations = new LocationRepository(_context);
             Providers = new ProviderRepository(_context);
             Consumers = new ConsumerRepository(_context);
-
+            Occupants = new OccupantRepository(_context);
+            ConsumerCategories = new ConsumerCategoryRepository(_context);
         }
 
         public IUtilityRepository Utilities { get; private set; }
         public ILocationRepository Locations { get; private set; }
         public IProviderRepository Providers { get; private set; }
         public IConsumerRepository Consumers { get; private set; }
+        public IOccupantRepository Occupants { get; private set; }
+        public IConsumerCategoryRepository ConsumerCategories { get; private set; }
 
         public async Task CompleteAsync()
         {

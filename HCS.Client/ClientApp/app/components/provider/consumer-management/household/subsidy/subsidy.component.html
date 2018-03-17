@@ -1,0 +1,19 @@
+﻿<form #f="ngForm" (ngSubmit)="submit()" class="content-wrapper">
+    <fieldset [disabled]="isBlocked">
+        <mat-slide-toggle name="hasSubsidy" [(ngModel)]="household.hasSubsidy">Є субсидія</mat-slide-toggle>
+        <div>
+            <h5>Обов'язкова сплата за послуги</h5>
+            <div *ngFor="let u of household.consumedUtilities; let i = index">
+                <mat-form-field>
+                    <input name="price{{u.id}}" matInput [placeholder]="u.name" type="text" [disabled]="!household.hasSubsidy" [(ngModel)]="household.consumedUtilities[i].obligatoryPrice" [pattern]="regexService.Decimal" required/>
+                    <mat-error>Обов'язкову сплату вказано невірно</mat-error>
+                </mat-form-field>     
+            </div>
+        </div>
+    </fieldset>
+    <div class="top-20">
+        <button color="primary" mat-raised-button [disabled]="!household.id || isBlocked || (!f.valid && household.hasSubsidy)">Підтвердити</button>
+    </div>
+</form>
+
+

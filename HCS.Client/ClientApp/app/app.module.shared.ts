@@ -1,5 +1,6 @@
 import { AdminModule, adminRoutes } from "./admin.module";
 import { AuthModule } from "./auth.module";
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -29,21 +30,19 @@ import { PortalComponent } from "./components/portal/portal/portal.component";
 import { ProviderComponent } from "./components/provider/provider/provider.component";
 import { SilentCallbackComponent } from "./components/silent-callback/silent-callback.component";
 
-//import { EqualValidator } from "./directives/equal-validator.directive";
-
 
 @NgModule({
     declarations: [
         AboutComponent,
         AppComponent,
         AuthCallbackComponent,
-        //EqualValidator,
         HomeComponent,
         SilentCallbackComponent
     ],
     imports: [
         AuthModule.forRoot(),
         AdminModule.forRoot(),
+        BrowserModule,
         BrowserAnimationsModule,
         CommonModule,
         FormsModule,

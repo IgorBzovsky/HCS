@@ -60,7 +60,7 @@ namespace HCS.Api.Controllers
             savedUser.Roles = userClaims.Where(x => x.Type.Equals(JwtClaimTypes.Role)).Select(x => x.Value).ToList();
             return Ok(savedUser);
         }
-        
+
         /// <summary>
         /// Update user
         /// </summary>
@@ -96,7 +96,7 @@ namespace HCS.Api.Controllers
             return Ok(savedUser);
         }
 
-        
+
         /// <summary>
         /// Get user by UserName
         /// </summary>
@@ -108,7 +108,7 @@ namespace HCS.Api.Controllers
         public async Task<IActionResult> GetByName(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
+            if (user == null || user.IsDeleted)
                 return NotFound();
             var principal = await _claimsFactory.CreateAsync(user);
             var userResource = _mapper.Map<ApplicationUser, UserResource>(user);
@@ -116,10 +116,34 @@ namespace HCS.Api.Controllers
             return Ok(userResource);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        /// <summary>
+        /// Get user by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(UserResource))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Get(string id)
         {
-            var users = _userManager.Users.ToList();
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null || user.IsDeleted)
+                return NotFound();
+            var principal = await _claimsFactory.CreateAsync(user);
+            var userResource = _mapper.Map<ApplicationUser, UserResource>(user);
+            userResource.Roles = principal.Claims.Where(x => x.Type == JwtClaimTypes.Role).Select(x => x.Value).ToList();
+            return Ok(userResource);
+        }
+
+        /// <summary>
+        /// Get users
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(UserResource))]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
             var result = new List<UserResource>();
 
             foreach (var user in users)
@@ -130,6 +154,27 @@ namespace HCS.Api.Controllers
                 result.Add(userResource);
             }
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(UserResource))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null || user.IsDeleted)
+                return NotFound();
+            user.IsDeleted = true;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                return BadRequest();
+            return Ok(id);
         }
     }
 }
