@@ -1,43 +1,65 @@
-﻿<form #f="ngForm" (ngSubmit)="submit()" class="content-wrapper">
+﻿<form #f="ngForm" (ngSubmit)="submit(); f.resetForm()" class="content-wrapper">
     <fieldset [disabled]="isBlocked">
-        <div>
-            <mat-form-field hintLabel="Максимум 50 символів">
-                <input matInput placeholder="Прізвище" type="text" name="lastName"
-                       [(ngModel)]="occupant.lastName" required #lastName="ngModel" maxlength="50" [pattern]="regexService.Name" />
-                <mat-hint align="end">{{lastName.value?.length || 0}}/50</mat-hint>
-                <mat-error *ngIf="lastName.hasError('required')">Вкажіть прізвище</mat-error>
-                <mat-error *ngIf="lastName.hasError('pattern')">Прізвище вказано невірно</mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field hintLabel="Максимум 50 символів">
-                <input matInput placeholder="Ім'я" type="text" name="firstName"
-                       [(ngModel)]="occupant.firstName" required #firstName="ngModel" maxlength="50" [pattern]="regexService.Name" />
-                <mat-hint align="end">{{firstName.value?.length || 0}}/50</mat-hint>
-                <mat-error *ngIf="firstName.hasError('required')">Вкажіть ім'я</mat-error>
-                <mat-error *ngIf="firstName.hasError('pattern')">Ім'я вказано невірно</mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field hintLabel="Максимум 50 символів">
-                <input matInput placeholder="Ім'я по батькові" type="text" name="middleName"
-                       [(ngModel)]="occupant.middleName" required #middleName="ngModel" maxlength="50" [pattern]="regexService.Name" />
-                <mat-hint align="end">{{middleName.value?.length || 0}}/50</mat-hint>
-                <mat-error *ngIf="middleName.hasError('required')">Вкажіть ім'я по батькові</mat-error>
-                <mat-error *ngIf="middleName.hasError('pattern')">Ім'я по батькові вказано невірно</mat-error>
-            </mat-form-field>
-        </div>
-        <h5>Норми споживання</h5>
-        <div *ngFor="let u of occupant.consumptionNorms; let i = index">
-            <mat-form-field>
-                <input name="amount{{u.id}}" matInput [placeholder]="u.utilityName" type="text" [(ngModel)]="occupant.consumptionNorms[i].obligatoryPrice" required [pattern]="regexService.Decimal" />
-                <mat-error>Норму вказано невірно</mat-error>
-            </mat-form-field>
+        <div class="flex-wrapper">
+            <div>
+                <div>
+                    <mat-form-field hintLabel="Максимум 50 символів">
+                        <input matInput placeholder="Прізвище" type="text" name="lastName"
+                               [(ngModel)]="occupant.lastName" required #lastName="ngModel" maxlength="50" [pattern]="regexService.Name" />
+                        <mat-hint align="end">{{lastName.value?.length || 0}}/50</mat-hint>
+                        <mat-error *ngIf="lastName.hasError('required')">Вкажіть прізвище</mat-error>
+                        <mat-error *ngIf="lastName.hasError('pattern')">Прізвище вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field hintLabel="Максимум 50 символів">
+                        <input matInput placeholder="Ім'я" type="text" name="firstName"
+                               [(ngModel)]="occupant.firstName" required #firstName="ngModel" maxlength="50" [pattern]="regexService.Name" />
+                        <mat-hint align="end">{{firstName.value?.length || 0}}/50</mat-hint>
+                        <mat-error *ngIf="firstName.hasError('required')">Вкажіть ім'я</mat-error>
+                        <mat-error *ngIf="firstName.hasError('pattern')">Ім'я вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field hintLabel="Максимум 50 символів">
+                        <input matInput placeholder="Ім'я по батькові" type="text" name="middleName"
+                               [(ngModel)]="occupant.middleName" required #middleName="ngModel" maxlength="50" [pattern]="regexService.Name" />
+                        <mat-hint align="end">{{middleName.value?.length || 0}}/50</mat-hint>
+                        <mat-error *ngIf="middleName.hasError('required')">Вкажіть ім'я по батькові</mat-error>
+                        <mat-error *ngIf="middleName.hasError('pattern')">Ім'я по батькові вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-select placeholder="Пільги" name="exemption" [(ngModel)]="occupant.exemptionId" required #exemption="ngModel">
+                            <mat-option></mat-option>
+                            <mat-option *ngFor="let e of exemptions" [value]="e.id">{{ getExemption(e) }}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="exemption.hasError('required')">Оберіть пільгу</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="top-20">
+                    <button color="primary" mat-raised-button [disabled]="!f.valid || isBlocked">Підтвердити</button>
+                </div>
+            </div>
+            <div class="left-40">
+                <h5>Норми споживання</h5>
+                <div *ngFor="let c of occupant.consumptionNorms">
+                    <p>{{c.utilityName}}</p>
+                    <div>
+                        <mat-form-field hintLabel="Норма споживання {{c.measureUnit}}">
+                            <input name="amount{{c.id}}" matInput [placeholder]="c.utilityName" type="text" [(ngModel)]="c.amount" required [pattern]="regexService.Decimal" />
+                            <mat-error>Норму вказано невірно</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="c.isSeasonal">
+                        <mat-form-field hintLabel="В опалювальний період {{c.measureUnit}}">
+                            <input name="seasonal-amount{{c.id}}" matInput [placeholder]="c.utilityName" type="text" [(ngModel)]="c.amount" required [pattern]="regexService.Decimal" />
+                            <mat-error>Норму вказано невірно</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
         </div>
     </fieldset>
-    <div class="top-20">
-        <button color="primary" mat-raised-button [disabled]="!f.valid || isBlocked || !household.id ">Підтвердити</button>
-    </div>
-    {{occupant | json}}
-    {{household | json}}
 </form>

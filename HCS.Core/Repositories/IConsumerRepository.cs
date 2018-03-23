@@ -8,6 +8,10 @@ namespace HCS.Core.Repositories
     {
         Task<Consumer> GetConsumerAsync(int id, bool includeRelated = true);
         Task<Consumer> GetConsumerByLocationAsync(int id, bool includeRelated = true);
-        Task<IEnumerable<Consumer>> GetAllIncludeLocation();
+        Task<IEnumerable<Consumer>> GetAllIncludeLocationAsync();
+        Task<IEnumerable<ConsumerCategory>> GetCategoriesByTypeNameAsync(string name);
+        Task<IEnumerable<ConsumerCategory>> GetCategoriesByTypeIdAsync(int typeId);
+        Task<IEnumerable<ConsumerType>> GetConsumerTypesAsync();
+        Task<IEnumerable<Exemption>> GetExemptionsAsync();
     }
 }

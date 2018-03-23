@@ -1,4 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
+import { ProviderService } from "../../../services/provider.service";
+import { Provider } from "../../../models/provider";
 
 @Component({
     selector: 'consumer-management',
@@ -8,8 +10,7 @@
 
 export class ConsumerManagementComponent implements OnInit {
 
-    constructor() {
-    }
+    constructor() { }
 
     ngOnInit() {
     }

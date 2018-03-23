@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HCS.Api.Controllers.Resources;
 using HCS.Api.Controllers.Resources.Location;
+using HCS.Api.Controllers.Resources.Utilities;
 using HCS.Core;
 using HCS.Core.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -92,18 +93,53 @@ namespace HCS.Api.Controllers
             var result = _mapper.Map<Location, LocationResource>(address);
             return Ok(result);
         }
-        
+
+        /// <summary>
+        /// Update address
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="locationResource"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("locations/{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(LocationResource))]
+        [SwaggerResponse((int)HttpStatusCode.Conflict, Type = typeof(LocationResource), Description = "Existing address returned")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateAddress(int id, [FromBody] SaveLocationResource locationResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var originalAddress = await _unitOfWork.Locations.GetLocationByAddressAsync(locationResource.ParentId, locationResource.Building, locationResource.Appartment);
+
+            //If address exists
+            if (originalAddress != null)
+            {
+                var originalResult = _mapper.Map<Location, LocationResource>(originalAddress);
+                return StatusCode((int)HttpStatusCode.Conflict, originalResult);
+            }
+
+            var address = await _unitOfWork.Locations.GetAsync(id);
+            if (address == null)
+                return NotFound();
+            _mapper.Map(locationResource, address);
+            await _unitOfWork.CompleteAsync();
+            address = await _unitOfWork.Locations.GetLocationIncludeParentAsync(address.Id);
+            var result = _mapper.Map<Location, LocationResource>(address);
+            return Ok(result);
+        }
+
         /// <summary>
         /// Get all utilities
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         [Route("utilities")]
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<KeyValuePairResource>))]
-        public async Task<IEnumerable<KeyValuePairResource>> GetUtilities()
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<UtilityResource>))]
+        public async Task<IEnumerable<UtilityResource>> GetUtilities()
         {
             var utilities = await _unitOfWork.Utilities.GetAllAsync();
-            return _mapper.Map<IEnumerable<Utility>, IEnumerable<KeyValuePairResource>>(utilities);
+            return _mapper.Map<IEnumerable<Utility>, IEnumerable<UtilityResource>>(utilities);
         }
     }
 }

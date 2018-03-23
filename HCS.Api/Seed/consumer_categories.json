@@ -1,6 +1,6 @@
 ﻿[
   {
-    "name": "Organization",
+    "name": "Організація",
     "consumerCategories": [
       {
         "name": "Комерціна організація"
@@ -17,7 +17,7 @@
     ]
   },
   {
-    "name": "Household",
+    "name": "Домогосподарство",
     "consumerCategories": [
       {
         "name": "Житловий будинок"

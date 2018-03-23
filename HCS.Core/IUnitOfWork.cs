@@ -10,7 +10,7 @@ namespace HCS.Core
         IProviderRepository Providers { get; }
         IConsumerRepository Consumers { get; }
         IOccupantRepository Occupants { get; }
-        IConsumerCategoryRepository ConsumerCategories { get; }
+        ITariffRepository Tariffs { get; }
         Task CompleteAsync();
     }
 }

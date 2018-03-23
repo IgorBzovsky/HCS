@@ -7,7 +7,11 @@ export interface SaveConsumedUtility {
 
 export interface ConsumedUtility {
     id: number;
-    providedUtilityId: number;
     name: string;
+    providedUtilityId: number;
+    tariffId: number | null;
     obligatoryPrice: number | null;
+    measureUnit: string;
+    hasMeter: boolean;
+    isSeasonal: boolean;
 }

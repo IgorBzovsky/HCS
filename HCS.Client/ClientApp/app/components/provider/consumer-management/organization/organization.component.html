@@ -15,5 +15,11 @@
                 <organization-form [organization]="organization" [consumerCategories]="consumerCategories" [providedUtilities]="provider.providedUtilities" (formSubmit)="organizationFormSubmit($event)"></organization-form>
             </div>
         </mat-step>
+        <mat-step label="Тарифи">
+            <div class="step-wrapper">
+                <organization-tariff [discriminator]="organizationDiscriminator" [organization]="organization" [providedUtilities]="provider.providedUtilities"></organization-tariff>
+            </div>
+        </mat-step>
     </mat-horizontal-stepper>
 </mat-card>
+{{organization | json}}

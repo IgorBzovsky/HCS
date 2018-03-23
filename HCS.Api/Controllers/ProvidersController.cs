@@ -78,9 +78,11 @@ namespace HCS.Api.Controllers
         {
             var userName = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(userName);
-            if(user.ProviderId == null)
-                return NoContent();
+            if(user?.ProviderId == null)
+                return NotFound();
             var provider = await _unitOfWork.Providers.GetProviderAsync(user.ProviderId.Value);
+            if (provider == null)
+                return NotFound();
             var providerResource = _mapper.Map<Provider, ProviderResource>(provider);
             return Ok(providerResource);
         }

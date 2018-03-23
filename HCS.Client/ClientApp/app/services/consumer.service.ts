@@ -22,11 +22,23 @@ export class ConsumerService {
         return this.authHttp.get(this.settings.BaseUrls.apiUrl + '/consumers').map(res => res.json());
     }
 
+    getTypes() {
+        return this.authHttp.get(this.settings.BaseUrls.apiUrl + '/consumers/types').map(res => res.json());
+    }
+
     getCategoriesByTypeName(name: string) {
         return this.authHttp.get(this.settings.BaseUrls.apiUrl + '/consumers/categories/type/' + name).map(res => res.json());
     }
 
     getConsumerByLocationId(locationId: number) {
         return this.authHttp.get(this.settings.BaseUrls.apiUrl + '/consumers/location/' + locationId).map(res => res.json());
+    }
+
+    getExemptions() {
+        return this.authHttp.get(this.settings.BaseUrls.apiUrl + '/consumers/exemptions').map(res => res.json())
+    }
+
+    get(id: number) {
+        return this.authHttp.get(this.settings.BaseUrls.apiUrl + '/consumers/' + id).map(res => res.json());
     }
 }

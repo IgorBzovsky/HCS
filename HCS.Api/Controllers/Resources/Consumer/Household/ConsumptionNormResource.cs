@@ -5,5 +5,8 @@
         public int Id { get; set; }
         public double Amount { get; set; }
         public int ConsumedUtilityId { get; set; }
+        public bool IsSeasonal { get; set; }
+        public string UtilityName { get; set; }
+        public string MeasureUnit { get; set; }
     }
 }

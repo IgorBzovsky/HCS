@@ -11,6 +11,13 @@ import { User } from "../../../../models/user";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/Observable/forkJoin';
 import { KeyValuePair } from "../../../../models/key_value_pair";
+import { Occupant } from "../../../../models/occupant";
+import { OccupantService } from "../../../../services/occupant.service";
+import { Exemption } from "../../../../models/exemption";
+import { TariffService } from "../../../../services/tariff.service";
+import { UserManagementService } from "../../../../services/user-management.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { LocationService } from "../../../../services/location.service";
 
 
 @Component({
@@ -22,28 +29,53 @@ export class HouseholdComponent implements OnInit {
 
     @ViewChild('stepper') stepper: MatStepper;
 
-    householdDiscriminator = "Household";
+    householdDiscriminator = "Домогосподарство";
 
     provider = new Provider();
     user = new User();
     address = new Address();
     household = new Household();
+    exemptions: Exemption[] = [];
     consumerCategories: KeyValuePair[];
 
-    constructor(private consumerService: ConsumerService, private providerService: ProviderService, private toastr: ToastsManager) { }
+    constructor(private consumerService: ConsumerService, private providerService: ProviderService, private toastr: ToastsManager, private router: Router, private route: ActivatedRoute, private occupantService: OccupantService, private tariffService: TariffService, private userManagementService: UserManagementService, private locationService: LocationService) {
+        route.params.subscribe(p => {
+            this.household.id = p['id'];
+        });
+    }
     
     ngOnInit() {
         Observable.forkJoin([
             this.providerService.getProvider(),
+            this.consumerService.getExemptions(),
             this.consumerService.getCategoriesByTypeName(this.householdDiscriminator)
         ]).subscribe(data => {
             this.provider = data[0],
-            this.consumerCategories = data[1]
+            this.exemptions = data[1],
+            this.consumerCategories = data[2]
         },
             err => {
                 console.log(err)
             });
-        this.setFormsInvalid();
+        if (this.household.id) {
+            this.consumerService.get(this.household.id)
+                .subscribe(data => {
+                    console.log(data);
+                    this.household = data;
+                    this.setFormsValid();
+                    this.locationService.get(this.household.locationId)
+                        .subscribe(data => {
+                            this.address = this.locationService.mapFromLocation(data);
+                        });
+                    this.userManagementService.getById(this.household.applicationUserId)
+                        .subscribe(data => {
+                            this.user = data;
+                        });
+                });
+        }
+        else {
+            this.setFormsInvalid();
+        }
     }
 
     //Form submit handlers
@@ -134,6 +166,21 @@ export class HouseholdComponent implements OnInit {
     }
     private setSubsidyFormValid() {
         this.subsidyFormControl.setErrors(null);
+    }
+
+    //Occupants form
+    private occupantsFormControl = new FormControl();
+    private setOccupantsFormInvalid() {
+        this.occupantsFormControl.setErrors({ 'completed': 'Not completed' });
+    }
+    private setOccupantsFormValid() {
+        this.occupantsFormControl.setErrors(null);
+    }
+
+    private setFormsValid() {
+        this.setUserFormValid();
+        this.setAddressFormValid();
+        this.setHouseholdFormValid();
     }
 
     private setFormsInvalid() {

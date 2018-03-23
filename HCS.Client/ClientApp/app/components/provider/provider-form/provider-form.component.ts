@@ -29,17 +29,14 @@ export class ProviderFormComponent implements OnInit {
     constructor(private providerService: ProviderService, private locationService: LocationService, private router: Router, private toastr: ToastsManager, private regexService: RegexService) { }
 
     ngOnInit() {
+        this.providerService.getProvider()
+            .subscribe(provider => this.setProvider(provider));
         Observable.forkJoin([
             this.locationService.getRegions(),
-            this.providerService.getUtilities(),
-            this.providerService.getProvider()
+            this.providerService.getUtilities()
         ]).subscribe(data => {
-                this.regions = data[0],
-                this.utilities = data[1],
-                this.setProvider(data[2])
-            },
-            err => {
-                console.log(err)
+            this.regions = data[0],
+            this.utilities = data[1]
             }
         );
     }

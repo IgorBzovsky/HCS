@@ -1,1 +1,17 @@
-﻿list
+﻿<mat-list>
+    <div class="top-20">
+        <button color="primary" mat-raised-button (click)="create()">Створити мешканця +</button>
+    </div>
+    <h3 mat-subheader>Мешканці</h3>
+    <mat-list-item *ngFor="let o of occupants">
+        <button mat-icon-button color="primary" [disabled]="isBlocked">
+            <mat-icon aria-label="Редагувати" (click)="edit(o.id)">edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" [disabled]="isBlocked">
+            <mat-icon aria-label="Видалити" (click)="delete(o)">delete</mat-icon>
+        </button>
+        <h4 mat-line>{{getShortName(o)}}</h4>
+        <p mat-line>{{getExemption(o.exemption)}}</p>
+    </mat-list-item>
+</mat-list>
+

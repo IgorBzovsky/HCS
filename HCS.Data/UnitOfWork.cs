@@ -16,7 +16,7 @@ namespace HCS.Data
             Providers = new ProviderRepository(_context);
             Consumers = new ConsumerRepository(_context);
             Occupants = new OccupantRepository(_context);
-            ConsumerCategories = new ConsumerCategoryRepository(_context);
+            Tariffs = new TariffRepository(_context);
         }
 
         public IUtilityRepository Utilities { get; private set; }
@@ -24,7 +24,7 @@ namespace HCS.Data
         public IProviderRepository Providers { get; private set; }
         public IConsumerRepository Consumers { get; private set; }
         public IOccupantRepository Occupants { get; private set; }
-        public IConsumerCategoryRepository ConsumerCategories { get; private set; }
+        public ITariffRepository Tariffs { get; private set; }
 
         public async Task CompleteAsync()
         {

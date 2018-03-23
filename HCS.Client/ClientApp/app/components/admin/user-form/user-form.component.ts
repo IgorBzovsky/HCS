@@ -16,7 +16,6 @@ export class UserFormComponent implements OnInit {
     user = new User();
 
     constructor(private userManagementService: UserManagementService, private regexService: RegexService, private toastr: ToastsManager, private route: ActivatedRoute, private router: Router) {
-
         route.params.subscribe(p => {
             this.user.id = p['id'];
         });
@@ -24,9 +23,8 @@ export class UserFormComponent implements OnInit {
 
     ngOnInit() {
         this.userManagementService.getById(this.user.id)
-            .subscribe(data => {
-                console.log(data);
-                this.user = data;
+            .subscribe(user => {
+                this.user = user;
             });
         this.roles = this.userManagementService.getRoles();
     }

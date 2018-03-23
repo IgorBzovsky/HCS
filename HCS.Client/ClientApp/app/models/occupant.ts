@@ -6,8 +6,8 @@ export class Occupant {
     firstName: string;
     lastName: string;
     middleName: string;
-    householdId: number;
-    exemption: Exemption;
+    consumerId: number;
+    exemptionId: number;
     consumptionNorms: ConsumptionNorm[];
 
     constructor() {

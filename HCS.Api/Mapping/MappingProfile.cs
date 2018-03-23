@@ -4,9 +4,11 @@ using HCS.Api.Controllers.Resources.Consumer;
 using HCS.Api.Controllers.Resources.Consumer.Household;
 using HCS.Api.Controllers.Resources.Location;
 using HCS.Api.Controllers.Resources.Provider;
+using HCS.Api.Controllers.Resources.Tariff;
 using HCS.Api.Controllers.Resources.User;
 using HCS.Api.Controllers.Resources.Utilities;
 using HCS.Core.Domain;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HCS.Api.Mapping
@@ -23,7 +25,14 @@ namespace HCS.Api.Mapping
             CreateMap<Location, SaveLocationResource>();
 
             //Utility
-            CreateMap<Utility, KeyValuePairResource>();
+            CreateMap<Utility, UtilityResource>();
+            CreateMap<ProvidedUtility, ProvidedUtilityResource>()
+                .ForMember(pr => pr.Name, opt => opt.MapFrom(p => p.Utility.Name))
+                .ForMember(pr => pr.MeasureUnit, opt => opt.MapFrom(p => p.Utility.MeasureUnit))
+                .ForMember(pr => pr.IsSeasonal, opt => opt.MapFrom(p => p.Utility.IsSeasonal))
+                .ForMember(pr => pr.Tariffs, opt => opt.MapFrom(p =>
+                Mapper.Map<IEnumerable<Tariff>, IEnumerable<TariffInfoResource>>(p.Tariffs)));
+
 
             //ApplicationUser
             CreateMap<ApplicationUser, UserResource>();
@@ -31,11 +40,14 @@ namespace HCS.Api.Mapping
             //Provider
             CreateMap<Provider, ProviderResource>()
                .ForMember(pr => pr.ProvidedUtilities,
-               opt => opt.MapFrom(p => p.ProvidedUtilities
-               .Select(x => new ProvidedUtilityResource { Id = x.Id, UtilityId = x.Utility.Id, Name = x.Utility.Name})));
+               opt => opt.MapFrom(p =>
+                Mapper.Map<IEnumerable<ProvidedUtility>, IEnumerable<ProvidedUtilityResource>>(p.ProvidedUtilities)));
 
             //ConsumerCategory
             CreateMap<ConsumerCategory, KeyValuePairResource>();
+
+            //ConsumerType
+            CreateMap<ConsumerType, KeyValuePairResource>();
 
             //Consumer
             CreateMap<Consumer, ConsumerLocationResource>()
@@ -51,19 +63,26 @@ namespace HCS.Api.Mapping
                 }))
                 .ForMember(cr => cr.ConsumedUtilities,
                opt => opt.MapFrom(c => c.ConsumedUtilities
-               .Select(x => new ConsumedUtilityResource { Id = x.Id, ProvidedUtilityId = x.ProvidedUtility.Id, Name = x.ProvidedUtility.Utility.Name, ObligatoryPrice = x.ObligatoryPrice })));
+               .Select(x => new ConsumedUtilityResource { Id = x.Id, ProvidedUtilityId = x.ProvidedUtility.Id, Name = x.ProvidedUtility.Utility.Name, MeasureUnit = x.ProvidedUtility.Utility.MeasureUnit, ObligatoryPrice = x.ObligatoryPrice, TariffId = x.TariffId, HasMeter = x.HasMeter, IsSeasonal = x.ProvidedUtility.Utility.IsSeasonal })));
 
             //Occupant
             CreateMap<Occupant, OccupantResource>()
                 .ForMember(or => or.ConsumptionNorms,
                opt => opt.MapFrom(n => n.ConsumptionNorms
-               .Select(x => new ConsumptionNormResource { Id = x.Id, Amount = x.Amount, ConsumedUtilityId = x.ConsumedUtilityId })));
+               .Select(x => new ConsumptionNormResource { Id = x.Id, Amount = x.Amount, ConsumedUtilityId = x.ConsumedUtilityId, IsSeasonal = x.IsSeasonal, UtilityName = x.ConsumedUtility.ProvidedUtility.Utility.Name, MeasureUnit = x.ConsumedUtility.ProvidedUtility.Utility.MeasureUnit })));
 
             //Exemption 
             CreateMap<Exemption, ExemptionResource>();
-            
 
-
+            //Tariff
+            CreateMap<Block, BlockResource>();
+            CreateMap<Tariff, TariffResource>();
+            CreateMap<Tariff, TariffInfoResource>()
+                .ForMember(tr => tr.ConsumerType, opt => opt.MapFrom(t => t.ConsumerType.Name));
+            CreateMap<Tariff, TariffListItemResource>()
+                .ForMember(tr => tr.ProvidedUtility, opt => opt.MapFrom(t => t.ProvidedUtility.Utility.Name))
+                .ForMember(tr => tr.ConsumerType, opt => opt.MapFrom(t => t.ConsumerType.Name))
+                .ForMember(tr => tr.ConsumersQuantity, opt => opt.MapFrom(t => t.ConsumedUtilities.Count));
             //API resource to domain
 
             //Location
@@ -119,12 +138,16 @@ namespace HCS.Api.Mapping
                     //Add new consumed utilities
                     var addedUtilities = hr.ConsumedUtilities
                         .Where(u => !h.ConsumedUtilities.Any(x => x.ProvidedUtilityId == u.ProvidedUtilityId))
-                        .Select(x => new ConsumedUtility { ProvidedUtilityId = x.ProvidedUtilityId, ObligatoryPrice = x.ObligatoryPrice }).ToList();
+                        .Select(x => new ConsumedUtility { ProvidedUtilityId = x.ProvidedUtilityId, ObligatoryPrice = x.ObligatoryPrice, HasMeter = x.HasMeter, TariffId = x.TariffId }).ToList();
                     foreach (var addedUtility in addedUtilities)
                         h.ConsumedUtilities.Add(addedUtility);
 
                     //Map existing consumed utilities
-                    Mapper.Map(hr.ConsumedUtilities, h.ConsumedUtilities);
+                    foreach (var utility in h.ConsumedUtilities)
+                    {
+                        var utilityResource = hr.ConsumedUtilities.FirstOrDefault(x => x.ProvidedUtilityId == utility.ProvidedUtilityId);
+                        Mapper.Map(utilityResource, utility);
+                    }
                 });
 
             //Occupant
@@ -149,6 +172,12 @@ namespace HCS.Api.Mapping
                     //Map existing norms
                     Mapper.Map(or.ConsumptionNorms, o.ConsumptionNorms);
                 });
+
+            //Tariff
+            CreateMap<BlockResource, Block>()
+                .ForMember(t => t.Id, opt => opt.Ignore());
+            CreateMap<TariffResource, Tariff>()
+                .ForMember(t => t.Id, opt => opt.Ignore());
         }
     }
 }

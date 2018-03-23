@@ -5,10 +5,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from './shared.module';
 
 //Angular Material modules
-import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatSidenavModule, MatToolbarModule, MatListModule, MatCheckboxModule, MatSelectModule, MatInputModule, MatStepperModule, MatAutocompleteModule, MatTableModule, MatRadioModule, MatTabsModule, MatSlideToggleModule } from '@angular/material';
+import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatSidenavModule, MatToolbarModule, MatListModule, MatCheckboxModule, MatSelectModule, MatInputModule, MatStepperModule, MatAutocompleteModule, MatTableModule, MatRadioModule, MatTabsModule, MatSlideToggleModule, MatExpansionModule } from '@angular/material';
 
 import { ConsumerService } from "./services/consumer.service";
 import { ProviderService } from "./services/provider.service";
+import { TariffService } from "./services/tariff.service";
 
 import { AddressFormComponent } from "./components/provider/consumer-management/address-form/address-form.component";
 import { AutocompleteComponent } from "./components/controls/autocomplete/autocomplete.component";
@@ -27,9 +28,13 @@ import { ProviderComponent } from './components/provider/provider/provider.compo
 import { ProviderFormComponent } from "./components/provider/provider-form/provider-form.component";
 import { RegistrationFormComponent } from "./components/provider/consumer-management/user-form/registration-form/registration-form.component";
 import { SubsidyComponent } from "./components/provider/consumer-management/household/subsidy/subsidy.component";
+import { TariffFormComponent } from "./components/provider/tariffs/tariff-form/tariff-form.component";
+import { TariffListComponent } from "./components/provider/tariffs/tariff-list/tariff-list.component";
 import { UserFormComponent } from "./components/provider/consumer-management/user-form/user-form.component";
-import { UtilitiesComponent } from "./components/provider/utilities/utilities.component";
-
+import { BlockComponent } from "./components/provider/tariffs/tariff-form/block/block.component";
+import { OrganizationTariffComponent } from "./components/provider/consumer-management/organization/organization-tariff/organization-tariff.component";
+import { OccupantService } from "./services/occupant.service";
+import { HouseholdTariffComponent } from "./components/provider/consumer-management/household/household-tariff/household-tariff.component";
 
 
 const consumersRoutes: Routes = [
@@ -42,11 +47,15 @@ const consumersRoutes: Routes = [
 export const providerRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardComponent },
-    { path: 'utilities', component: UtilitiesComponent },
+    { path: 'tariffs', component: TariffListComponent },
+    { path: 'tariffs/new', component: TariffFormComponent },
+    { path: 'tariffs/:id', component: TariffFormComponent },
     { path: 'profile', component: ProviderFormComponent },
     { path: 'consumers', component: ConsumerListComponent },
     { path: 'consumers/organizations/new', component: OrganizationComponent },
-    { path: 'consumers/households/new', component: HouseholdComponent }
+    { path: 'consumers/organizations/:id', component: OrganizationComponent },
+    { path: 'consumers/households/new', component: HouseholdComponent },
+    { path: 'consumers/households/:id', component: HouseholdComponent }
     /*{ path: 'consumers', component: ConsumerManagementComponent, children: consumersRoutes }*/
 ];
 
@@ -61,6 +70,7 @@ export const providerRoutes: Routes = [
         MatButtonModule,
         MatCardModule,
         MatCheckboxModule,
+        MatExpansionModule,
         MatIconModule,
         MatInputModule,
         MatListModule,
@@ -78,23 +88,27 @@ export const providerRoutes: Routes = [
     declarations: [
         AddressFormComponent,
         AutocompleteComponent,
+        BlockComponent,
         ConsumerListComponent,
         ConsumerManagementComponent,
         DashboardComponent,
         HouseholdComponent,
         HouseholdFormComponent,
+        HouseholdTariffComponent,
         LoginFormComponent,
         OccupantsComponent,
         OccupantsFormComponent,
         OccupantsListComponent,
         OrganizationComponent,
         OrganizationFormComponent,
+        OrganizationTariffComponent,
         ProviderComponent,
         ProviderFormComponent,
         RegistrationFormComponent,
         SubsidyComponent,
-        UserFormComponent,
-        UtilitiesComponent
+        TariffFormComponent,
+        TariffListComponent,
+        UserFormComponent
     ],
     exports: [ProviderComponent]
 })
@@ -104,7 +118,9 @@ export class ProviderModule {
             ngModule: ProviderModule,
             providers: [
                 ProviderService,
-                ConsumerService
+                ConsumerService,
+                OccupantService,
+                TariffService
             ]
         }
     }

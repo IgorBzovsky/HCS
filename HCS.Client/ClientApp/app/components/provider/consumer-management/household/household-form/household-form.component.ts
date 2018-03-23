@@ -4,6 +4,7 @@ import { KeyValuePair } from "../../../../../models/key_value_pair";
 import { Household } from "../../../../../models/consumer";
 import { ToastsManager } from "ng2-toastr/ng2-toastr";
 import { RegexService } from "../../../../../services/regex.service";
+import { ProvidedUtility } from "../../../../../models/provided-utility";
 
 @Component({
     selector: 'household-form',
@@ -14,7 +15,7 @@ export class HouseholdFormComponent implements OnInit {
 
     @Input() household: Household;
     @Input() consumerCategories: KeyValuePair[];
-    @Input() providedUtilities: KeyValuePair[];
+    @Input() providedUtilities: ProvidedUtility[];
     @Output() formSubmit = new EventEmitter();
 
     isBlocked: boolean;
@@ -24,16 +25,26 @@ export class HouseholdFormComponent implements OnInit {
     ngOnInit() {
     }
 
-    onUtilityToggle(utilityId: number, name: string, $event: any) {
+    onUtilityToggle(utility: ProvidedUtility, $event: any) {
         if ($event.checked)
-            this.household.consumedUtilities.push({ id: 0, providedUtilityId: utilityId, name: name, obligatoryPrice: null });
+            this.household.consumedUtilities.push({ id: 0, providedUtilityId: utility.id, name: utility.name, obligatoryPrice: null, tariffId: null, measureUnit: utility.measureUnit, isSeasonal: utility.isSeasonal, hasMeter: false });
         else {
             var index = this.household.consumedUtilities
                 .map(x => x.providedUtilityId)
-                .indexOf(utilityId);
+                .indexOf(utility.id);
             this.household.consumedUtilities.splice(index, 1);
 
         }
+    }
+
+    onMeterToggle(providedUtilityId: number, $event: any) {
+        let consumedUtility = this.household.consumedUtilities.find(c => c.providedUtilityId === providedUtilityId);
+        if (!consumedUtility)
+            return;
+        if ($event.checked)
+            consumedUtility.hasMeter = true;
+        else
+            consumedUtility.hasMeter = false;
     }
 
     submit() {
@@ -69,6 +80,13 @@ export class HouseholdFormComponent implements OnInit {
                 }
                 );
         }
+    }
+
+    private hasMeter(providedUtilityId: number) {
+        let consumedUtility = this.household.consumedUtilities.find(c => c.providedUtilityId === providedUtilityId);
+        if (!consumedUtility)
+            return false;
+        return consumedUtility.hasMeter;
     }
 
     private containsUtilities(id: number) {

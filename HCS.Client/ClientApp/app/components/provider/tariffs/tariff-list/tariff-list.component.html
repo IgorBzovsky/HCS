@@ -1,0 +1,45 @@
+﻿<div class="table-container mat-elevation-z8">
+    <h4 class="table-heading">Список тарифів</h4>
+    <mat-table #table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Назва тарифу </mat-header-cell>
+            <mat-cell *matCellDef="let tariffData"> {{tariffData.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="providedUtility">
+            <mat-header-cell *matHeaderCellDef> Послуга </mat-header-cell>
+            <mat-cell *matCellDef="let tariffData"> {{tariffData.providedUtility}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="consumerType">
+            <mat-header-cell *matHeaderCellDef> Тип споживача </mat-header-cell>
+            <mat-cell *matCellDef="let tariffData"> {{tariffData.consumerType}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="consumersQuantity">
+            <mat-header-cell *matHeaderCellDef> Кількість споживачів </mat-header-cell>
+            <mat-cell *matCellDef="let tariffData"> {{tariffData.consumersQuantity}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Дії </mat-header-cell>
+            <mat-cell *matCellDef="let tariffData">
+                <button mat-icon-button color="primary">
+                    <mat-icon aria-label="Редагувати" (click)="edit(tariffData.id)">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" [disabled]="tariffData.consumersQuantity > 0 || isDeleteBlocked">
+                    <mat-icon aria-label="Видалити" (click)="delete(tariffData.id)">delete</mat-icon>
+                </button>
+                <!--<button mat-icon-button color="primary">
+                    <mat-icon aria-label="Редагувати" (click)="edit(userData.id)">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn">
+                    <mat-icon aria-label="Видалити" (click)="delete(userData)">delete</mat-icon>
+                </button>-->
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>

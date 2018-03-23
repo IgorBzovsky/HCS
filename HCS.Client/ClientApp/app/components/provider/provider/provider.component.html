@@ -1,28 +1,28 @@
 ﻿<mat-sidenav-container class="all-wrap" fullscreen>
     <mat-sidenav #sidenav mode="side" class="app-sidenav">
         <mat-nav-list>
+            <img src="../../../../../wwwroot/images/logo.png" class="menu-logo"/>
+            <mat-divider></mat-divider>
             <a mat-list-item [routerLink]="['./profile']"><mat-icon>assignment</mat-icon>&nbsp;Профіль постачальника</a>
             <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['./utilities']"><mat-icon>location_city</mat-icon>&nbsp;Створити домогосподарство</a>
-            <mat-divider></mat-divider>
+            
             <h3 mat-subheader>Управління споживачами</h3>
             <a mat-list-item [routerLink]="['./consumers/households/new']">
+                <mat-icon>location_city</mat-icon>&nbsp;
                 Створити домогосподарство
             </a>
             <a mat-list-item [routerLink]="['./consumers/organizations/new']">
+                <mat-icon>business</mat-icon>&nbsp;
                 Створити організацію
             </a>
             <a mat-list-item [routerLink]="['./consumers']"><mat-icon>group</mat-icon>&nbsp;Список споживачів</a>
             <mat-divider></mat-divider>
             <h3 mat-subheader>Управління тарифами</h3>
-            <a mat-list-item [routerLink]="['./consumers/household']"><mat-icon>lightbulb_outline</mat-icon>&nbsp;Створити тариф</a>
-            <a mat-list-item [routerLink]="['./consumers/organization']"><mat-icon>list</mat-icon>&nbsp;Список тарифів</a>
+            <a mat-list-item [routerLink]="['./tariffs/new']"><mat-icon>lightbulb_outline</mat-icon>&nbsp;Створити тариф</a>
+            <a mat-list-item [routerLink]="['./tariffs']"><mat-icon>list</mat-icon>&nbsp;Список тарифів</a>
             <mat-divider></mat-divider>
-            <h3 mat-subheader>Адміністрування</h3>
-            <a mat-list-item [routerLink]="['./consumers/household']"><mat-icon>person_add</mat-icon>&nbsp;Створити користувача</a>
-            <a mat-list-item [routerLink]="['./consumers/organization']"><mat-icon>group</mat-icon>&nbsp;Список користувачів</a>
+            <a mat-list-item (click)="authService.startSignout()"><mat-icon>exit_to_app</mat-icon>&nbsp;Вийти</a>
             <mat-divider></mat-divider>
-            <a mat-list-item (click)="authService.startSignout()">Вийти</a>
         </mat-nav-list>
     </mat-sidenav>
     <div class="page-wrap">
@@ -32,6 +32,13 @@
                     <mat-icon class="md-24">menu</mat-icon>
                 </button>
                 <button mat-button [routerLink]="['./dashboard']">Портал постачальника</button>
+                <span class="example-fill-remaining-space"></span>
+                <button mat-button [matMenuTriggerFor]="menu">{{authService.getClaims().email}}
+                </button>
+                <mat-menu #menu="matMenu" [overlapTrigger]="false">
+                    <button mat-menu-item><mat-icon>person</mat-icon>&nbsp;Профіль</button>
+                    <button mat-menu-item (click)="authService.startSignout()"><mat-icon>exit_to_app</mat-icon>&nbsp;Вийти</button>
+                </mat-menu>
                 <!--<button mat-button (click)="testToken()">Test token</button>-->
             </mat-toolbar>
         </header>

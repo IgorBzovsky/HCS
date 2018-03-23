@@ -1,8 +1,9 @@
-﻿<mat-tab-group (selectedTabChange)="selectTab($event)">
+﻿<mat-tab-group [(selectedIndex)]="selectedTab" (selectedTabChange)="selectTab($event)">
     <mat-tab label="Список мешканців">
-        <occupants-list></occupants-list>
+        <occupants-list (onEdit)="editOccupant($event)" (onCreate)="createOccupant()" [occupants]="occupants"></occupants-list>
     </mat-tab>
     <mat-tab label="Форма">
-        <occupants-form [household]="household"></occupants-form>
+        <occupants-form [occupant]="occupant" [household]="household" [exemptions]="exemptions" (onSubmit)="occupantsFormSubmit($event)"></occupants-form>
     </mat-tab>
 </mat-tab-group>
+<hr />

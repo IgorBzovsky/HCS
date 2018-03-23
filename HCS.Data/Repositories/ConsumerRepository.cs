@@ -1,6 +1,7 @@
 ﻿using HCS.Core.Domain;
 using HCS.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace HCS.Data.Repositories
                 .FirstOrDefaultAsync(x => x.LocationId == locationId);
         }
 
-        public async Task<IEnumerable<Consumer>> GetAllIncludeLocation()
+        public async Task<IEnumerable<Consumer>> GetAllIncludeLocationAsync()
         {
             return await context.Consumers
                 .Include(p => p.Location)
@@ -54,6 +55,32 @@ namespace HCS.Data.Repositories
                     .ThenInclude(x => x.ConsumerType)
                 .Where(x => x.IsDraft)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ConsumerCategory>> GetCategoriesByTypeNameAsync(string name)
+        {
+            return await context.ConsumerCategories
+                .Include(c => c.ConsumerType)
+                .Where(x => x.ConsumerType.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ConsumerCategory>> GetCategoriesByTypeIdAsync(int typeId)
+        {
+            return await context.ConsumerCategories
+                .Include(c => c.ConsumerType)
+                .Where(x => x.ConsumerType.Id == typeId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ConsumerType>> GetConsumerTypesAsync()
+        {
+            return await context.ConsumerTypes.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Exemption>> GetExemptionsAsync()
+        {
+            return await context.Exemptions.ToListAsync();
         }
     }
 }

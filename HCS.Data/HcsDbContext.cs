@@ -18,6 +18,8 @@ namespace HCS.Data
         public DbSet<Exemption> Exemptions { get; set; }
         public DbSet<ConsumerCategory> ConsumerCategories { get; set; }
         public DbSet<ConsumerType> ConsumerTypes { get; set; }
+        public DbSet<Tariff> Tariffs { get; set; }
+        public DbSet<Block> Blocks { get; set; }
 
         public HcsDbContext(DbContextOptions<HcsDbContext> options) : base(options)
         {
@@ -28,7 +30,6 @@ namespace HCS.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ConsumedUtilityConfiguration());
             modelBuilder.ApplyConfiguration(new OccupantConfiguration());
-            //modelBuilder.ApplyConfiguration(new ConsumerConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

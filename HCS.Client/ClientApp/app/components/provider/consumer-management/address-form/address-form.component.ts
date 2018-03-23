@@ -27,6 +27,7 @@ export class AddressFormComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.address.region);
         this.locationService.getRegions().subscribe(regions => {
             this.regions = regions;
         });
@@ -75,41 +76,67 @@ export class AddressFormComponent implements OnInit {
 
     submit() {
         this.isBlocked = true;
-        this.locationService.create(this.mapToSaveAddress())
-            .subscribe(
-            data => {
-                this.isBlocked = false;
-                this.mapFromLocation(data);
-                this.toastr.success('Ви створили адресу споживача', 'Успішно!');
-                this.formSubmit.emit(this.address);
-            },
-            err => {
-                this.isBlocked = false;
-                if (err.status == 409) {
-                    this.mapFromLocation(JSON.parse(err._body));
-                    this.toastr.info("Адреса вже зареєстрована", "Інформація!");
+        console.log(this.address);
+        if (!this.address.id) {
+            this.locationService.create(this.mapToSaveAddress())
+                .subscribe(
+                data => {
+                    this.isBlocked = false;
+                    this.address = this.locationService.mapFromLocation(data);
+                    this.toastr.success('Ви створили адресу споживача', 'Успішно!');
                     this.formSubmit.emit(this.address);
+                },
+                err => {
+                    this.isBlocked = false;
+                    if (err.status == 409) {
+                        this.address = this.locationService.mapFromLocation(JSON.parse(err._body));
+                        this.toastr.info("Адреса вже зареєстрована", "Інформація!");
+                        this.formSubmit.emit(this.address);
+                    }
+                    else {
+                        this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                    }
                 }
-                else {
-                    this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                );
+        }
+        else {
+            console.log("Update");
+            this.locationService.update(this.mapToSaveAddress())
+                .subscribe(
+                data => {
+                    console.log(data);
+                    this.isBlocked = false;
+                    this.address = this.locationService.mapFromLocation(data);
+                    this.toastr.success('Ви оновили адресу споживача', 'Успішно!');
+                    this.formSubmit.emit(this.address);
+                },
+                err => {
+                    this.isBlocked = false;
+                    if (err.status == 409) {
+                        this.toastr.error("Така адреса вже зареєстрована", "Помилка!");
+                    }
+                    else {
+                        this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
+                    }
                 }
-            }
-            );
+                );
+        }
+        
     }
 
-    private mapFromLocation(location: LocationIncludeParent) {
-        this.address.id = location.id;
-        this.address.building = location.building;
-        this.address.appartment = location.appartment;
-        let street = location.parent;
-        this.address.street = new KeyValuePair(street.id, street.name);
-        let locality = street.parent;
-        this.address.locality = new KeyValuePair(locality.id, locality.name);
-        let district = locality.parent;
-        this.address.district = new KeyValuePair(district.id, district.name);
-        let region = district.parent;
-        this.address.region = new KeyValuePair(region.id, region.name);
-    }
+    //private mapFromLocation(location: LocationIncludeParent) {
+    //    this.address.id = location.id;
+    //    this.address.building = location.building;
+    //    this.address.appartment = location.appartment;
+    //    let street = location.parent;
+    //    this.address.street = new KeyValuePair(street.id, street.name);
+    //    let locality = street.parent;
+    //    this.address.locality = new KeyValuePair(locality.id, locality.name);
+    //    let district = locality.parent;
+    //    this.address.district = new KeyValuePair(district.id, district.name);
+    //    let region = district.parent;
+    //    this.address.region = new KeyValuePair(region.id, region.name);
+    //}
 
     private mapToSaveAddress() {
         let saveAddress: SaveAddress = {

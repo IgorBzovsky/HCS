@@ -1,40 +1,43 @@
-﻿import { Component, Input, Output, EventEmitter } from "@angular/core";
+﻿import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { Organization } from "../../../../../models/consumer";
 import { KeyValuePair } from "../../../../../models/key_value_pair";
 import { ConsumerService } from "../../../../../services/consumer.service";
 import { ToastsManager } from "ng2-toastr/ng2-toastr";
 import { RegexService } from "../../../../../services/regex.service";
+import { ProvidedUtility } from "../../../../../models/provided-utility";
 
 @Component({
     selector: "organization-form",
     templateUrl: "./organization-form.component.html"
 })
-export class OrganizationFormComponent {
+export class OrganizationFormComponent implements OnInit {
 
     @Input() organization: Organization;
     @Input() consumerCategories: KeyValuePair[];
-    @Input() providedUtilities: KeyValuePair[];
+    @Input() providedUtilities: ProvidedUtility[];
     @Output() formSubmit = new EventEmitter();
 
     private isBlocked: boolean;
 
     constructor(private consumerService: ConsumerService, private toastr: ToastsManager, private regexService: RegexService) { }
 
-    onUtilityToggle(utilityId: number, name: string, $event: any) {
-        if ($event.checked)
-            this.organization.consumedUtilities.push({ id: 0, providedUtilityId: utilityId, name: name, obligatoryPrice: null });
+    ngOnInit() {
+    }
+
+    onUtilityToggle(utility: ProvidedUtility, $event: any) {
+        if ($event.checked) {
+            this.organization.consumedUtilities.push({ id: 0, providedUtilityId: utility.id, name: utility.name, obligatoryPrice: null, tariffId: null, measureUnit: utility.measureUnit, isSeasonal: utility.isSeasonal, hasMeter: true });
+        }
         else {
             var index = this.organization.consumedUtilities
                 .map(x => x.providedUtilityId)
-                .indexOf(utilityId);
+                .indexOf(utility.id);
             this.organization.consumedUtilities.splice(index, 1);
-
         }
     }
 
     submit() {
         this.isBlocked = true;
-        this.organization.isDraft = true;
         if (!this.organization.id) {
             this.consumerService.create(this.organization)
                 .subscribe(

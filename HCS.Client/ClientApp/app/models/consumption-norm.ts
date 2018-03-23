@@ -3,9 +3,9 @@
     amount: number;
     consumedUtilityId: number;
     utilityName: string;
+    isSeasonal: boolean;
+    measureUnit: string;
 
-    constructor(consumedUtilityId: number, utilityName: string) {
-        this.consumedUtilityId = consumedUtilityId;
-        this.utilityName = utilityName;
+    constructor() {
     }
 }

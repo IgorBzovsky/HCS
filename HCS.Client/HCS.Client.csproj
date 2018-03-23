@@ -38,19 +38,19 @@
     <None Remove="ClientApp\app\components\admin\user-list\user-list.component.ts" />
     <None Remove="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
     <None Remove="ClientApp\app\components\controls\autocomplete\autocomplete.component.ts" />
-    <None Remove="ClientApp\app\components\portal\main\main.component.ts" />
-    <None Remove="ClientApp\app\components\portal\more-info\more-info.component.ts" />
     <None Remove="ClientApp\app\components\portal\portal\portal.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\address-form\address-form.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\consumer-list\consumer-list.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\consumer-management.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\household\household-form\household-form.component.ts" />
+    <None Remove="ClientApp\app\components\provider\consumer-management\household\household-tariff\household-tariff.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\household\household.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\household\occupants\occupants-form\occupants-form.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\household\occupants\occupants-list\occupants-list.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\household\occupants\occupants.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\household\subsidy\subsidy.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\organization\organization-form\organization-form.component.ts" />
+    <None Remove="ClientApp\app\components\provider\consumer-management\organization\organization-tariff\organization-tariff.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\organization\organization.component.ts" />
     <None Remove="ClientApp\app\components\provider\consumer-management\user-form\login-form\login-form.component.css" />
     <None Remove="ClientApp\app\components\provider\consumer-management\user-form\login-form\login-form.component.ts" />
@@ -59,9 +59,11 @@
     <None Remove="ClientApp\app\components\provider\dashboard\dashboard.component.ts" />
     <None Remove="ClientApp\app\components\provider\provider-form\provider-form.component.ts" />
     <None Remove="ClientApp\app\components\provider\provider\provider.component.ts" />
+    <None Remove="ClientApp\app\components\provider\tariffs\tariff-form\block\block.component.ts" />
+    <None Remove="ClientApp\app\components\provider\tariffs\tariff-form\tariff-form.component.ts" />
     <None Remove="ClientApp\app\components\provider\tariffs\tariff-list.html" />
     <None Remove="ClientApp\app\components\provider\tariffs\tariff-list\tariff-list.component.ts" />
-    <None Remove="ClientApp\app\components\provider\utilities\utilities.component.ts" />
+    <None Remove="ClientApp\app\components\provider\tariffs\tariff-list\tariff-list.html" />
     <None Remove="ClientApp\app\components\silent-callback\silent-callback.component.ts" />
     <None Remove="ClientApp\app\directives\equal-validator.directive.ts" />
     <None Remove="ClientApp\app\models\address.ts" />
@@ -73,7 +75,9 @@
     <None Remove="ClientApp\app\models\occupant.ts" />
     <None Remove="ClientApp\app\models\provided-utility.ts" />
     <None Remove="ClientApp\app\models\provider.ts" />
+    <None Remove="ClientApp\app\models\tariff.ts" />
     <None Remove="ClientApp\app\models\user.ts" />
+    <None Remove="ClientApp\app\models\utility.ts" />
     <None Remove="ClientApp\app\portal.module.ts" />
     <None Remove="ClientApp\app\provider.module.ts" />
     <None Remove="ClientApp\app\routing.module.ts" />
@@ -85,9 +89,11 @@
     <None Remove="ClientApp\app\services\location.service.ts" />
     <None Remove="ClientApp\app\services\occupant.service.ts" />
     <None Remove="ClientApp\app\services\provider-guard.service.ts" />
+    <None Remove="ClientApp\app\services\provider-resolve.service.ts" />
     <None Remove="ClientApp\app\services\provider.service.ts" />
     <None Remove="ClientApp\app\services\regex.service.ts" />
     <None Remove="ClientApp\app\services\settings.service.ts" />
+    <None Remove="ClientApp\app\services\tariff.service.ts" />
     <None Remove="ClientApp\app\services\user-management.service.ts" />
     <None Remove="ClientApp\app\shared.module.ts" />
     <None Remove="ClientApp\auth.module.ts" />
@@ -101,19 +107,19 @@
     <TypeScriptCompile Include="ClientApp\app\components\admin\user-list\user-list.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\controls\autocomplete\autocomplete.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\portal\main\main.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\portal\more-info\more-info.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\portal\portal\portal.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\address-form\address-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\consumer-list\consumer-list.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\consumer-management.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\household\household-form\household-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\household\household-tariff\household-tariff.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\household\household.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\household\occupants\occupants-form\occupants-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\household\occupants\occupants-list\occupants-list.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\household\occupants\occupants.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\household\subsidy\subsidy.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\organization\organization-form\organization-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\organization\organization-tariff\organization-tariff.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\organization\organization.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\user-form\login-form\login-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\consumer-management\user-form\registration-form\registration-form.component.ts" />
@@ -121,8 +127,9 @@
     <TypeScriptCompile Include="ClientApp\app\components\provider\dashboard\dashboard.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\provider-form\provider-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\provider\provider.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\provider\tariffs\tariff-form\block\block.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\provider\tariffs\tariff-form\tariff-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\provider\tariffs\tariff-list\tariff-list.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\provider\utilities\utilities.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\silent-callback\silent-callback.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\directives\equal-validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\address.ts" />
@@ -134,7 +141,9 @@
     <TypeScriptCompile Include="ClientApp\app\models\occupant.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\provided-utility.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\provider.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\tariff.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\user.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\utility.ts" />
     <TypeScriptCompile Include="ClientApp\app\portal.module.ts" />
     <TypeScriptCompile Include="ClientApp\app\provider.module.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\admin-guard.service.ts" />
@@ -148,13 +157,9 @@
     <TypeScriptCompile Include="ClientApp\app\services\regex.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\settings.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\auth.module.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\tariff.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\user-management.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared.module.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\app\components\provider\tariffs\tariff-form\" />
-    <Folder Include="ClientApp\app\components\provider\users\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

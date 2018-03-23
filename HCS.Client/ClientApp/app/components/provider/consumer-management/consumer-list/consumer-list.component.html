@@ -36,17 +36,11 @@
             <mat-header-cell *matHeaderCellDef> Дії </mat-header-cell>
             <mat-cell *matCellDef="let consumerData">
                 <button mat-icon-button color="primary">
-                    <mat-icon aria-label="Редагувати">edit</mat-icon>
+                    <mat-icon aria-label="Редагувати" (click)="edit(consumerData)">edit</mat-icon>
                 </button>
                 <button mat-icon-button color="warn">
                     <mat-icon aria-label="Видалити">delete</mat-icon>
                 </button>
-                <!--<button mat-icon-button color="primary">
-                    <mat-icon aria-label="Редагувати" (click)="edit(userData.id)">edit</mat-icon>
-                </button>
-                <button mat-icon-button color="warn">
-                    <mat-icon aria-label="Видалити" (click)="delete(userData)">delete</mat-icon>
-                </button>-->
             </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

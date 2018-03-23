@@ -14,10 +14,4 @@ export class ProviderComponent implements OnInit {
     ngOnInit() {
 
     }
-
-    /*testToken() {
-        var helper = new JwtHelper();
-        console.log(helper.getTokenExpirationDate(this.authService.getAccessToken()));
-        console.log(helper.isTokenExpired(this.authService.getAccessToken()));
-    }*/
 }

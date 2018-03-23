@@ -1,6 +1,6 @@
 ﻿<form #f="ngForm" (ngSubmit)="submit()" class="content-wrapper">
     <fieldset [disabled]="isBlocked">
-        <mat-slide-toggle name="hasSubsidy" [(ngModel)]="household.hasSubsidy">Є субсидія</mat-slide-toggle>
+        <mat-slide-toggle name="hasSubsidy" color="primary" [(ngModel)]="household.hasSubsidy">Є субсидія</mat-slide-toggle>
         <div>
             <h5>Обов'язкова сплата за послуги</h5>
             <div *ngFor="let u of household.consumedUtilities; let i = index">

@@ -20,9 +20,14 @@
                 <subsidy [household]="household" (formSubmit)="subsidyFormSubmit($event)"></subsidy>
             </div>
         </mat-step>
-        <mat-step label="Мешканці">
+        <mat-step label="Мешканці" [stepControl]="occupantsFormControl">
             <div class="step-wrapper">
-                <occupants [household]="household"></occupants>
+                <occupants [household]="household" [exemptions]="exemptions"></occupants>
+            </div>
+        </mat-step>
+        <mat-step label="Тарифи">
+            <div class="step-wrapper">
+                <household-tariff [discriminator]="householdDiscriminator" [household]="household" [providedUtilities]="provider.providedUtilities"></household-tariff>
             </div>
         </mat-step>
     </mat-horizontal-stepper>

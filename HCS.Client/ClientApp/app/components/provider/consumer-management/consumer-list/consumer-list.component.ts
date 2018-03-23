@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ConsumerService } from "../../../../services/consumer.service";
 import { ConsumerLocation, ConsumerDataSource, ConsumerLocationData } from "../../../../models/consumer";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'consumer-list',
@@ -9,27 +10,36 @@ import { ConsumerLocation, ConsumerDataSource, ConsumerLocationData } from "../.
 })
 export class ConsumerListComponent implements OnInit {
 
-    consumers: ConsumerLocation[];
+    private readonly organizationDiscriminator = "Організація";
+    private readonly householdDiscriminator = "Домогосподарство";
+
+    consumers: ConsumerLocation[] = [];
     consumersData: ConsumerLocationData[] = [];
     displayedColumns = ['region', 'district', 'locality', 'street', 'building', 'appartment', 'actions'];
     dataSource: ConsumerDataSource;
 
-    constructor(private consumerService: ConsumerService) { }
-    consumer: ConsumerLocation[];
+    constructor(private consumerService: ConsumerService, private router: Router) { }
+
     ngOnInit() {
         this.consumerService.getAll()
             .subscribe(
-            data => {
-                this.consumers = data;
+            consumers => {
+                this.consumers = consumers;
                 this.populateTable();
-                this.dataSource = new ConsumerDataSource(this.consumersData);
             },
             err => {
                 console.log("Error (get consumer list)", err);
             })
-        this.consumerService.getAll().subscribe(consumers => {
-            this.consumers = consumers;
-        });
+    }
+
+    edit(consumerData: ConsumerLocationData) {
+        if (consumerData.consumerType === this.organizationDiscriminator) {
+            this.router.navigate(["provider/consumers/organizations/" + consumerData.id]);
+        }
+        else if (consumerData.consumerType === this.householdDiscriminator) {
+            console.log("Household");
+            this.router.navigate(["provider/consumers/households/" + consumerData.id]);
+        }
     }
 
     private populateTable() {
@@ -38,5 +48,6 @@ export class ConsumerListComponent implements OnInit {
             consumerData.position = i + 1;
             this.consumersData.push(consumerData);
         }
+        this.dataSource = new ConsumerDataSource(this.consumersData);
     }
 }

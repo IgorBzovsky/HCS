@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatStepper } from "@angular/material/stepper";
 import { Provider } from "../../../../models/provider";
 import { User } from "../../../../models/user";
@@ -11,7 +11,10 @@ import { Organization } from "../../../../models/consumer";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/Observable/forkJoin';
 import { KeyValuePair } from "../../../../models/key_value_pair";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
+import { TariffService } from "../../../../services/tariff.service";
+import { LocationService } from "../../../../services/location.service";
+import { UserManagementService } from "../../../../services/user-management.service";
 
 @Component({
     selector: 'organization',
@@ -22,28 +25,52 @@ export class OrganizationComponent implements OnInit {
 
     @ViewChild('stepper') stepper: MatStepper;
 
-    private readonly organizationDiscriminator = "Organization";
+    private readonly organizationDiscriminator = "Організація";
 
-    provider = new Provider();
+    provider: Provider;
+
     user = new User();
     address = new Address();
     organization = new Organization();
     consumerCategories: KeyValuePair[];
 
-    constructor(private consumerService: ConsumerService, private providerService: ProviderService, private toastr: ToastsManager, private router: Router) { }
+    constructor(private consumerService: ConsumerService, private providerService: ProviderService, private toastr: ToastsManager, private router: Router, private route: ActivatedRoute, private tariffService: TariffService, private locationService: LocationService, private userManagementService: UserManagementService) {
+        route.params.subscribe(p => {
+            this.organization.id = p['id'];
+        });
+    }
 
     ngOnInit() {
         Observable.forkJoin([
             this.providerService.getProvider(),
-            this.consumerService.getCategoriesByTypeName(this.organizationDiscriminator)
-        ]).subscribe(data => {
-            this.provider = data[0],
-            this.consumerCategories = data[1]
+            this.consumerService.getCategoriesByTypeName(this.organizationDiscriminator)])
+            .subscribe(data => {
+                this.provider = data[0],
+                this.consumerCategories = data[1],
+                this.filterTariffs()
         },
             err => {
-                console.log(err)
+                console.log(err);
             });
-        this.setFormsInvalid();
+        if (this.organization.id) {
+            this.consumerService.get(this.organization.id)
+                .subscribe(data => {
+                    this.organization = data;
+                    this.setFormsValid();
+                    this.locationService.get(this.organization.locationId)
+                        .subscribe(data => {
+                            this.address = this.locationService.mapFromLocation(data);
+                        });
+                    this.userManagementService.getById(this.organization.applicationUserId)
+                        .subscribe(data => {
+                            this.user = data;
+                        });
+            });
+        }
+        else {
+            this.setFormsInvalid();
+        }
+        
     }
 
     //Form submit handlers
@@ -61,9 +88,11 @@ export class OrganizationComponent implements OnInit {
             .subscribe(
             data => {
                 if (data.consumerType.name !== this.organizationDiscriminator) {
+                    this.address.id = 0;
                     this.toastr.error("За цією адресою зареєстровано домогосподарство");
                 }
                 else if (data.applicationUserId !== this.user.id) {
+                    this.address.id = 0;
                     this.toastr.error("Ця адреса закріплена за іншим споживачем");
                 }
                 else {
@@ -91,7 +120,7 @@ export class OrganizationComponent implements OnInit {
     organizationFormSubmit($event: Organization) {
         this.organization = $event;
         this.setOrganizationFormValid();
-        this.router.navigate(["provider/consumers"]);
+        this.stepper.next();
     }
 
     //User form
@@ -124,5 +153,21 @@ export class OrganizationComponent implements OnInit {
     private setFormsInvalid() {
         this.setUserFormInvalid();
         this.setAddressFormInvalid();
+    }
+
+    private setFormsValid() {
+        this.setUserFormValid();
+        this.setAddressFormValid();
+        this.setOrganizationFormValid();
+    }
+
+    private filterTariffs() {
+        let utilities = this.provider.providedUtilities;
+        for (let i = 0; i < utilities.length; i++) {
+            let tariffs = utilities[i].tariffs;
+            for (let j = 0; j < tariffs.length; j++) {
+                tariffs.filter(t => t.consumerType === this.organizationDiscriminator);
+            }
+        }
     }
 }

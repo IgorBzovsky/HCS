@@ -162,7 +162,7 @@ namespace HCS.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(UserResource))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(string))]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Delete(string id)

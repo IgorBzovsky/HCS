@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using HCS.Api.Controllers.Resources;
 using HCS.Api.Controllers.Resources.Consumer;
+using HCS.Api.Controllers.Resources.Consumer.Household;
 using HCS.Core;
 using HCS.Core.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
@@ -16,19 +16,17 @@ namespace HCS.Api.Controllers
 {
     [Produces("application/json")]
     [Route("consumers")]
-    /*[Authorize(AuthenticationSchemes =
-    JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.ProviderPolicy)]*/
+    [Authorize(AuthenticationSchemes =
+    JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.ProviderPolicy)]
     public class ConsumersController : Controller
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserManager<ApplicationUser> _userManager;
         
-        public ConsumersController(IMapper mapper, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public ConsumersController(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _userManager = userManager;
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace HCS.Api.Controllers
         [HttpPost]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ConsumerResource))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateHousehold([FromBody] ConsumerResource consumerResource)
+        public async Task<IActionResult> Create([FromBody] ConsumerResource consumerResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -66,6 +64,8 @@ namespace HCS.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var consumer = await _unitOfWork.Consumers.GetConsumerAsync(id);
+            if (consumer == null)
+                return NotFound();
             _mapper.Map(consumerResource, consumer);
             await _unitOfWork.CompleteAsync();
             consumer = await _unitOfWork.Consumers.GetConsumerAsync(id);
@@ -80,10 +80,9 @@ namespace HCS.Api.Controllers
         /// <returns></returns>
         [HttpGet("categories/{consumerTypeId}")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<KeyValuePairResource>))]
-        [SwaggerResponse((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetConsumerTypeCategories(int consumerTypeId)
         {
-            var consumerCategories = await _unitOfWork.ConsumerCategories.FindAsync(c => c.ConsumerTypeId == consumerTypeId);
+            var consumerCategories = await _unitOfWork.Consumers.GetCategoriesByTypeIdAsync(consumerTypeId);
             var result = _mapper.Map<IEnumerable<ConsumerCategory>, IEnumerable<KeyValuePairResource>>(consumerCategories);
             return Ok(result);
         }
@@ -97,7 +96,7 @@ namespace HCS.Api.Controllers
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<KeyValuePairResource>))]
         public async Task<IActionResult> GetConsumerTypeCategories(string consumerTypeName)
         {
-            var consumerCategories = await _unitOfWork.ConsumerCategories.GetCategoriesByTypeName(consumerTypeName);
+            var consumerCategories = await _unitOfWork.Consumers.GetCategoriesByTypeNameAsync(consumerTypeName);
             var result = _mapper.Map<IEnumerable<ConsumerCategory>, IEnumerable<KeyValuePairResource>>(consumerCategories);
             return Ok(result);
         }
@@ -120,6 +119,23 @@ namespace HCS.Api.Controllers
         }
 
         /// <summary>
+        /// Get consumer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ConsumerResource))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Get(int id)
+        {
+            var consumer = await _unitOfWork.Consumers.GetConsumerAsync(id);
+            if (consumer == null)
+                return NotFound();
+            var consumerResource = _mapper.Map<Consumer, ConsumerResource>(consumer);
+            return Ok(consumerResource);
+        }
+
+        /// <summary>
         /// Get all consumers
         /// </summary>
         /// <returns></returns>
@@ -127,8 +143,34 @@ namespace HCS.Api.Controllers
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<ConsumerLocationResource>))]
         public async Task<IActionResult> GetAll()
         {
-            var consumers = await _unitOfWork.Consumers.GetAllIncludeLocation();
+            var consumers = await _unitOfWork.Consumers.GetAllIncludeLocationAsync();
             var result = _mapper.Map<IEnumerable<Consumer>, IEnumerable<ConsumerLocationResource>>(consumers);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Get consumer types
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("types")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<KeyValuePairResource>))]
+        public async Task<IActionResult> GetConsumerTypes()
+        {
+            var types = await _unitOfWork.Consumers.GetConsumerTypesAsync();
+            var result = _mapper.Map<IEnumerable<ConsumerType>, IEnumerable<KeyValuePairResource>>(types);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Get exemptions
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("exemptions")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<ExemptionResource>))]
+        public async Task<IActionResult> GetExemptions()
+        {
+            var exemptions = await _unitOfWork.Consumers.GetExemptionsAsync();
+            var result = _mapper.Map<IEnumerable<Exemption>, IEnumerable<ExemptionResource>>(exemptions);
             return Ok(result);
         }
     }

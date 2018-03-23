@@ -1,0 +1,15 @@
+﻿<form #f="ngForm" (ngSubmit)="submit()">
+    <h5>Тарифи</h5>
+    <div *ngFor="let c of household.consumedUtilities">
+        <mat-form-field class="long-input">
+            <mat-select [placeholder]="c.name" name="tariff{{c.id}}" [(ngModel)]="c.tariffId" required #tariff="ngModel">
+                <mat-option></mat-option>
+                <mat-option *ngFor="let t of getTariffs(c.providedUtilityId)" [value]="t.id">{{ t.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="tariff.hasError('required')">Оберіть регіон постачання</mat-error>
+        </mat-form-field>
+    </div>
+    <div class="top-20">
+        <button color="primary" mat-raised-button [disabled]="!f.valid || isBlocked">Завершити</button>
+    </div>
+</form>

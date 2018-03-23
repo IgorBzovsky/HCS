@@ -43,7 +43,7 @@ main {
     margin-top: 10px;
 }
 .top-20 {
-    margin-top: 20px
+    margin-top: 20px;
 }
 .top-30 {
     margin-top: 30px;
@@ -56,12 +56,28 @@ main {
     margin-top: 50px;
 }
 
+.bottom-10 {
+    margin-bottom: 10px;
+}
+
+.bottom-20 {
+    margin-bottom: 20px;
+}
+
 .left-10 {
     margin-left: 10px;
 }
 
 .left-20 {
     margin-left: 20px;
+}
+
+.left-30 {
+    margin-left: 30px;
+}
+
+.left-40 {
+    margin-left: 40px;
 }
 
 .right-10 {
@@ -75,16 +91,36 @@ main {
     font-weight: 300;
 }
 
+.mat-slide-toggle {
+    font-weight: 300;
+}
+
 /*Navbar*/
-.mat-list-item-content {
+.mat-list-item-content, .mat-menu-item {
     font-size: 0.8em;
 }
-.mat-list-item-content mat-icon {
+.mat-menu-item {
+    font-size: 1em;
+}
+mat-nav-list .mat-list-item-content mat-icon {
     color: grey;
 }
 .mat-table {
     overflow: auto;
     max-height: 500px;
+}
+
+
+.menu-logo {
+    display: block;
+    height: 80px;
+    margin: 20px auto;
+}
+
+.example-fill-remaining-space {
+    /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
 }
 
 

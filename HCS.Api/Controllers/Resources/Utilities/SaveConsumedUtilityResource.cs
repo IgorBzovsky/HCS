@@ -4,5 +4,6 @@
     {
         public int ProvidedUtilityId { get; set; }
         public decimal? ObligatoryPrice { get; set; }
+        public bool HasMeter { get; set; }
     }
 }

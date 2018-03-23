@@ -7,5 +7,6 @@
         public int ConsumedUtilityId { get; set; }
         public ConsumedUtility ConsumedUtility { get; set; }
         public int OccupantId { get; set; }
+        public bool IsSeasonal { get; set; }
     }
 }
