@@ -22,10 +22,12 @@ export class UserFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userManagementService.getById(this.user.id)
-            .subscribe(user => {
-                this.user = user;
-            });
+        if (this.user.id) {
+            this.userManagementService.getById(this.user.id)
+                .subscribe(user => {
+                    this.user = user;
+                });
+        }
         this.roles = this.userManagementService.getRoles();
     }
 

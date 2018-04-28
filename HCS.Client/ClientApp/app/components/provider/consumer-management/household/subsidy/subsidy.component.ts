@@ -4,6 +4,8 @@ import { KeyValuePair } from "../../../../../models/key_value_pair";
 import { Household } from "../../../../../models/consumer";
 import { ToastsManager } from "ng2-toastr/ng2-toastr";
 import { RegexService } from "../../../../../services/regex.service";
+import { ConsumedUtility } from "../../../../../models/consumed-utility";
+import { ProvidedUtility } from "../../../../../models/provided-utility";
 
 
 @Component({
@@ -12,6 +14,7 @@ import { RegexService } from "../../../../../services/regex.service";
 })
 export class SubsidyComponent {
     @Input() household: Household;
+    @Input() providedUtilities: ProvidedUtility[];
     @Output() formSubmit = new EventEmitter();
     isBlocked: boolean;
 
@@ -34,6 +37,19 @@ export class SubsidyComponent {
                 console.log(err);
             }
             );
+    }
+
+    getConsumedUtilities() {
+        let utilities: ConsumedUtility[] = [];
+        this.household.consumedUtilities.forEach(u => {
+            if (this.providedUtilities.some(p => p.id === u.providedUtilityId))
+                utilities.push(u);
+        });
+        return utilities;
+    }
+
+    getConsumedUtilityById(id: number) {
+        return this.household.consumedUtilities.find(c => c.id === id);
     }
 }
 

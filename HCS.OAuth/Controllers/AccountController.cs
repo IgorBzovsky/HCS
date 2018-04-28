@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using HCS.OAuth.Models;
+﻿using HCS.Core.Domain;
 using HCS.OAuth.Models.AccountViewModels;
 using HCS.OAuth.Services;
-using HCS.Core.Domain;
-using IdentityServer4.Services;
-using IdentityServer4.Events;
-using IdentityServer4.Stores;
-using Microsoft.AspNetCore.Http;
-using IdentityServer4.Extensions;
 using IdentityModel;
 using IdentityServer4;
+using IdentityServer4.Extensions;
+using IdentityServer4.Services;
+using IdentityServer4.Stores;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HCS.OAuth.Controllers
 {
@@ -84,6 +78,12 @@ namespace HCS.OAuth.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null && user.IsDeleted)
+                {
+                    ModelState.AddModelError(string.Empty, "Користувача було видалено");
+                    return View(model);
+                }
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -101,7 +101,7 @@ namespace HCS.OAuth.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Невдала спроба входу.");
                     return View(model);
                 }
             }

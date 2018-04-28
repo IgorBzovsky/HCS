@@ -32,11 +32,12 @@
                     <mat-icon class="md-24">menu</mat-icon>
                 </button>
                 <button mat-button [routerLink]="['./dashboard']">Портал постачальника</button>
-                <span class="example-fill-remaining-space"></span>
+                <span class="fill-remaining-space"></span>
                 <button mat-button [matMenuTriggerFor]="menu">{{authService.getClaims().email}}
                 </button>
                 <mat-menu #menu="matMenu" [overlapTrigger]="false">
-                    <button mat-menu-item><mat-icon>person</mat-icon>&nbsp;Профіль</button>
+                    <button mat-menu-item [routerLink]="['./user-profile']"><mat-icon>person</mat-icon>&nbsp;Профіль</button>
+                    <button mat-menu-item [routerLink]="['./change-password']"><mat-icon>security</mat-icon>&nbsp;Змінити пароль</button>
                     <button mat-menu-item (click)="authService.startSignout()"><mat-icon>exit_to_app</mat-icon>&nbsp;Вийти</button>
                 </mat-menu>
                 <!--<button mat-button (click)="testToken()">Test token</button>-->

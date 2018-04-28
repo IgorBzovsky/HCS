@@ -1,7 +1,9 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ConsumerService } from "../../../../services/consumer.service";
 import { ConsumerLocation, ConsumerDataSource, ConsumerLocationData } from "../../../../models/consumer";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Provider } from "../../../../models/provider";
+import { ProviderService } from "../../../../services/provider.service";
 
 @Component({
     selector: 'consumer-list',
@@ -17,19 +19,24 @@ export class ConsumerListComponent implements OnInit {
     consumersData: ConsumerLocationData[] = [];
     displayedColumns = ['region', 'district', 'locality', 'street', 'building', 'appartment', 'actions'];
     dataSource: ConsumerDataSource;
+    provider = new Provider();
 
-    constructor(private consumerService: ConsumerService, private router: Router) { }
+    constructor(private consumerService: ConsumerService, private router: Router, private providerService: ProviderService, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.consumerService.getAll()
-            .subscribe(
-            consumers => {
-                this.consumers = consumers;
-                this.populateTable();
-            },
-            err => {
-                console.log("Error (get consumer list)", err);
-            })
+        this.route.data
+            .subscribe((data: { provider: Provider }) => {
+                this.provider = data.provider;
+                this.consumerService.getAll(this.provider.id)
+                    .subscribe(
+                    consumers => {
+                        this.consumers = consumers;
+                        this.populateTable();
+                    },
+                    err => {
+                        console.log("Error (get consumer list)", err);
+                    })
+            });
     }
 
     edit(consumerData: ConsumerLocationData) {

@@ -27,8 +27,20 @@ export class LocationService {
     }
 
     update(address: SaveAddress) {
-        console.log("AAAAAAAAAAAAAAAAa");
         return this.authHttp.put(this.settings.BaseUrls.apiUrl + '/locations/' + address.id, address).map(res => res.json());
+    }
+
+    stringifyUtilityBillAddress(address: Address) {
+        let billAddress = "";
+        if (address.street)
+            billAddress += "вул. " + address.street.name + " ";
+        billAddress += address.building;
+        if (address.appartment) {
+            billAddress += "/" + address.appartment;
+        }
+        if (address.locality)
+            billAddress += " м." + address.locality.name;
+        return billAddress;
     }
 
     mapFromLocation(location: LocationIncludeParent) {

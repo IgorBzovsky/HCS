@@ -1,12 +1,19 @@
 ﻿using AutoMapper;
+using HCS.Api.Controllers.Resources.Queries;
 using HCS.Api.Controllers.Resources.User;
 using HCS.Core.Domain;
+using HCS.Core.Extensions;
+using HCS.Core.Queries;
 using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,8 +22,8 @@ namespace HCS.Api.Controllers
 {
     [Route("user-management")]
     [Produces("application/json")]
-    /*[Authorize(AuthenticationSchemes =
-    JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.AdminPolicy)]*/
+    [Authorize(AuthenticationSchemes =
+    JwtBearerDefaults.AuthenticationScheme)]
     public class UserManagementController : Controller
     {
         private readonly IMapper _mapper;
@@ -96,6 +103,29 @@ namespace HCS.Api.Controllers
             return Ok(savedUser);
         }
 
+        /// <summary>
+        /// Reset password
+        /// </summary>
+        /// <param name="changePasswordResource"></param>
+        /// <returns></returns>
+        [HttpPut("user/password")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(UserResource))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ResetPassword([FromBody] ChangePasswordResource changePasswordResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null)
+                return NotFound();
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordResource.CurrentPassword, changePasswordResource.NewPassword);
+            if (!result.Succeeded)
+                return BadRequest();
+            var savedUser = _mapper.Map<ApplicationUser, UserResource>(user);
+            return Ok(savedUser);
+        }
+
 
         /// <summary>
         /// Get user by UserName
@@ -138,14 +168,27 @@ namespace HCS.Api.Controllers
         /// <summary>
         /// Get users
         /// </summary>
+        /// <param name="queryResource"></param>
         /// <returns></returns>
         [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(UserResource))]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] UserQueryResource queryResource = null)
         {
-            var users = _userManager.Users.Where(x => !x.IsDeleted).ToList();
-            var result = new List<UserResource>();
+            var query = _mapper.Map<UserQueryResource, UserQuery>(queryResource);
+            var users = _userManager.Users.Where(x => !x.IsDeleted);
+            if(!string.IsNullOrWhiteSpace(query.Search))
+            {
+                users = users.Where(u => u.Email.Contains(query.Search) || u.LastName.Contains(query.Search) || u.FirstName.Contains(query.Search) || u.MiddleName.Contains(query.Search));
+            }
 
+            var columnsMap = new Dictionary<string, Expression<Func<ApplicationUser, object>>>
+            {
+                ["email"] = u => u.Email,
+                ["lastName"] = u => u.LastName
+            };
+            users = users.ApplyOrdering(query, columnsMap);
+
+            var result = new List<UserResource>();
             foreach (var user in users)
             {
                 var principal = await _claimsFactory.CreateAsync(user);
@@ -176,5 +219,7 @@ namespace HCS.Api.Controllers
                 return BadRequest();
             return Ok(id);
         }
+
+        
     }
 }

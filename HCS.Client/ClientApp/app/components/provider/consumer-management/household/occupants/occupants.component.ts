@@ -5,6 +5,7 @@ import { Occupant } from "../../../../../models/occupant";
 import { Exemption } from "../../../../../models/exemption";
 import { OccupantService } from "../../../../../services/occupant.service";
 import { ConsumedUtility } from "../../../../../models/consumed-utility";
+import { ProvidedUtility } from "../../../../../models/provided-utility";
 
 @Component({
     selector: "occupants",
@@ -12,6 +13,7 @@ import { ConsumedUtility } from "../../../../../models/consumed-utility";
 })
 export class OccupantsComponent {
     @Input() exemptions: Exemption[];
+    @Input() providedUtilities: ProvidedUtility[];
 
     private _household: Household;
     get household(): Household {
@@ -35,7 +37,6 @@ export class OccupantsComponent {
         for (let i = 0; i < this.household.consumedUtilities.length; i++) {
             let utility = this.household.consumedUtilities[i];
             if (!this.occupant.consumptionNorms.find(x => x.consumedUtilityId == utility.id)) {
-                console.log("Add");
                 this.addEmptyNorm(this.occupant, utility);
             }
         }

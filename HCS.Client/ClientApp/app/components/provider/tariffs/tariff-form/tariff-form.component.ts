@@ -9,6 +9,7 @@ import { RegexService } from "../../../../services/regex.service";
 import { Utility } from "../../../../models/utility";
 import { TariffService } from "../../../../services/tariff.service";
 import { ConsumerService } from "../../../../services/consumer.service";
+import { Provider } from "../../../../models/provider";
 
 @Component({
     selector: "tariff-form",
@@ -31,9 +32,9 @@ export class TariffFormComponent {
 
     ngOnInit() {
         this.isBlocked = false;
-        this.providerService.getProvider()
-            .subscribe(provider => {
-                this.utilities = provider.providedUtilities;
+        this.route.data
+            .subscribe((data: { provider: Provider }) => {
+                this.utilities = data.provider.providedUtilities;
                 if (this.tariff.id) {
                     this.tariffService.getById(this.tariff.id)
                         .subscribe(tariff => {

@@ -27,25 +27,25 @@
                     <input asp-for="Password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="checkbox">
                         <label asp-for="RememberMe">
                             <input asp-for="RememberMe" />
                             Запам'ятати мене ?
                         </label>
                     </div>
-                </div>
+                </div>*@
                 <div class="form-group">
                     <button type="submit" class="btn btn-default">Логін</button>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <p>
                         <a asp-action="ForgotPassword">Забули пароль ?</a>
                     </p>
                     <p>
                         <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Зареєструватися як новий користувач ?</a>
                     </p>
-                </div>
+                </div>*@
             </form>
         </section>
     </div>

@@ -7,6 +7,7 @@ import { OccupantService } from "../../../../../../services/occupant.service";
 import { ToastsManager } from "ng2-toastr/ng2-toastr";
 import { ConsumedUtility } from "../../../../../../models/consumed-utility";
 import { Exemption } from "../../../../../../models/exemption";
+import { ProvidedUtility } from "../../../../../../models/provided-utility";
 
 @Component({
     selector: "occupants-form",
@@ -16,6 +17,7 @@ export class OccupantsFormComponent implements OnInit {
 
     @Input() occupant: Occupant;
     @Input() household: Household;
+    @Input() providedUtilities: ProvidedUtility[];
     @Input() exemptions: Exemption[];
     
     @Output() onSubmit = new EventEmitter();
@@ -73,5 +75,24 @@ export class OccupantsFormComponent implements OnInit {
         if (index == -1)
             return null;
         return this.occupant.consumptionNorms[index];
+    }
+
+    getConsumedUtilities() {
+        let utilities: ConsumedUtility[] = [];
+        this.household.consumedUtilities.forEach(u => {
+            if (this.providedUtilities.some(p => p.id === u.providedUtilityId))
+                utilities.push(u);
+        });
+        return utilities;
+    }
+
+    getNorms() {
+        let utilities = this.getConsumedUtilities();
+        let norms: ConsumptionNorm[] = [];
+        this.occupant.consumptionNorms.forEach(n => {
+            if (utilities.some(u => u.id === n.consumedUtilityId))
+                norms.push(n);
+        });
+        return norms;
     }
 }

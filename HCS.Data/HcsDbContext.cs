@@ -20,6 +20,8 @@ namespace HCS.Data
         public DbSet<ConsumerType> ConsumerTypes { get; set; }
         public DbSet<Tariff> Tariffs { get; set; }
         public DbSet<Block> Blocks { get; set; }
+        public DbSet<UtilityBill> UtilityBills { get; set; }
+        public DbSet<UtilityBillLine> UtilityBillLines { get; set; }
 
         public HcsDbContext(DbContextOptions<HcsDbContext> options) : base(options)
         {
@@ -30,6 +32,7 @@ namespace HCS.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ConsumedUtilityConfiguration());
             modelBuilder.ApplyConfiguration(new OccupantConfiguration());
+            modelBuilder.ApplyConfiguration(new UtilityBillConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

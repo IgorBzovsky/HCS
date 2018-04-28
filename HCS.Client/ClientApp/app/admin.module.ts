@@ -12,13 +12,17 @@ import { UserFormComponent } from "./components/admin/user-form/user-form.compon
 import { UserListComponent } from "./components/admin/user-list/user-list.component";
 
 import { UserManagementService } from "./services/user-management.service";
+import { UserProfileComponent } from "./components/user-profile/user-profile.component";
+import { ChangePasswordComponent } from "./components/change-password/change-password.component";
 
 
 export const adminRoutes: Routes = [
     { path: '', redirectTo: 'user-list', pathMatch: 'full' },
     { path: 'user-form/new', component: UserFormComponent },
     { path: 'user-form/:id', component: UserFormComponent },
-    { path: 'user-list', component: UserListComponent }
+    { path: 'user-list', component: UserListComponent },
+    { path: 'user-profile', component: UserProfileComponent },
+    { path: "change-password", component: ChangePasswordComponent }
 ];
 
 
@@ -33,6 +37,7 @@ export const adminRoutes: Routes = [
         MatInputModule,
         MatIconModule,
         MatCardModule,
+        MatMenuModule,
         MatSidenavModule,
         MatTableModule,
         MatToolbarModule,

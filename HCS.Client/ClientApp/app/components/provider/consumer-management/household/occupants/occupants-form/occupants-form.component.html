@@ -44,9 +44,9 @@
             </div>
             <div class="left-40">
                 <h5>Норми споживання</h5>
-                <div *ngFor="let c of occupant.consumptionNorms">
-                    <p>{{c.utilityName}}</p>
-                    <div>
+                <div *ngFor="let c of getNorms()">
+                    <p *ngIf="!c.isSeasonal">{{c.utilityName}}</p>
+                    <div *ngIf="!c.isSeasonal">
                         <mat-form-field hintLabel="Норма споживання {{c.measureUnit}}">
                             <input name="amount{{c.id}}" matInput [placeholder]="c.utilityName" type="text" [(ngModel)]="c.amount" required [pattern]="regexService.Decimal" />
                             <mat-error>Норму вказано невірно</mat-error>

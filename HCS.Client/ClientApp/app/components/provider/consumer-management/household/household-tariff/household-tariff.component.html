@@ -1,6 +1,6 @@
 ﻿<form #f="ngForm" (ngSubmit)="submit()">
     <h5>Тарифи</h5>
-    <div *ngFor="let c of household.consumedUtilities">
+    <div *ngFor="let c of getConsumedUtilities()">
         <mat-form-field class="long-input">
             <mat-select [placeholder]="c.name" name="tariff{{c.id}}" [(ngModel)]="c.tariffId" required #tariff="ngModel">
                 <mat-option></mat-option>

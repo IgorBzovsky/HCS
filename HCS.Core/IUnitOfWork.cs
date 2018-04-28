@@ -10,6 +10,7 @@ namespace HCS.Core
         IProviderRepository Providers { get; }
         IConsumerRepository Consumers { get; }
         IOccupantRepository Occupants { get; }
+        IUtilityBillRepository UtilityBills { get; }
         ITariffRepository Tariffs { get; }
         Task CompleteAsync();
     }

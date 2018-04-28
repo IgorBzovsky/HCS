@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { User, UserData, UserDataSource } from "../../../models/user";
 import { UserManagementService } from "../../../services/user-management.service";
 import { Router } from "@angular/router";
@@ -17,10 +17,12 @@ export class UserListComponent implements OnInit {
     displayedColumns = ['email', 'lastName', 'firstName', 'middleName', 'roles', 'delete'];
     dataSource: UserDataSource;
 
+    userQuery: any = {};
+
     constructor(private userManagementService: UserManagementService, private router: Router, private toastr: ToastsManager, private authService: AuthService) { }
 
     ngOnInit() {
-        this.userManagementService.get()
+        this.userManagementService.get(this.userQuery)
             .subscribe(
             data => {
                 this.users = data;
@@ -52,13 +54,26 @@ export class UserListComponent implements OnInit {
                     else {
                         this.toastr.error('Виникла невідома помилка на сервері.', 'Помилка!');
                     }
-                }
-                );
+                });
         }
     }
 
     edit(id: string) {
         this.router.navigate(["admin/user-form/" + id]);
+    }
+
+    submit() {
+        this.userManagementService.get(this.userQuery)
+            .subscribe(
+            data => {
+                this.usersData = [];
+                this.users = data;
+                this.populateTable();
+                this.dataSource = new UserDataSource(this.usersData);
+            },
+            err => {
+                console.log("Error (get user list)", err);
+            });
     }
 
     private populateTable() {

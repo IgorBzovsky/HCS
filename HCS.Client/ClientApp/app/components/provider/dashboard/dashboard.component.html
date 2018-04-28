@@ -4,12 +4,12 @@
             <mat-card-header>
                 <div mat-card-avatar><mat-icon>subject</mat-icon></div>
                 <mat-card-title>
-                    Профіль
+                    Постачальник
                 </mat-card-title>
             </mat-card-header>
         </mat-card>
     </a>
-    <a href="#">
+    <a [routerLink]="['./../tariffs/new']">
         <mat-card>
             <mat-card-header>
                 <div mat-card-avatar><mat-icon>lightbulb_outline</mat-icon></div>
@@ -19,7 +19,7 @@
             </mat-card-header>
         </mat-card>
     </a>
-    <a href="#">
+    <a [routerLink]="['./../consumers/organizations/new']">
         <mat-card>
             <mat-card-header>
                 <div mat-card-avatar><mat-icon>domain</mat-icon></div>
@@ -29,7 +29,7 @@
             </mat-card-header>
         </mat-card>
     </a>
-    <a [routerLink]="['./../consumers']">
+    <a [routerLink]="['./../consumers/households/new']">
         <mat-card>
             <mat-card-header>
                 <div mat-card-avatar><mat-icon>location_city</mat-icon></div>

@@ -45,14 +45,16 @@ export class HouseholdComponent implements OnInit {
     }
     
     ngOnInit() {
+        this.route.data
+            .subscribe((data: { provider: Provider }) => {
+                this.provider = data.provider;
+            });
         Observable.forkJoin([
-            this.providerService.getProvider(),
             this.consumerService.getExemptions(),
             this.consumerService.getCategoriesByTypeName(this.householdDiscriminator)
         ]).subscribe(data => {
-            this.provider = data[0],
-            this.exemptions = data[1],
-            this.consumerCategories = data[2]
+            this.exemptions = data[0],
+            this.consumerCategories = data[1]
         },
             err => {
                 console.log(err)

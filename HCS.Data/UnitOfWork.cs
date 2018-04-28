@@ -17,6 +17,7 @@ namespace HCS.Data
             Consumers = new ConsumerRepository(_context);
             Occupants = new OccupantRepository(_context);
             Tariffs = new TariffRepository(_context);
+            UtilityBills = new UtilityBillRepository(_context);
         }
 
         public IUtilityRepository Utilities { get; private set; }
@@ -25,6 +26,7 @@ namespace HCS.Data
         public IConsumerRepository Consumers { get; private set; }
         public IOccupantRepository Occupants { get; private set; }
         public ITariffRepository Tariffs { get; private set; }
+        public IUtilityBillRepository UtilityBills { get; private set; }
 
         public async Task CompleteAsync()
         {

@@ -1,0 +1,20 @@
+﻿<mat-card>
+    <mat-card-header>
+        <div mat-card-avatar><mat-icon>cached</mat-icon></div>
+        <mat-card-title>Список зареєстрованих споживачів</mat-card-title>
+        <mat-card-subtitle>Оберіть споживача</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <form #f="ngForm" (ngSubmit)="submit()">
+            <fieldset [disabled]="isBlocked">
+                <mat-radio-group name="consumer" [(ngModel)]="consumerService.currentConsumerId">
+                    <div *ngFor="let a of addresses" class="top-20">
+                        <mat-radio-button color="primary" [value]="a.id" >
+                            {{a.location}}
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </fieldset>
+        </form>
+    </mat-card-content>
+</mat-card>

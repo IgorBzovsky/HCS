@@ -1,5 +1,9 @@
 ﻿<mat-card>
-    <mat-card-title>Тариф</mat-card-title>
+    <mat-card-header>
+        <div mat-card-avatar><mat-icon>lightbulb_outline</mat-icon></div>
+        <mat-card-title>Тариф</mat-card-title>
+        <mat-card-subtitle>Форма редагування тарифу</mat-card-subtitle>
+    </mat-card-header>
     <mat-card-content>
         <form [formGroup]="tariffForm">
             <fieldset>
@@ -27,7 +31,7 @@
                                     <mat-option></mat-option>
                                     <mat-option *ngFor="let t of consumerTypes" [value]="t.id">{{ t.name }}</mat-option>
                                 </mat-select>
-                                <mat-error *ngIf="!tariffForm.controls.providedUtilityId.valid">Оберіть послугу</mat-error>
+                                <mat-error *ngIf="!tariffForm.controls.providedUtilityId.valid">Оберіть тип споживача</mat-error>
                             </mat-form-field>
                         </div>
                     </div>
@@ -37,7 +41,7 @@
                                 <mat-form-field hintLabel="Абонплата, якщо є (грн)">
                                     <input matInput placeholder="Абонплата" type="text" formControlName="subscriberFee" #subscriberFee maxlength="10" [(ngModel)]="tariff.subscriberFee" />
                                     <mat-hint align="end">{{subscriberFee.value?.length || 0}}/10</mat-hint>
-                                    <mat-error *ngIf="!tariffForm.controls.subscriberFee.valid">Вартість вказано невірно</mat-error>
+                                    <mat-error *ngIf="!tariffForm.controls.subscriberFee.valid">Абонплату вказано невірно</mat-error>
                                 </mat-form-field>
                             </div>
                             <div>
@@ -71,7 +75,7 @@
                 </div>
             </fieldset>
             <div class="top-20">
-                <button color="primary" mat-raised-button [disabled]="!tariffForm.valid || isBlocked" (click)="submit()">Зберегти</button>
+                <button color="primary" mat-raised-button [disabled]="!tariffForm.valid || isBlocked" (click)="submit()">Підтвердити</button>
             </div>
         </form>
     </mat-card-content>

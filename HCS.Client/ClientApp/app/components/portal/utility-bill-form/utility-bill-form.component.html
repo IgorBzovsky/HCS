@@ -1,0 +1,50 @@
+﻿<mat-card>
+    <mat-card-header>
+        <div mat-card-avatar><mat-icon>note_add</mat-icon></div>
+        <mat-card-title>Нова платіжка</mat-card-title>
+        <mat-card-subtitle>{{utilityBillAddress}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <form #f="ngForm" (ngSubmit)="submit()">
+            <fieldset [disabled]="isBlocked">
+                <div>
+                    <mat-form-field>
+                        <mat-select placeholder="Місяць" name="month" [(ngModel)]="utilityBill.month" required #month="ngModel">
+                            <mat-option></mat-option>
+                            <mat-option *ngFor="let m of consumerService.months; let i = index" [value]="i + 1">{{ m }}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="month.hasError('required')">Оберіть місяць</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="left-20">
+                        <input matInput placeholder="Рік" [(ngModel)]="utilityBill.year" required maxlength="4" name="year" [pattern]="regexService.Year" #year="ngModel"/>
+                        <mat-hint align="end">{{year.value?.length || 0}}/4</mat-hint>
+                        <mat-error *ngIf="year.hasError('required')">Вкажіть рік</mat-error>
+                        <mat-error *ngIf="year.hasError('pattern')">Рік вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+                
+                <h5 *ngIf="getLinesWithMeter().length > 0">Споживання (за приладами обліку)</h5>
+                <div *ngFor="let u of getLinesWithMeter()">
+                    <mat-form-field hintLabel="Показник лічильника ({{u.consumedUtility.measureUnit}})" *ngIf="u.consumedUtility.hasMeter">
+                        <input matInput [placeholder]="u.consumedUtility.name" type="text" name="counter{{u.id}}"
+                               [(ngModel)]="u.meterReadingEnd" required #counter="ngModel" maxlength="10" [pattern]="regexService.Decimal" />
+                        <mat-hint align="end">{{counter.value?.length || 0}}/10</mat-hint>
+                        <mat-error *ngIf="counter.hasError('required')">Вкажіть показник лічильника</mat-error>
+                        <mat-error *ngIf="counter.hasError('pattern')">Показник вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <h5 *ngIf="getLinesWithoutMeter().length > 0">Споживання (прилади обліку відсутні)</h5>
+                <div *ngFor="let u of getLinesWithoutMeter()">
+                    <mat-form-field hintLabel="Споживання ({{u.consumedUtility.measureUnit}})" *ngIf="!u.consumedUtility.hasMeter">
+                        <input matInput [placeholder]="u.consumedUtility.name" type="text" name="counter{{u.id}}"
+                               [value]="u.consumedUtility.consumption" readonly />
+                    </mat-form-field>
+                </div>
+            </fieldset>
+            <div class="top-20">
+                <button color="primary" mat-raised-button [disabled]="!f.valid || isBlocked">Зберегти</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

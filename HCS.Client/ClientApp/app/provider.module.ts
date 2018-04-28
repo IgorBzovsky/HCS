@@ -35,27 +35,26 @@ import { BlockComponent } from "./components/provider/tariffs/tariff-form/block/
 import { OrganizationTariffComponent } from "./components/provider/consumer-management/organization/organization-tariff/organization-tariff.component";
 import { OccupantService } from "./services/occupant.service";
 import { HouseholdTariffComponent } from "./components/provider/consumer-management/household/household-tariff/household-tariff.component";
+import { ProviderResolveService } from "./services/provider.resolve.service";
+import { UserProfileComponent } from "./components/user-profile/user-profile.component";
+import { ChangePasswordComponent } from "./components/change-password/change-password.component";
 
 
-const consumersRoutes: Routes = [
-    { path: '', redirectTo: 'household', pathMatch: 'full' },
-    { path: 'household', component: HouseholdComponent },
-    { path: 'list', component: ConsumerListComponent },
-    { path: 'organization', component: OrganizationComponent }
-];
 
 export const providerRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardComponent },
-    { path: 'tariffs', component: TariffListComponent },
-    { path: 'tariffs/new', component: TariffFormComponent },
-    { path: 'tariffs/:id', component: TariffFormComponent },
+    { path: 'tariffs', resolve: {provider: ProviderResolveService}, component: TariffListComponent },
+    { path: 'tariffs/new', resolve: { provider: ProviderResolveService }, component: TariffFormComponent },
+    { path: 'tariffs/:id', resolve: { provider: ProviderResolveService }, component: TariffFormComponent },
     { path: 'profile', component: ProviderFormComponent },
-    { path: 'consumers', component: ConsumerListComponent },
-    { path: 'consumers/organizations/new', component: OrganizationComponent },
-    { path: 'consumers/organizations/:id', component: OrganizationComponent },
-    { path: 'consumers/households/new', component: HouseholdComponent },
-    { path: 'consumers/households/:id', component: HouseholdComponent }
+    { path: 'consumers', resolve: { provider: ProviderResolveService }, component: ConsumerListComponent },
+    { path: 'consumers/organizations/new', resolve: { provider: ProviderResolveService }, component: OrganizationComponent },
+    { path: 'consumers/organizations/:id', resolve: { provider: ProviderResolveService }, component: OrganizationComponent },
+    { path: 'consumers/households/new', resolve: { provider: ProviderResolveService }, component: HouseholdComponent },
+    { path: 'consumers/households/:id', resolve: { provider: ProviderResolveService }, component: HouseholdComponent },
+    { path: 'user-profile', component: UserProfileComponent },
+    { path: "change-password", component: ChangePasswordComponent }
     /*{ path: 'consumers', component: ConsumerManagementComponent, children: consumersRoutes }*/
 ];
 
@@ -118,6 +117,7 @@ export class ProviderModule {
             ngModule: ProviderModule,
             providers: [
                 ProviderService,
+                ProviderResolveService,
                 ConsumerService,
                 OccupantService,
                 TariffService

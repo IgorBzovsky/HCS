@@ -18,6 +18,12 @@ export class User {
     }
 }
 
+export class ChangePassword {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
 export class UserData {
     id: string;
     position: number;

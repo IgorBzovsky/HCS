@@ -8,6 +8,7 @@
     <Compile Remove="Domain\Household.cs" />
     <Compile Remove="Domain\HouseholdCategory.cs" />
     <Compile Remove="Domain\Organization.cs" />
+    <Compile Remove="Domain\UserQuery.cs" />
   </ItemGroup>
 
   <ItemGroup>

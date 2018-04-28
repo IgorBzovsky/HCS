@@ -3,7 +3,7 @@
         <occupants-list (onEdit)="editOccupant($event)" (onCreate)="createOccupant()" [occupants]="occupants"></occupants-list>
     </mat-tab>
     <mat-tab label="Форма">
-        <occupants-form [occupant]="occupant" [household]="household" [exemptions]="exemptions" (onSubmit)="occupantsFormSubmit($event)"></occupants-form>
+        <occupants-form [occupant]="occupant" [household]="household" [providedUtilities]="providedUtilities" [exemptions]="exemptions" (onSubmit)="occupantsFormSubmit($event)"></occupants-form>
     </mat-tab>
 </mat-tab-group>
 <hr />

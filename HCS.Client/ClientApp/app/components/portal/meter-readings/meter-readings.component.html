@@ -1,0 +1,25 @@
+﻿<mat-card>
+    <mat-card-header>
+        <div mat-card-avatar><mat-icon>assignment</mat-icon></div>
+        <mat-card-title>Реєстрація показників лічильника</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form #f="ngForm" (ngSubmit)="submit()">
+            <fieldset [disabled]="isBlocked">
+                <h5>Послуги</h5>
+                <div *ngFor="let u of utilityBill.utilityBillLines">
+                    <mat-form-field hintLabel="Показник лічильника ({{u.consumedUtility.measureUnit}})" *ngIf="u.consumedUtility.hasMeter">
+                        <input matInput [placeholder]="u.consumedUtility.name" type="text" name="counter{{u.id}}"
+                               [(ngModel)]="u.meterReadingEnd" required #counter="ngModel" maxlength="10" [pattern]="regexService.Decimal" />
+                        <mat-hint align="end">{{counter.value?.length || 0}}/10</mat-hint>
+                        <mat-error *ngIf="counter.hasError('required')">Вкажіть показник лічильника</mat-error>
+                        <mat-error *ngIf="counter.hasError('pattern')">Показник вказано невірно</mat-error>
+                    </mat-form-field>
+                </div>
+            </fieldset>
+            <div class="top-20">
+                <button color="primary" mat-raised-button [disabled]="!f.valid || isBlocked">Зберегти</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

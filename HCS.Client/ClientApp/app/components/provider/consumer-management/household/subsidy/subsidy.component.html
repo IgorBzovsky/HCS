@@ -2,11 +2,11 @@
     <fieldset [disabled]="isBlocked">
         <mat-slide-toggle name="hasSubsidy" color="primary" [(ngModel)]="household.hasSubsidy">Є субсидія</mat-slide-toggle>
         <div>
-            <h5>Обов'язкова сплата за послуги</h5>
-            <div *ngFor="let u of household.consumedUtilities; let i = index">
+            <h5>Субсидія за послуги</h5>
+            <div *ngFor="let u of getConsumedUtilities()">
                 <mat-form-field>
-                    <input name="price{{u.id}}" matInput [placeholder]="u.name" type="text" [disabled]="!household.hasSubsidy" [(ngModel)]="household.consumedUtilities[i].obligatoryPrice" [pattern]="regexService.Decimal" required/>
-                    <mat-error>Обов'язкову сплату вказано невірно</mat-error>
+                    <input name="price{{u.id}}" matInput [placeholder]="u.name" type="text" [disabled]="!household.hasSubsidy" [(ngModel)]="getConsumedUtilityById(u.id).subsidy" [pattern]="regexService.Decimal" required/>
+                    <mat-error>Субсидію вказано невірно</mat-error>
                 </mat-form-field>     
             </div>
         </div>

@@ -17,12 +17,12 @@
         </mat-step>
         <mat-step label="Субсидії" [stepControl]="subsidyFormControl">
             <div class="step-wrapper">
-                <subsidy [household]="household" (formSubmit)="subsidyFormSubmit($event)"></subsidy>
+                <subsidy [household]="household" [providedUtilities]="provider.providedUtilities" (formSubmit)="subsidyFormSubmit($event)"></subsidy>
             </div>
         </mat-step>
         <mat-step label="Мешканці" [stepControl]="occupantsFormControl">
             <div class="step-wrapper">
-                <occupants [household]="household" [exemptions]="exemptions"></occupants>
+                <occupants [household]="household" [providedUtilities]="provider.providedUtilities" [exemptions]="exemptions"></occupants>
             </div>
         </mat-step>
         <mat-step label="Тарифи">

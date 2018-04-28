@@ -27,7 +27,7 @@ export class HouseholdFormComponent implements OnInit {
 
     onUtilityToggle(utility: ProvidedUtility, $event: any) {
         if ($event.checked)
-            this.household.consumedUtilities.push({ id: 0, providedUtilityId: utility.id, name: utility.name, obligatoryPrice: null, tariffId: null, measureUnit: utility.measureUnit, isSeasonal: utility.isSeasonal, hasMeter: false });
+            this.household.consumedUtilities.push({ id: 0, providedUtilityId: utility.id, name: utility.name, subsidy: null, tariffId: null, measureUnit: utility.measureUnit, isSeasonal: utility.isSeasonal, hasMeter: false, consumption: null });
         else {
             var index = this.household.consumedUtilities
                 .map(x => x.providedUtilityId)
@@ -87,6 +87,13 @@ export class HouseholdFormComponent implements OnInit {
         if (!consumedUtility)
             return false;
         return consumedUtility.hasMeter;
+    }
+
+    private getConsumedUtility(providedUtilityId: number) {
+        let consumedUtility = this.household.consumedUtilities.find(c => c.providedUtilityId === providedUtilityId);
+        if (!consumedUtility)
+            return null;
+        return consumedUtility;
     }
 
     private containsUtilities(id: number) {

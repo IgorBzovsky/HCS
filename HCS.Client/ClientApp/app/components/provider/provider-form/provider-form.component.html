@@ -1,5 +1,9 @@
 ﻿<mat-card>
-    <mat-card-title>Профіль постачальника</mat-card-title>
+    <mat-card-header>
+        <div mat-card-avatar><mat-icon>assignment</mat-icon></div>
+        <mat-card-title>Профіль постачальника</mat-card-title>
+        <mat-card-subtitle>Інформація про підприємство</mat-card-subtitle>
+    </mat-card-header>
     <mat-card-content>
         <form #f="ngForm" (ngSubmit)="submit()">
             <fieldset [disabled]="isBlocked">
@@ -24,7 +28,7 @@
                 <div>
                     <h4>Послуги</h4>
                     <div *ngFor="let u of utilities">
-                        <mat-checkbox id="utility{{ u.id }}" (change)="onUtilityToggle(u.id, $event)" [checked]="provider.providedUtilities.includes(u.id)">{{ u.name }}</mat-checkbox>
+                        <mat-checkbox color="primary" id="utility{{ u.id }}" (change)="onUtilityToggle(u.id, $event)" [checked]="provider.providedUtilities.includes(u.id)">{{ u.name }}</mat-checkbox>
                     </div>
                 </div>
             </fieldset>
@@ -34,4 +38,3 @@
         </form>
     </mat-card-content>
 </mat-card>
-{{provider | json}}

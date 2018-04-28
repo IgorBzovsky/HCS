@@ -1,0 +1,31 @@
+﻿<div class="table-container mat-elevation-z8">
+    <h4 class="table-heading">Список платіжок ({{utilityBillAddress}})</h4>
+    <mat-table #table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="month">
+            <mat-header-cell *matHeaderCellDef> Місяць </mat-header-cell>
+            <mat-cell *matCellDef="let utilityBillData"> {{consumerService.getMonth(utilityBillData.month)}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="year">
+            <mat-header-cell *matHeaderCellDef> Рік </mat-header-cell>
+            <mat-cell *matCellDef="let utilityBillData"> {{utilityBillData.year}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef> Загальна сумма </mat-header-cell>
+            <mat-cell *matCellDef="let utilityBillData"> {{utilityBillData.total | currency:'UAH':'symbol'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Дії </mat-header-cell>
+            <mat-cell *matCellDef="let utilityBillData">
+                <button mat-icon-button color="primary">
+                    <mat-icon aria-label="Редагувати" (click)="view(utilityBillData.id)">search</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>

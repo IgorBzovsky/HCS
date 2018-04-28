@@ -1,0 +1,29 @@
+﻿.dashboard-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+    .dashboard-wrapper a {
+        display: inline-block;
+        margin: 20px;
+    }
+
+        .dashboard-wrapper a:hover {
+            text-decoration: none;
+        }
+
+    .dashboard-wrapper .mat-card-title {
+        font-size: 15px;
+        margin-top: 15px;
+    }
+
+    .dashboard-wrapper .mat-card {
+        width: 260px;
+    }
+
+    .dashboard-wrapper .mat-icon {
+        font-size: 30px;
+        margin-top: 10px;
+        color: lightslategrey;
+    }

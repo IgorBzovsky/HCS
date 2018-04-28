@@ -1,6 +1,10 @@
 ﻿<mat-card>
-    <mat-card-title>Форма користувача</mat-card-title>
-    <mat-card-content>
+    <mat-card-header>
+        <div mat-card-avatar><mat-icon>person_add</mat-icon></div>
+        <mat-card-title>Форма користувача</mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content class="top-20">
         <form #f="ngForm" (ngSubmit)="submit()" class="top-20">
             <div class="flex-wrapper">
                 <div class="user-info-region">

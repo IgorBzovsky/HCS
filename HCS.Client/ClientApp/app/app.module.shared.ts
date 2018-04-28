@@ -29,6 +29,7 @@ import { HomeComponent } from './components/home/home.component';
 import { PortalComponent } from "./components/portal/portal/portal.component";
 import { ProviderComponent } from "./components/provider/provider/provider.component";
 import { SilentCallbackComponent } from "./components/silent-callback/silent-callback.component";
+import { ConsumersResolveService } from "./services/consumers.resolve.service";
 
 
 @NgModule({
@@ -52,7 +53,7 @@ import { SilentCallbackComponent } from "./components/silent-callback/silent-cal
         MatIconModule,
         MatMenuModule,
         MatSidenavModule,
-        PortalModule,
+        PortalModule.forRoot(),
         ProviderModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'about', pathMatch: 'full' },
@@ -62,6 +63,7 @@ import { SilentCallbackComponent } from "./components/silent-callback/silent-cal
                 path: 'portal',
                 component: PortalComponent,
                 canActivate: [AuthGuardService],
+                resolve: { consumers: ConsumersResolveService },
                 children: portalRoutes
             },
             {

@@ -55,6 +55,17 @@ export class ConsumerLocation {
     }
 }
 
+export class ConsumerInfo {
+    id: number;
+    hasSubsidy: boolean;
+    consumedUtilities: ConsumedUtility[];
+    locationId: number;
+
+    constructor() {
+        this.consumedUtilities = [];
+    }
+}
+
 export class ConsumerLocationData {
     id: number;
     position: number;

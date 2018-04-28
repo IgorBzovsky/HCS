@@ -1,29 +1,36 @@
 ﻿<div class="table-container mat-elevation-z8">
     <h4 class="table-heading">Список користувачів</h4>
-    <mat-table #table [dataSource]="dataSource">
-
+    <div class="left-30">
+        <mat-form-field>
+            <input matInput placeholder="Пошук" type="text" [(ngModel)]="userQuery.search" />
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="submit()">
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <mat-table #table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="email">
-            <mat-header-cell *matHeaderCellDef> Електронна пошта </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Електронна пошта </mat-header-cell>
             <mat-cell *matCellDef="let userData"> {{userData.email}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="lastName">
-            <mat-header-cell *matHeaderCellDef> Прізвище </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Прізвище </mat-header-cell>
             <mat-cell *matCellDef="let userData"> {{userData.lastName}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="firstName">
-            <mat-header-cell *matHeaderCellDef> Ім'я </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Ім'я </mat-header-cell>
             <mat-cell *matCellDef="let userData"> {{userData.firstName}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="middleName">
-            <mat-header-cell *matHeaderCellDef> По батькові </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> По батькові </mat-header-cell>
             <mat-cell *matCellDef="let userData"> {{userData.middleName}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="roles">
-            <mat-header-cell *matHeaderCellDef> Ролі </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Ролі </mat-header-cell>
             <mat-cell *matCellDef="let userData"> {{userData.roles}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="delete">

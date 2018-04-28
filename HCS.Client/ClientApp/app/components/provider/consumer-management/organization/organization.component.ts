@@ -27,7 +27,7 @@ export class OrganizationComponent implements OnInit {
 
     private readonly organizationDiscriminator = "Організація";
 
-    provider: Provider;
+    provider: Provider = new Provider();
 
     user = new User();
     address = new Address();
@@ -41,16 +41,14 @@ export class OrganizationComponent implements OnInit {
     }
 
     ngOnInit() {
-        Observable.forkJoin([
-            this.providerService.getProvider(),
-            this.consumerService.getCategoriesByTypeName(this.organizationDiscriminator)])
+        this.route.data
+            .subscribe((data: { provider: Provider }) => {
+                this.provider = data.provider;
+            });
+        this.consumerService.getCategoriesByTypeName(this.organizationDiscriminator)
             .subscribe(data => {
-                this.provider = data[0],
-                this.consumerCategories = data[1],
-                this.filterTariffs()
-        },
-            err => {
-                console.log(err);
+                this.consumerCategories = data,
+                    this.filterTariffs()
             });
         if (this.organization.id) {
             this.consumerService.get(this.organization.id)

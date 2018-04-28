@@ -27,7 +27,6 @@ export class AddressFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.address.region);
         this.locationService.getRegions().subscribe(regions => {
             this.regions = regions;
         });
@@ -76,7 +75,6 @@ export class AddressFormComponent implements OnInit {
 
     submit() {
         this.isBlocked = true;
-        console.log(this.address);
         if (!this.address.id) {
             this.locationService.create(this.mapToSaveAddress())
                 .subscribe(
@@ -143,7 +141,7 @@ export class AddressFormComponent implements OnInit {
             id: this.address.id,
             parentId: this.address.street ? this.address.street.id : 0,
             building: this.address.building,
-            appartment: this.address.appartment
+            appartment: this.address.appartment ? this.address.appartment : ""
         }
         return saveAddress;
     }

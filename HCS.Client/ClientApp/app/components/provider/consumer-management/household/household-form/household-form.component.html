@@ -54,6 +54,12 @@
                         <mat-checkbox color="primary" id="utility{{ u.id }}" (change)="onUtilityToggle(u, $event)" [checked]="containsUtilities(u.id)" class="left-20" [disabled]="isBlocked">{{ u.name }}</mat-checkbox>
                         <div>
                             <mat-slide-toggle color="primary" class="left-20 top-10" name="has-counter{{u.id}}" ngModel [checked]="hasMeter(u.id)" [disabled]="!containsUtilities(u.id)" (change)="onMeterToggle(u.id, $event)">Є лічильник</mat-slide-toggle>
+                            <mat-form-field class="left-20" hintLabel="Споживання {{u.measureUnit}}">
+                                <input matInput [placeholder]="u.name" type="text" name="consumption{{u.id}}"
+                                       [ngModel]="getConsumedUtility(u.id)?.consumption" (ngModelChange)="getConsumedUtility(u.id) ? getConsumedUtility(u.id).consumption = $event : null" required [pattern]="regexService.Decimal" #consumption="ngModel" [disabled]="hasMeter(u.id) || !getConsumedUtility(u.id)" />
+                                <mat-error *ngIf="consumption.hasError('required')">Вкажіть об'єм споживання</mat-error>
+                                <mat-error *ngIf="consumption.hasError('pattern')">Невірний формат</mat-error>
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>
@@ -61,5 +67,4 @@
 
         </div>
     </fieldset>
-    
 </form>

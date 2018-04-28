@@ -3,7 +3,8 @@
     public class SaveConsumedUtilityResource
     {
         public int ProvidedUtilityId { get; set; }
-        public decimal? ObligatoryPrice { get; set; }
+        public decimal? Subsidy { get; set; }
+        public double? Consumption { get; set; }
         public bool HasMeter { get; set; }
     }
 }

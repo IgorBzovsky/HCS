@@ -2,9 +2,10 @@
 import { TariffListItem, TariffDataSource } from "../../../../models/tariff";
 import { TariffService } from "../../../../services/tariff.service";
 import { ProviderService } from "../../../../services/provider.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ToastsManager } from "ng2-toastr/ng2-toastr";
 import { ConsumerService } from "../../../../services/consumer.service";
+import { Provider } from "../../../../models/provider";
 
 @Component({
     selector: "tariff-list",
@@ -12,25 +13,25 @@ import { ConsumerService } from "../../../../services/consumer.service";
     styleUrls: ["./tariff-list.component.css"]
 })
 export class TariffListComponent implements OnInit {
+    provider: Provider;
     tariffsData: TariffListItem[] = [];
     displayedColumns = ['name', 'providedUtility', 'consumerType', 'consumersQuantity', 'actions'];
     dataSource: TariffDataSource;
     isDeleteBlocked: boolean;
 
-    constructor(private providerService: ProviderService, private tariffService: TariffService, private router: Router, private toastr: ToastsManager) { }
+    constructor(private providerService: ProviderService, private tariffService: TariffService, private router: Router, private route: ActivatedRoute, private toastr: ToastsManager) { }
 
     ngOnInit() {
-        this.providerService.getProvider()
-            .subscribe(provider => {
-                this.tariffService.getAllByProviderId(provider.id)
+        console.log(this.route.data);
+        this.route.data
+            .subscribe((data: { provider: Provider }) => {
+                console.log(data.provider.name);
+                this.provider = data.provider;
+                this.tariffService.getAllByProviderId(this.provider.id)
                     .subscribe(tariffs => {
-                        console.log(tariffs);
                         this.tariffsData = tariffs;
                         this.populateTable();
                     });
-            },
-            err => {
-                console.log(err);
             });
     }
 

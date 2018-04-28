@@ -26,7 +26,7 @@ export class OrganizationFormComponent implements OnInit {
 
     onUtilityToggle(utility: ProvidedUtility, $event: any) {
         if ($event.checked) {
-            this.organization.consumedUtilities.push({ id: 0, providedUtilityId: utility.id, name: utility.name, obligatoryPrice: null, tariffId: null, measureUnit: utility.measureUnit, isSeasonal: utility.isSeasonal, hasMeter: true });
+            this.organization.consumedUtilities.push({ id: 0, providedUtilityId: utility.id, name: utility.name, subsidy: null, tariffId: null, measureUnit: utility.measureUnit, isSeasonal: utility.isSeasonal, hasMeter: true, consumption: null });
         }
         else {
             var index = this.organization.consumedUtilities

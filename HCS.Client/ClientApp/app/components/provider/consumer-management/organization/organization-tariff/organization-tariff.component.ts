@@ -4,6 +4,7 @@ import { ConsumerService } from "../../../../../services/consumer.service";
 import { ToastsManager } from "ng2-toastr/ng2-toastr";
 import { ProvidedUtility } from "../../../../../models/provided-utility";
 import { Router } from "@angular/router";
+import { ConsumedUtility } from "../../../../../models/consumed-utility";
 
 @Component({
     selector: "organization-tariff",
@@ -47,5 +48,14 @@ export class OrganizationTariffComponent {
         if (index === -1)
             return [];
         return this.providedUtilities[index].tariffs.filter(x => x.consumerType === this.discriminator);
+    }
+
+    getConsumedUtilities() {
+        let utilities: ConsumedUtility[] = [];
+        this.organization.consumedUtilities.forEach(u => {
+            if (this.providedUtilities.some(p => p.id === u.providedUtilityId))
+                utilities.push(u);
+        });
+        return utilities;
     }
 }

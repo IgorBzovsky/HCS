@@ -6,5 +6,6 @@
         public string Name { get; set; }
         public string MeasureUnit { get; set; }
         public bool IsSeasonal { get; set; }
+        public Strategies Strategy { get; set; }
     }
 }

@@ -14,8 +14,6 @@ namespace HCS.Api.Controllers
 {
     [Produces("application/json")]
     [Route("occupants")]
-    [Authorize(AuthenticationSchemes =
-    JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.ProviderPolicy)]
     public class OccupantsController : Controller
     {
         private readonly IMapper _mapper;
@@ -32,6 +30,7 @@ namespace HCS.Api.Controllers
         /// <param name="occupantResource"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.ProviderPolicy)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(OccupantResource))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Create([FromBody] SaveOccupantResource occupantResource)
@@ -53,6 +52,7 @@ namespace HCS.Api.Controllers
         /// <returns></returns>
         [HttpGet("household/{householdId}")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<OccupantResource>))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetOccupantsByHousehold(int householdId)
         {
             if (!ModelState.IsValid)
@@ -68,6 +68,7 @@ namespace HCS.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<OccupantResource>))]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Get(int id)
@@ -84,6 +85,7 @@ namespace HCS.Api.Controllers
         /// <param name="occupantResource"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.ProviderPolicy)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(OccupantResource))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
@@ -105,6 +107,7 @@ namespace HCS.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = RolePolicies.ProviderPolicy)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(int))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]

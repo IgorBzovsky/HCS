@@ -22,7 +22,10 @@ namespace HCS.Data.Repositories
             return await context.Consumers
                 .Include(c => c.ConsumedUtilities)
                     .ThenInclude(p => p.ProvidedUtility)
-                    .ThenInclude(u => u.Utility)
+                        .ThenInclude(u => u.Utility)
+                .Include(c => c.ConsumedUtilities)
+                    .ThenInclude(cu => cu.Tariff)
+                       .ThenInclude(t => t.Blocks)
                 .Include(c => c.Location)
                 .Include(c => c.ConsumerCategory)
                     .ThenInclude(x => x.ConsumerType)
@@ -54,6 +57,34 @@ namespace HCS.Data.Repositories
                 .Include(c => c.ConsumerCategory)
                     .ThenInclude(x => x.ConsumerType)
                 .Where(x => x.IsDraft)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Consumer>> GetAllByProviderAsync(int providerId)
+        {
+            return await context.Consumers
+                .Include(p => p.Location)
+                    .ThenInclude(l => l.Parent)
+                        .ThenInclude(l => l.Parent)
+                            .ThenInclude(l => l.Parent)
+                                .ThenInclude(l => l.Parent)
+                .Include(c => c.ConsumerCategory)
+                    .ThenInclude(x => x.ConsumerType)
+                .Where(x => x.IsDraft && x.ConsumedUtilities.FirstOrDefault(u => u.ProvidedUtility.ProviderId == providerId) != null)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Consumer>> GetUserConsumersAsync(string userId)
+        {
+            return await context.Consumers
+                .Include(p => p.Location)
+                    .ThenInclude(l => l.Parent)
+                        .ThenInclude(l => l.Parent)
+                            .ThenInclude(l => l.Parent)
+                                .ThenInclude(l => l.Parent)
+                .Include(c => c.ConsumerCategory)
+                    .ThenInclude(x => x.ConsumerType)
+                .Where(x => x.IsDraft && x.ApplicationUserId == userId)
                 .ToListAsync();
         }
 
